@@ -1,0 +1,7 @@
+android {
+    defaultConfig {
+        // Add the next line
+        manifestPlaceholders = [auth0Domain: "dev-xqmzmsyp.us.auth0.com", auth0Scheme: "${applicationId}"]
+    }
+    ...
+}
