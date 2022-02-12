@@ -12,16 +12,17 @@ import {
 } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { ColorSchemeName, Pressable } from 'react-native';
+import { Button, ColorSchemeName, Pressable } from 'react-native';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import ModalScreen from '../screens/ModalScreen';
+import EditProfile from '../screens/EditProfile';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import ProfileScreen from '../screens/Profile';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import {
   RootStackParamList,
+  RootStackScreenProps,
   RootTabParamList,
   RootTabScreenProps,
 } from '../types';
@@ -62,7 +63,19 @@ function RootNavigator() {
         options={{ title: 'Oops!' }}
       />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="Modal" component={ModalScreen} />
+        <Stack.Screen 
+          name="EditProfile" 
+          component={EditProfile}
+          options={({ navigation }: RootStackModalProps<'EditProfile'>) => ({ 
+            title: 'Edit Profile',
+            headerRight: () => (
+              <Button 
+                onPress={() => navigation.navigate('Profile')}
+                title="Done"
+              />
+            )
+          })}
+        />
       </Stack.Group>
     </Stack.Navigator>
   );
@@ -92,13 +105,13 @@ function BottomTabNavigator() {
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
             <Pressable
-              onPress={() => navigation.navigate('Modal')}
+              onPress={() => navigation.navigate('EditProfile')}
               style={({ pressed }) => ({
                 opacity: pressed ? 0.5 : 1,
               })}
             >
               <FontAwesome
-                name="info-circle"
+                name="pencil-square-o"
                 size={25}
                 color={Colors[colorScheme].text}
                 style={{ marginRight: 15 }}
