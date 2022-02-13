@@ -1,73 +1,107 @@
 import { useState } from 'react';
-import { Image, StyleSheet, TextInput } from 'react-native';
-import { Text, View } from '../components/Themed';
-import { ImageLibraryOptions, launchImageLibrary } from 'react-native-image-picker';
+import { Image, StyleSheet } from 'react-native';
+import { Text, View, TextInput } from '../components/Themed';
+import * as ImagePicker from 'expo-image-picker';
+import { Buffer } from 'buffer';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+
 
 export default function EditProfile() {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [bio, setBio] = useState("");
-  // const [photo, setPhoto] = useState("");
+  const [username, setUsername] = useState<string>("");
+  const [firstName, setFirstName] = useState<string>("");
+  const [lastName, setLastName] = useState<string>("");
+  const [bio, setBio] = useState<string>("");
+  const [photoBuffer, setPhotoBuffer] = useState<Buffer | null>(null);
+  const [photoURI, setPhotoURI] = useState<string>("");
 
   const onChangeImage = async () => {
-    const options: ImageLibraryOptions = {
-      mediaType: 'photo',
-      includeBase64: true,
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      base64: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    if (!result.cancelled) {
+      if (result.base64) {
+        const buffer: Buffer = Buffer.from(result.base64, "base64");
+        setPhotoURI("data:image/jpeg;base64,"+result.base64);
+        setPhotoBuffer(buffer);
+      }
     }
-    const image = await launchImageLibrary(options);
-    console.log(image);
   }
 
   return (
-    <View style={styles.profileContainer}>
-      <View style={styles.photoContainer}>
-        <Image
-          style={styles.profileImage}
-          source={{
-            uri: 'https://eitrawmaterials.eu/wp-content/uploads/2016/09/person-icon.png',
-          }}
+    <KeyboardAwareScrollView style={styles.container}>
+      <View style={styles.profileContainer}>
+        <View style={styles.photoContainer}>
+          <Image
+            style={styles.profileImage}
+            source={{
+              uri: photoURI || 'https://eitrawmaterials.eu/wp-content/uploads/2016/09/person-icon.png',
+            }}
+          />
+          <Text 
+            onPress={onChangeImage}
+            lightColor="blue"
+            darkColor="#EEEE"
+            style={styles.changeImageLabel}>
+            Change profile photo
+            </Text>
+        </View>
+        <View
+          style={styles.separator}
+          lightColor="#eee"
+          darkColor="rgba(255,255,255,0.1)"
         />
-        <Text 
-          onPress={onChangeImage}
-          style={styles.changeImageLabel}>
-          Change profile photo
-          </Text>
+        <View style={styles.inputContainer}>
+          <Text style={styles.textLabel}>Username</Text>
+          <TextInput style={styles.input} 
+            placeholder={"ross3102"}
+            onChangeText={setUsername}
+            value={username} 
+            lightColor="gray"
+            darkColor="white"
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <Text style={styles.textLabel}>First Name</Text>
+          <TextInput style={styles.input} 
+            placeholder={"Ross"}
+            onChangeText={setFirstName}
+            value={firstName} 
+            lightColor="gray"
+            darkColor="white"
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <Text style={styles.textLabel}>Last Name</Text>
+          <TextInput 
+          style={styles.input} 
+            placeholder={"Newman"}
+            onChangeText={setLastName}
+            value={lastName} 
+            lightColor="gray"
+            darkColor="white"
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <Text style={styles.textLabel}>Bio</Text>
+          <TextInput 
+          style={styles.multilineInput} 
+            placeholder={"Hi! I'm a second year. This is my bio. lol"}
+            multiline
+            numberOfLines={4}
+            maxLength={40}
+            onChangeText={setBio}
+            value={bio} 
+            lightColor="gray"
+            darkColor="white"
+          />
+        </View>
       </View>
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
-      />
-      <View style={styles.inputContainer}>
-        <Text style={styles.textLabel}>First Name</Text>
-        <TextInput style={styles.input} 
-          placeholder={"Ross"}
-          onChangeText={setFirstName}
-          value={firstName} 
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <Text style={styles.textLabel}>Last Name</Text>
-        <TextInput 
-        style={styles.input} 
-          placeholder={"Newman"}
-          onChangeText={setLastName}
-          value={lastName} 
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <Text style={styles.textLabel}>Bio</Text>
-        <TextInput 
-        style={styles.multilineInput} 
-          placeholder={"Hi! I'm a second year. lol"}
-          multiline
-          numberOfLines={4}
-          maxLength={40}
-          onChangeText={setBio}
-          value={bio} 
-        />
-      </View>
-    </View>
+    </KeyboardAwareScrollView>
   );
 }
 
@@ -107,13 +141,11 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   profileContainer: {
-    flex: 1,
     paddingVertical: 20,
     alignItems: 'center',
   },
   changeImageLabel: {
     marginTop: 5,
-    color: "blue"
   },
   textLabel: {
     textAlign: "right",
