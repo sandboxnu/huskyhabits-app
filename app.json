@@ -23,6 +23,7 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.huskyhabits",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
