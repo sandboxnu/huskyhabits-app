@@ -3,6 +3,7 @@
     "name": "huskyhabits",
     "slug": "huskyhabits",
     "version": "1.0.0",
+    "owner": "sandbox-neu",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
