@@ -9,7 +9,7 @@ export default function ProfileScreen() {
         <Image
           style={styles.profileImage}
           source={{
-            uri: 'https://scontent-bos3-1.cdninstagram.com/v/t51.2885-19/s320x320/194595949_2944643812441773_5561089273727433550_n.jpg?_nc_ht=scontent-bos3-1.cdninstagram.com&_nc_cat=109&_nc_ohc=XtbYfM0TcA4AX9UMrh_&edm=ABfd0MgBAAAA&ccb=7-4&oh=00_AT-3n6KvVqVRYMxua-ao9aWCZ_fpGpqv2JwUdifzIZXdAw&oe=62033239&_nc_sid=7bff83',
+            uri: 'https://cdn.iconscout.com/icon/free/png-256/avatar-370-456322.png',
           }}
         />
         <Text style={styles.title}>Ross Newman</Text>
