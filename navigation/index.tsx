@@ -18,11 +18,13 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import EditProfile from '../screens/EditProfile';
 import NotFoundScreen from '../screens/NotFoundScreen';
+import Onboarding from '../screens/Onboarding';
 import ProfileScreen from '../screens/Profile';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import {
-  RootStackParamList,
-  RootStackScreenProps,
+  RootStackModalProps,
+  AuthenticatedStackParamList,
+  AuthenticatedStackScreenProps,
   RootTabParamList,
   RootTabScreenProps,
 } from '../types';
@@ -33,12 +35,13 @@ export default function Navigation({
 }: {
   colorScheme: ColorSchemeName;
 }) {
+  const isUser: boolean = false;
   return (
     <NavigationContainer
       linking={LinkingConfiguration}
       theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
     >
-      <RootNavigator />
+      {isUser ? <AuthenticatedNavigator /> : <RegisterNavigator />}
     </NavigationContainer>
   );
 }
@@ -47,9 +50,9 @@ export default function Navigation({
  * A root stack navigator is often used for displaying modals on top of all other content.
  * https://reactnavigation.org/docs/modal
  */
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const Stack = createNativeStackNavigator<AuthenticatedStackParamList>();
 
-function RootNavigator() {
+function AuthenticatedNavigator() {
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -79,6 +82,21 @@ function RootNavigator() {
       </Stack.Group>
     </Stack.Navigator>
   );
+}
+
+/**
+ * RegisterNavigator holds all screens for unauthenticated users.
+ */
+function RegisterNavigator() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Root"
+        component={Onboarding}
+        options={{ headerShown: false }}
+      />
+    </Stack.Navigator>
+  )
 }
 
 /**

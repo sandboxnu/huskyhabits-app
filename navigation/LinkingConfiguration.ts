@@ -7,10 +7,10 @@
 import { LinkingOptions } from '@react-navigation/native';
 import * as Linking from 'expo-linking';
 
-import { RootStackParamList } from '../types';
+import { AuthenticatedStackParamList } from '../types';
 
-const linking: LinkingOptions<RootStackParamList> = {
-  prefixes: [Linking.makeUrl('/')],
+const linking: LinkingOptions<AuthenticatedStackParamList> = {
+  prefixes: [Linking.createURL('/')],
   config: {
     screens: {
       Root: {
