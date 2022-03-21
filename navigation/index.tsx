@@ -18,13 +18,12 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import EditProfile from '../screens/EditProfile';
 import NotFoundScreen from '../screens/NotFoundScreen';
+import OnboardingScreen from '../screens/Onboarding';
 import ProfileScreen from '../screens/Profile';
-import Onboarding from '../screens/Onboarding';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import {
   RootStackModalProps,
   AuthenticatedStackParamList,
-  AuthenticatedStackScreenProps,
   RootTabParamList,
   RootTabScreenProps,
 } from '../types';
@@ -36,7 +35,6 @@ export default function Navigation({
   colorScheme: ColorSchemeName;
 }) {
   const isUser: boolean = false;
-
   return (
     <NavigationContainer
       linking={LinkingConfiguration}
@@ -84,13 +82,12 @@ function AuthenticatedNavigator() {
 /**
  * RegisterNavigator holds all screens for unauthenticated users.
  */
-
 function RegisterNavigator() {
   return (
     <Stack.Navigator>
       <Stack.Screen
         name="Root"
-        component={Onboarding}
+        component={OnboardingScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
