@@ -21,26 +21,32 @@ export default function Login() {
     }
   }, [response]);
 
-  return (
-    <>
+  return (authToken === undefined 
+    ?
       <Button
         disabled={!request}
         title="Login"
         onPress={() => {
+          console.log(response);
           promptAsync();
           console.log(response);
         } }
       />
+    :
       <Button
           title="Logout"
-          onPress={async () => {
+          onPress={() => {
               const tokenToRevoke: AuthSession.RevokeTokenRequestConfig = {
                 token: authToken ?? ''
               };
-              const discoveryDocument: AuthSession.DiscoveryDocument = {};
-              await AuthSession.revokeAsync(tokenToRevoke, discoveryDocument);
-          } } 
+              AuthSession.revokeAsync(tokenToRevoke, Google.discovery)
+                .then(() => {
+                  setAuthToken(undefined);
+                })
+                .catch(() => {
+                  // TODO: toast w/ error details?
+                });
+          } }
       />
-    </>
-  );
+  )
 }
