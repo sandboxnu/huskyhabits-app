@@ -17,20 +17,13 @@ import Colors from '../theme/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import EditProfile from '../screens/EditProfile';
 import NotFoundScreen from '../screens/NotFoundScreen';
-<<<<<<< HEAD
-import OnboardingScreen from '../screens/Onboarding';
-=======
 import Onboarding from '../screens/Onboarding';
->>>>>>> cee71111cb90921e1b86523b90e057fbd35b0a70
 import ProfileScreen from '../screens/Profile';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import {
   RootStackModalProps,
   AuthenticatedStackParamList,
-<<<<<<< HEAD
-=======
   AuthenticatedStackScreenProps,
->>>>>>> cee71111cb90921e1b86523b90e057fbd35b0a70
   RootTabParamList,
   RootTabScreenProps,
 } from '../types';
@@ -93,11 +86,7 @@ function RegisterNavigator() {
     <Stack.Navigator>
       <Stack.Screen
         name="Root"
-<<<<<<< HEAD
-        component={OnboardingScreen}
-=======
         component={Onboarding}
->>>>>>> cee71111cb90921e1b86523b90e057fbd35b0a70
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

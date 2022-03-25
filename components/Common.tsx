@@ -19,7 +19,7 @@ export const SmallTextInput = styled.TextInput`
   margin: 5px;
   padding: 10px;
   background: #FFFFFF;
-  boxShadow: 0px 1px 8px rgba(0, 0, 0, 0.25);
+  boxShadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
 `;
 
 export const LargeTextInput = styled.TextInput`
@@ -29,7 +29,7 @@ export const LargeTextInput = styled.TextInput`
   margin: 5px;
   padding: 10px;
   background: #FFFFFF;
-  boxShadow: 0px 1px 8px rgba(0, 0, 0, 0.25);
+  boxShadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
 `;
 
 export const Container = styled.View`

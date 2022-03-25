@@ -1,20 +1,26 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Image, StyleSheet, ImageBackground } from 'react-native';
 import { Text, View, TextInput } from '../components/Themed';
 import * as ImagePicker from 'expo-image-picker';
 import { Buffer } from 'buffer';
 import { InputTextLabel, LargeTextInput, SmallTextInput } from '../components/Common';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { HuskyHabitsBackground }  from "../assets/images/Pawprints.png";
+import HuskyHabitsBackground  from "../assets/images/Pawprints.png";
 
 
 export default function Onboarding() {
   const [username, setUsername] = useState<string>('');
-  const [firstName, setFirstName] = useState<string>('');
-  const [lastName, setLastName] = useState<string>('');
+  //const [firstName, setFirstName] = useState<string>('');
+  //const [lastName, setLastName] = useState<string>('');
+  const [name, setName] = useState<string>('');
   const [bio, setBio] = useState<string>('');
   const [photoBuffer, setPhotoBuffer] = useState<Buffer | null>(null);
   const [photoURI, setPhotoURI] = useState<string>('');
+
+  // simulate name being autofilled from oauth
+  useEffect(() => {
+    setName('Ross Newman');
+  }, []);
 
   const onChangeImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -35,43 +41,55 @@ export default function Onboarding() {
   };
 
   return(
+    <ImageBackground source={HuskyHabitsBackground} style={styles.imageBackground}>
       <KeyboardAwareScrollView style={styles.container}>
-        {/* <HuskyHabitsBackground style={{ height: '500px', width: '200px' }} />
-         */}
-         {/* <HuskyHabitsBackground /> */}
-         {/* <Image source={HuskyHabitsBackground} style={styles.imageBackground} /> */}
-         <ImageBackground source={HuskyHabitsBackground} style={styles.imageBackground}>
-          <View style={styles.formContainer}>
-            <Text 
-                onPress={onChangeImage}
-                lightColor="blue"
-                darkColor="#EEEE"
-                style={styles.changeImageLabel}>
-                Change profile photo lol
-            </Text>
-            <View
-              style={styles.separator}
-              lightColor="#eee"
-              darkColor="rgba(255,255,255,0.1)"
+        <View style={styles.formContainer}>
+          <View
+            style={styles.separator}
+            lightColor="#eee"
+            darkColor="rgba(255,255,255,0.1)"
+          />
+          <View style={styles.inputContainer}>
+            <InputTextLabel>Username</InputTextLabel>
+            <SmallTextInput
+              placeholder={"ross3102"}
+              onChangeText={setUsername}
+              value={username}
             />
-            <View style={styles.inputContainer}>
-              <InputTextLabel>Username</InputTextLabel>
-              <SmallTextInput
-                placeholder={"ross3102"}
-                onChangeText={setUsername}
-                value={username}
-              />
-            </View>
-            <View style={styles.inputContainer}>
-              <InputTextLabel>Bio</InputTextLabel>
-              <LargeTextInput
-                onChangeText={setBio}
-                value={bio}
-              />
-              </View>
-            </View>
-        </ImageBackground>
+          </View>
+          <View style={styles.inputContainer}>
+            <InputTextLabel>Name</InputTextLabel>
+            <SmallTextInput
+              placeholder={"Ross Newman"}
+              onChangeText={setName}
+              value={name}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <InputTextLabel>Bio</InputTextLabel>
+            <LargeTextInput
+              onChangeText={setBio}
+              value={bio}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Text 
+              onPress={onChangeImage}
+              lightColor="black"//"blue"
+              darkColor="black"//"#EEEE"
+              style={styles.changeImageLabel}>
+              Upload Profile Picture
+            </Text>
+            <Image
+              style={styles.profileImage}
+              source={{
+                uri: photoURI || 'https://eitrawmaterials.eu/wp-content/uploads/2016/09/person-icon.png',
+              }}
+            />
+          </View>
+        </View>
       </KeyboardAwareScrollView>
+    </ImageBackground>
   );
 }
 
@@ -93,14 +111,16 @@ const styles = StyleSheet.create({
     inputContainer: {
       flexDirection: "column",
       width: "100%",
+      backgroundColor: 'transparent'
     },
     formContainer: {
       margin: 10,
       paddingVertical: 20,
       alignItems: 'center',
+      backgroundColor: 'transparent'
     },
     changeImageLabel: {
-      marginTop: 5,
+      marginVertical: 5,
     },
     textLabel: {
       textAlign: "right",
@@ -117,5 +137,11 @@ const styles = StyleSheet.create({
       marginVertical: 15,
       height: 1,
       width: '80%',
+    },
+    profileImage: {
+      width: 100,
+      height: 100,
+      borderRadius: 50,
+      boxShadow: '0px 0px 8px rgba(0, 0, 0, 0.25)',
     },
 });
