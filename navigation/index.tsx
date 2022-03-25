@@ -13,17 +13,24 @@ import {
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { Button, ColorSchemeName, Pressable } from 'react-native';
-
-import Colors from '../constants/Colors';
+import Colors from '../theme/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import EditProfile from '../screens/EditProfile';
 import NotFoundScreen from '../screens/NotFoundScreen';
+<<<<<<< HEAD
 import OnboardingScreen from '../screens/Onboarding';
+=======
+import Onboarding from '../screens/Onboarding';
+>>>>>>> cee71111cb90921e1b86523b90e057fbd35b0a70
 import ProfileScreen from '../screens/Profile';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import {
   RootStackModalProps,
   AuthenticatedStackParamList,
+<<<<<<< HEAD
+=======
+  AuthenticatedStackScreenProps,
+>>>>>>> cee71111cb90921e1b86523b90e057fbd35b0a70
   RootTabParamList,
   RootTabScreenProps,
 } from '../types';
@@ -49,11 +56,10 @@ const Stack = createNativeStackNavigator<AuthenticatedStackParamList>();
 
 function AuthenticatedNavigator() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen
         name="Root"
         component={BottomTabNavigator}
-        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="NotFound"
@@ -87,7 +93,11 @@ function RegisterNavigator() {
     <Stack.Navigator>
       <Stack.Screen
         name="Root"
+<<<<<<< HEAD
         component={OnboardingScreen}
+=======
+        component={Onboarding}
+>>>>>>> cee71111cb90921e1b86523b90e057fbd35b0a70
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
@@ -133,14 +143,14 @@ function BottomTabNavigator() {
           ),
         })}
       />
-      <BottomTab.Screen
+      {/* <BottomTab.Screen
         name="TabTwo"
         component={TabTwoScreen}
         options={{
           title: 'Tab Two',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
-      />
+      /> */}
     </BottomTab.Navigator>
   );
 }

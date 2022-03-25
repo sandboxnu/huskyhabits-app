@@ -2,6 +2,14 @@ const tintColorLight = '#2f95dc';
 const tintColorDark = '#fff';
 
 export default {
+  ///// COLOR PALETTE /////
+  clifford: "#e1897e",
+  goldendoodle: "#cfbc91",
+  malamute: "#ecec4",
+  mastiff: "#c4c4c4",
+  pug: "#000000",
+  
+  ///// THEME COLORS /////
   light: {
     text: '#000',
     background: '#fff',
