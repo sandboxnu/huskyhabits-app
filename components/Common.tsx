@@ -14,7 +14,7 @@ export const Body = styled.Text`
 
 export const SmallTextInput = styled.TextInput`
   height: 40px;
-  width: 200px;
+  maxWidth: 100%;
   borderRadius: 8px;
   margin: 5px;
   padding: 10px;
@@ -24,7 +24,7 @@ export const SmallTextInput = styled.TextInput`
 
 export const LargeTextInput = styled.TextInput`
   height: 100px;
-  width: 200px;
+  maxWidth: 100%;
   borderRadius: 8px;
   margin: 5px;
   padding: 10px;
@@ -39,18 +39,17 @@ export const Container = styled.View`
   width: 100%;
 `;
 
+export const InputTextLabel = styled.Text`
+  fontFamily: ${Text.font.body};
+  width: 100px;
+  fontSize: ${Text.size.body};
+  margin: 5px;
+  padding: 0;
+`
+
 export const ScrollContainer = styled.ScrollView`
   flex: 1;
 `;
-
-export const InputTextLabel = styled.Text`
-  fontFamily: ${Text.font.body};
-  textAlign: right;
-  width: 100px;
-  fontSize: ${Text.size.body};
-  marginRight: 10px;
-  padding: 0;
-`
 
 export const CenterText = styled.Text`
   textAlign: center;

@@ -1,9 +1,11 @@
 import { useState } from 'react';
-import { Image, StyleSheet } from 'react-native';
+import { Image, StyleSheet, ImageBackground } from 'react-native';
 import { Text, View, TextInput } from '../components/Themed';
 import * as ImagePicker from 'expo-image-picker';
 import { Buffer } from 'buffer';
+import { InputTextLabel, LargeTextInput, SmallTextInput } from '../components/Common';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { HuskyHabitsBackground }  from "../assets/images/Pawprints.png";
 
 
 export default function Onboarding() {
@@ -34,62 +36,41 @@ export default function Onboarding() {
 
   return(
       <KeyboardAwareScrollView style={styles.container}>
-          <View style={styles.profileContainer}>
+        {/* <HuskyHabitsBackground style={{ height: '500px', width: '200px' }} />
+         */}
+         {/* <HuskyHabitsBackground /> */}
+         {/* <Image source={HuskyHabitsBackground} style={styles.imageBackground} /> */}
+         <ImageBackground source={HuskyHabitsBackground} style={styles.imageBackground}>
+          <View style={styles.formContainer}>
             <Text 
                 onPress={onChangeImage}
                 lightColor="blue"
                 darkColor="#EEEE"
                 style={styles.changeImageLabel}>
-                Change profile photo
+                Change profile photo lol
             </Text>
-            </View>
             <View
               style={styles.separator}
               lightColor="#eee"
               darkColor="rgba(255,255,255,0.1)"
             />
             <View style={styles.inputContainer}>
-            <Text style={styles.textLabel}>What is your username?</Text>
-            <TextInput style={styles.input} 
+              <InputTextLabel>Username</InputTextLabel>
+              <SmallTextInput
                 placeholder={"ross3102"}
                 onChangeText={setUsername}
-                value={username} 
-                lightColor="gray"
-                darkColor="white"
-            />
+                value={username}
+              />
             </View>
             <View style={styles.inputContainer}>
-            <Text style={styles.textLabel}>First Name</Text>
-            <TextInput style={styles.input} 
-                onChangeText={setFirstName}
-                value={firstName} 
-                lightColor="gray"
-                darkColor="white"
-            />
+              <InputTextLabel>Bio</InputTextLabel>
+              <LargeTextInput
+                onChangeText={setBio}
+                value={bio}
+              />
+              </View>
             </View>
-            <View style={styles.inputContainer}>
-            <Text style={styles.textLabel}>Last Name</Text>
-            <TextInput 
-            style={styles.input} 
-                onChangeText={setLastName}
-                value={lastName} 
-                lightColor="gray"
-                darkColor="white"
-            />
-            </View>
-            <View style={styles.inputContainer}>
-            <Text style={styles.textLabel}>Bio</Text>
-            <TextInput 
-              style={styles.multilineInput} 
-              multiline
-              numberOfLines={4}
-              maxLength={40}
-              onChangeText={setBio}
-              value={bio} 
-              lightColor="gray"
-              darkColor="white"
-            />
-          </View>
+        </ImageBackground>
       </KeyboardAwareScrollView>
   );
 }
@@ -98,38 +79,23 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
     },
-    input: {
-      height: 40,
-      width: 200,
-      margin: 5,
-      borderWidth: 1,
-      padding: 10,
-    },
-    multilineInput: {
-      height: 100,
-      width: 200,
-      margin: 5,
-      borderWidth: 1,
-      padding: 10,
+    imageBackground: {
+      width: '100%',
+      height: '100%',
+      // position: 'absolute',
+      // top: 0,
+      // left: 0,
+      // bottom: 0,
+      // right: 0,
+      // zIndex: -1,
+      flex: 1,
     },
     inputContainer: {
-      flexDirection: "row",
-      alignItems: "center",
-    },
-    profileImage: {
-      width: 100,
-      height: 100,
-      borderRadius: 50,
-      borderColor: 'black',
-      borderWidth: 1,
-    },
-    photoContainer: {
       flexDirection: "column",
-      alignItems: 'center',
-      justifyContent: 'center',
-      margin: 5,
+      width: "100%",
     },
-    profileContainer: {
+    formContainer: {
+      margin: 10,
       paddingVertical: 20,
       alignItems: 'center',
     },
