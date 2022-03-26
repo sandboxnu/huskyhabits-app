@@ -1,14 +1,13 @@
 import { StyleSheet, Image } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { Text, View } from '../components/Themed';
-import { Heading, Body, CenterText, Container, ScrollContainer } from '../components/Common';
+import { Heading, Body, CenterText, Container, ScrollContainer, StyledImage } from '../components/Common';
 
 export default function ProfileScreen() {
   return (
     <ScrollContainer>
       <Container>
-        <Image
-          style={styles.profileImage}
+        <StyledImage
           source={{
             uri: 'https://cdn.iconscout.com/icon/free/png-256/avatar-370-456322.png',
           }}
@@ -94,13 +93,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginBottom: 10,
     marginTop: 5,
-  },
-  profileImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    borderColor: 'black',
-    borderWidth: 1,
   },
   separator: {
     marginVertical: 30,

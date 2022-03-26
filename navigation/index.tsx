@@ -17,7 +17,7 @@ import Colors from '../theme/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import EditProfile from '../screens/EditProfile';
 import NotFoundScreen from '../screens/NotFoundScreen';
-import Onboarding from '../screens/Onboarding';
+import Onboarding from '../screens/Onboarding/Onboarding';
 import ProfileScreen from '../screens/Profile';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import {

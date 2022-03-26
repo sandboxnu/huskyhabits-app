@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Image, StyleSheet } from 'react-native';
 import { Text, View } from '../components/Themed';
-import { RowContainer, SmallTextInput, LargeTextInput, ScrollContainer, InputTextLabel, Container } from '../components/Common';
+import { RowContainer, SmallTextInput, LargeTextInput, ScrollContainer, InputTextLabel, Container, StyledImage } from '../components/Common';
 import * as ImagePicker from 'expo-image-picker';
 import { Buffer } from 'buffer';
 
@@ -36,8 +36,7 @@ export default function EditProfile() {
     <ScrollContainer>
       <Container>
         <View style={styles.photoContainer}>
-          <Image
-            style={styles.profileImage}
+          <StyledImage
             source={{
               uri: photoURI || 'https://eitrawmaterials.eu/wp-content/uploads/2016/09/person-icon.png',
             }}
@@ -99,13 +98,6 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
-  },
-  profileImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    borderColor: 'black',
-    borderWidth: 1,
   },
   photoContainer: {
     flexDirection: "column",

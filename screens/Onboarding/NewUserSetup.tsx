@@ -5,6 +5,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { Buffer } from 'buffer';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Step } from './Onboarding';
+import { StyledImage } from '../../components/Common';
 
 interface NewUserSetupScreenProps {
     setStep: (step: Step) => void
@@ -90,8 +91,7 @@ export default function NewUserSetupScreen({setStep}: NewUserSetupScreenProps) {
         </View>
       </View>
       <View style={styles.photoContainer}>
-        <Image
-          style={styles.profileImage}
+        <StyledImage
           source={{
             uri:
               photoURI ||
@@ -135,13 +135,6 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  profileImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    borderColor: 'black',
-    borderWidth: 1,
   },
   photoContainer: {
     flexDirection: 'column',
