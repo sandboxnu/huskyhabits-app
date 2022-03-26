@@ -50,6 +50,10 @@ const Stack = createNativeStackNavigator<AuthenticatedStackParamList>();
 function AuthenticatedNavigator() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
+       <Stack.Screen
+        name="Root"
+        component={Onboarding}
+      />
       <Stack.Screen
         name="Root"
         component={BottomTabNavigator}
@@ -85,7 +89,7 @@ function RegisterNavigator() {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Root"
+        name="Register"
         component={Onboarding}
         options={{ headerShown: false }}
       />

@@ -18,7 +18,7 @@ export const SmallTextInput = styled.TextInput`
   maxWidth: 100%;
   borderRadius: 8px;
   padding: 10px;
-  background: #FFFFFF;
+  background: #ffffff;
   boxShadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
 `;
 
@@ -27,7 +27,7 @@ export const LargeTextInput = styled.TextInput`
   maxWidth: 100%;
   borderRadius: 8px;
   padding: 10px;
-  background: #FFFFFF;
+  background: #ffffff;
   boxShadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
 `;
 
@@ -35,8 +35,8 @@ export const StyledImage = styled.Image`
   width: 100px;
   height: 100px;
   borderRadius: 50px;
-  box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.25);
-  background: #FFFFFF;
+  boxShadow: 1px 1px 8px rgba(0, 0, 0, 0.25);
+  background: #ffffff;
 `;
 
 export const Container = styled.View`
@@ -48,10 +48,11 @@ export const Container = styled.View`
 
 export const InputTextLabel = styled.Text`
   fontFamily: ${Text.font.body};
-  width: 100px;
   fontSize: ${Text.size.body};
+  width: auto;
+  maxWidth: 90%;
   padding: 0;
-`
+`;
 
 export const FormContainer = styled.View`
   margin: 10px;
@@ -87,11 +88,22 @@ export const ColumnContainer = styled.View`
 
 export const PrimaryButton = styled.TouchableOpacity`
   display: flex;
-  flex-direction: row;
-  align-items: flex-start;
+  flexDirection: row;
+  alignItems: flex-start;
   padding: 12px 16px;
   backgroundColor: ${Colors.clifford};
-  border-radius: 8px;
+  borderRadius: 8px;
+`;
+
+export const SecondaryButton = styled.TouchableOpacity`
+  display: flex;
+  flexDirection: row;
+  alignItems: flex-start;
+  padding: 12px 16px;
+  borderColor: ${Colors.clifford};
+  borderWidth: 2px;
+  backgroundColor: ${Colors.malamute};
+  borderRadius: 8px;
 `;
 
 export const ButtonText = styled.Text`

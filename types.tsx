@@ -12,15 +12,18 @@ declare global {
 }
 
 export type AuthenticatedStackParamList = {
+  Onboarding: undefined;
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   EditProfile: undefined;
   NotFound: undefined;
 };
 
-export type AuthenticatedStackScreenProps<Screen extends keyof AuthenticatedStackParamList> =
-  NativeStackScreenProps<AuthenticatedStackParamList, Screen>;
+export type AuthenticatedStackScreenProps<
+  Screen extends keyof AuthenticatedStackParamList,
+> = NativeStackScreenProps<AuthenticatedStackParamList, Screen>;
 
 export type RootTabParamList = {
+  Onboarding: undefined;
   Profile: undefined;
   TabTwo: undefined;
 };

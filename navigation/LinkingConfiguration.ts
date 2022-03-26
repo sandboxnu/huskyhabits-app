@@ -13,8 +13,14 @@ const linking: LinkingOptions<AuthenticatedStackParamList> = {
   prefixes: [Linking.createURL('/')],
   config: {
     screens: {
+      // Look at register
       Root: {
         screens: {
+          Onboarding: {
+            screens: {
+              Onboarding: '/onboarding',
+            }
+          },
           Profile: {
             screens: {
               ProfileScreen: 'one',
