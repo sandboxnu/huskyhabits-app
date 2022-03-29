@@ -1,35 +1,34 @@
-import { StyleSheet, Image, ScrollView } from 'react-native';
+import { StyleSheet, Image } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { Text, View } from '../components/Themed';
+import { Heading, Body, CenterText, Container, ScrollContainer } from '../components/Common';
 
 export default function ProfileScreen() {
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.profileContainer}>
+    <ScrollContainer>
+      <Container>
         <Image
           style={styles.profileImage}
           source={{
             uri: 'https://cdn.iconscout.com/icon/free/png-256/avatar-370-456322.png',
           }}
         />
-        <Text style={styles.title}>Ross Newman</Text>
+        <Heading>Ross Newman</Heading>
         <Text style={styles.handle}>@ross3102</Text>
         <View style={styles.locationView}>
           <FontAwesome name="map-marker" size={20} style={{ marginRight: 5 }} />
           <Text>Boston, MA, USA</Text>
         </View>
-        <Text style={styles.bio}>
+        <CenterText>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        </Text>
-
+        </CenterText>
         <View
           style={styles.separator}
           lightColor="#eee"
           darkColor="rgba(255,255,255,0.1)"
         />
-
-        <View style={styles.groupsContainer}>
+        <Container>
           <Text style={styles.title}>Groups</Text>
           <View style={styles.group}>
             <Image
@@ -79,41 +78,22 @@ export default function ProfileScreen() {
               <Text>50 members</Text>
             </View>
           </View>
-        </View>
-      </View>
-    </ScrollView>
+        </Container>
+      </Container>
+    </ScrollContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  profileContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#666',
-    padding: 10,
-    margin: 10,
-  },
-  title: {
-    fontSize: 25,
-    fontWeight: 'bold',
-  },
   handle: {
     fontSize: 20,
-    color: '#999',
   },
   locationView: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#666',
     flexDirection: 'row',
     marginBottom: 10,
     marginTop: 5,
-  },
-  bio: {
-    textAlign: 'center',
   },
   profileImage: {
     width: 100,
@@ -121,12 +101,6 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     borderColor: 'black',
     borderWidth: 1,
-  },
-  groupsContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#666',
-    width: '100%',
   },
   separator: {
     marginVertical: 30,
