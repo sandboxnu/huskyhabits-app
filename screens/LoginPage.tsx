@@ -1,13 +1,18 @@
 import { Button, ScrollView } from "react-native"
 import { Image, StyleSheet } from 'react-native';
 import { Text, View, TextInput } from '../components/Themed';
+import AuthServiceClient from '../services/authService';
 
 export default function Login() {
-  
+  const authClient: AuthServiceClient = new AuthServiceClient(undefined);
+
   return (
         <View style={styles.pageContainer}>
             <Text style={styles.title}>Husky Habits</Text>
-            <Button title='Log in with Google'/>
+            <Button 
+              title='Log in with Google'
+              onPress={() => { authClient.loginWithGoogle(); }}
+            />
             {/* <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script> */}
         </View>
     );
