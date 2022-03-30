@@ -1,5 +1,4 @@
-import { AxiosResponse } from "axios";
-import assert from 'assert';
+import { AxiosResponse } from 'axios';
 
 export interface ResponseEnvelope<T> {
   isOK: boolean;
@@ -7,7 +6,16 @@ export interface ResponseEnvelope<T> {
   response?: T;
 }
 
-export function unwrapOrThrowError<T>(response: AxiosResponse<ResponseEnvelope<T>>, ignoreResponse = false): T {
+export function assert(condition: any, msg?: string): asserts condition {
+  if (!condition) {
+    throw new Error(msg);
+  }
+}
+
+export function unwrapOrThrowError<T>(
+  response: AxiosResponse<ResponseEnvelope<T>>,
+  ignoreResponse = false,
+): T {
   if (response.data.isOK) {
     if (ignoreResponse) {
       return {} as T;
