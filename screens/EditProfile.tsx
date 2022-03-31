@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Image, StyleSheet } from 'react-native';
-import { Text, View } from '../components/Themed';
-import { RowContainer, SmallTextInput, LargeTextInput, ScrollContainer, InputTextLabel, Container } from '../components/Common';
+import { Text, View, TextInput } from '../components/Themed';
 import * as ImagePicker from 'expo-image-picker';
 import { Buffer } from 'buffer';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 
 export default function EditProfile() {
@@ -33,8 +33,8 @@ export default function EditProfile() {
   }
 
   return (
-    <ScrollContainer>
-      <Container>
+    <KeyboardAwareScrollView style={styles.container}>
+      <View style={styles.profileContainer}>
         <View style={styles.photoContainer}>
           <Image
             style={styles.profileImage}
@@ -55,47 +55,74 @@ export default function EditProfile() {
           lightColor="#eee"
           darkColor="rgba(255,255,255,0.1)"
         />
-        <RowContainer>
-          <InputTextLabel>Username</InputTextLabel>
-          <SmallTextInput
+        <View style={styles.inputContainer}>
+          <Text style={styles.textLabel}>Username</Text>
+          <TextInput style={styles.input} 
             placeholder={"ross3102"}
             onChangeText={setUsername}
             value={username} 
+            lightColor="gray"
+            darkColor="white"
           />
-        </RowContainer>
-        <RowContainer>
-          <InputTextLabel>First Name</InputTextLabel>
-          <SmallTextInput
+        </View>
+        <View style={styles.inputContainer}>
+          <Text style={styles.textLabel}>First Name</Text>
+          <TextInput style={styles.input} 
             placeholder={"Ross"}
             onChangeText={setFirstName}
             value={firstName} 
+            lightColor="gray"
+            darkColor="white"
           />
-        </RowContainer>
-        <RowContainer>
-          <InputTextLabel>Last Name</InputTextLabel>
-          <SmallTextInput
+        </View>
+        <View style={styles.inputContainer}>
+          <Text style={styles.textLabel}>Last Name</Text>
+          <TextInput 
+          style={styles.input} 
             placeholder={"Newman"}
             onChangeText={setLastName}
             value={lastName} 
+            lightColor="gray"
+            darkColor="white"
           />
-        </RowContainer>
-        <RowContainer>
-          <InputTextLabel>Bio</InputTextLabel>
-          <LargeTextInput 
+        </View>
+        <View style={styles.inputContainer}>
+          <Text style={styles.textLabel}>Bio</Text>
+          <TextInput 
+          style={styles.multilineInput} 
             placeholder={"Hi! I'm a second year. This is my bio. lol"}
             multiline
             numberOfLines={4}
             maxLength={40}
             onChangeText={setBio}
             value={bio} 
+            lightColor="gray"
+            darkColor="white"
           />
-        </RowContainer>
-      </Container>
-    </ScrollContainer>
+        </View>
+      </View>
+    </KeyboardAwareScrollView>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  input: {
+    height: 40,
+    width: 200,
+    margin: 5,
+    borderWidth: 1,
+    padding: 10,
+  },
+  multilineInput: {
+    height: 100,
+    width: 200,
+    margin: 5,
+    borderWidth: 1,
+    padding: 10,
+  },
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",

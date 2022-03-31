@@ -1,5 +1,6 @@
 import { KeyboardAwareScrollView as DefaultScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styled from 'styled-components/native';
+import Colors from '../theme/Colors';
 import Text from '../theme/Text';
 
 export const Heading = styled.Text`
@@ -10,6 +11,18 @@ export const Heading = styled.Text`
 
 export const Body = styled.Text`
   fontFamily: ${Text.font.body};
+  lineHeight: 30px;
+`;
+
+export const ProfileBody = styled.Text`
+  fontFamily: ${Text.font.bodyBold};
+  lineHeight: 30px;
+`;
+
+export const TitleText = styled.Text`
+  fontFamily: ${Text.font.bodyBold};
+  fontSize: ${Text.size.heading};
+  lineHeight: 50px;
 `;
 
 export const SmallTextInput = styled.TextInput`
@@ -32,9 +45,14 @@ export const LargeTextInput = styled.TextInput`
   boxShadow: 0px 1px 8px rgba(0, 0, 0, 0.25);
 `;
 
-export const Container = styled.View`
+export const CenteredContainer = styled.View`
   alignItems: center;
   justifyContent: center;
+  padding: 10px;
+  width: 100%;
+`;
+
+export const Container = styled.View`
   padding: 10px;
   width: 100%;
 `;
@@ -59,4 +77,31 @@ export const CenterText = styled.Text`
 export const RowContainer = styled.View`
   flexDirection: row;
   alignItems: center;
+`;
+
+export const CenteredRowContainer = styled.View`
+  alignItems: center;
+  justifyContent: center;
+  flexDirection: row;
+`;
+
+export const CenteredColContainer = styled.View`
+  flexDirection: column;
+  alignItems: center;
+  justifyContent: center;
+`;
+
+export const ColContainer = styled.View`
+  flexDirection: column;
+`;
+
+export const LeftAlign = styled.View`
+  flexDirection: row;
+  justifyContent: flex-start;
+`;
+
+export const SubHeadingItalic = styled.Text`
+  fontFamily: ${Text.font.subHeadingItalic};
+  fontSize: 14px;
+  color: ${Colors.goldendoodle};
 `;
