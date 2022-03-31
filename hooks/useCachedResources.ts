@@ -18,6 +18,9 @@ export default function useCachedResources() {
           'Balsamiq-Sans': require('../assets/fonts/BalsamiqSans-Regular.ttf'),
           'BeVietnam-Bold': require('../assets/fonts/BeVietnam-Bold.ttf'),
           'BeVietnam': require('../assets/fonts/BeVietnam-Regular.ttf'),
+          'BeVietnam-Bold': require('../assets/fonts/BeVietnam-Bold.ttf'),
+          'ABeeZee': require('../assets/fonts/ABeeZee-Regular.ttf'),
+          'ABeeZee-Italic': require('../assets/fonts/ABeeZee-Italic.ttf'),
         });
       } catch (e) {
         // We might want to provide this error information to an error reporting service
