@@ -20,6 +20,7 @@ import NotFoundScreen from '../screens/NotFoundScreen';
 import ProfileScreen from '../screens/Profile';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import {
+  RootStackModalProps,
   RootStackParamList,
   RootStackScreenProps,
   RootTabParamList,

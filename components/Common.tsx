@@ -15,6 +15,7 @@ export const Body = styled.Text`
 `;
 
 export const ProfileBody = styled.Text`
+  fontSize: ${Text.size.body};
   fontFamily: ${Text.font.bodyBold};
   lineHeight: 30px;
 `;

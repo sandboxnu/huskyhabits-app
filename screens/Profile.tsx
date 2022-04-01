@@ -20,6 +20,7 @@ import {
 } from '../components/Common';
 import Tape from '../assets/images/Tape.png';
 import HuskyHabitsBackground from '../assets/images/Pawprints.png';
+import Colors from '../theme/Colors';
 
 export default function ProfileScreen() {
   return (
@@ -31,7 +32,8 @@ export default function ProfileScreen() {
       <ScrollContainer>
         <Container>
           <LeftAlign>
-            <TitleText>@bagel_gatekeeper</TitleText>
+            <TitleText style={{color: Colors.huskyYellow}}>@</TitleText>
+            <TitleText>bagel_gatekeeper</TitleText>
           </LeftAlign>
           <CenteredRowContainer>
             <CenteredColContainer>
@@ -46,15 +48,21 @@ export default function ProfileScreen() {
               </View>
             </CenteredColContainer>
 
-            <ColContainer>
+            <ColContainer style={styles.padding}>
               <Heading> Jaime Gonora </Heading>
               <SubHeadingItalic> (she/her) </SubHeadingItalic>
               <RowContainer>
-                <ProfileBody> 50 </ProfileBody>
-                <Body>Friends </Body>
+                <ProfileBody style={styles.yellowText}> 50 </ProfileBody>
+                <Body style={styles.yellowText}>Friends </Body>
               </RowContainer>
-              <RowContainer></RowContainer>
-              <RowContainer></RowContainer>
+              <RowContainer>
+                <ProfileBody style={styles.yellowText}> 3 </ProfileBody>
+                <Body style={styles.yellowText}>Challenges </Body>
+              </RowContainer>
+              <RowContainer>
+                <ProfileBody style={styles.yellowText}> 6 </ProfileBody>
+                <Body style={styles.yellowText}>Habits </Body>
+              </RowContainer>
             </ColContainer>
           </CenteredRowContainer>
         </Container>
@@ -89,6 +97,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   image: {
-    opacity: 0.5,
+    opacity: 0.4,
   },
+  yellowText: {
+    color: Colors.huskyYellow,
+  },
+  padding: {
+    padding:10,
+  }
 });
