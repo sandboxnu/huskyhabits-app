@@ -51,6 +51,7 @@ export const InputTextLabel = styled.Text`
   fontSize: ${Text.size.body};
   width: auto;
   maxWidth: 90%;
+  marginBottom: 5px;
   padding: 0;
 `;
 

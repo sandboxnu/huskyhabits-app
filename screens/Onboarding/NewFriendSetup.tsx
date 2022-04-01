@@ -20,7 +20,7 @@ export default function NewFriendSetup({
   setCurrentStep,
 }: NewFriendSetupProps) {
   return (
-    <KeyboardAwareScrollView style={styles.container}>
+    <View style={styles.container}>
       <FormContainer>
         <InputContainer>
           <InputTextLabel>
@@ -28,33 +28,54 @@ export default function NewFriendSetup({
             using Husky Habits below!{' '}
           </InputTextLabel>
         </InputContainer>
-        <Body>Share via:</Body>
-        <PrimaryButton onPress={() => console.log('TODO')}>
-          <ButtonText>Email</ButtonText>
+        <PrimaryButton
+          style={styles.shareButton}
+          onPress={() => console.log('TODO')}
+        >
+          <ButtonText>Share via Email</ButtonText>
+        </PrimaryButton>
+        <PrimaryButton
+          style={styles.shareButton}
+          onPress={() => console.log('TODO')}
+        >
+          <ButtonText>Share via Text</ButtonText>
+        </PrimaryButton>
+        <PrimaryButton
+          style={styles.shareButton}
+          onPress={() => console.log('TODO')}
+        >
+          <ButtonText>Share via Instagram</ButtonText>
         </PrimaryButton>
       </FormContainer>
       <View style={styles.buttonContainer}>
         <SecondaryButton onPress={() => setCurrentStep('habit')}>
           <ButtonText>Back</ButtonText>
         </SecondaryButton>
-        <PrimaryButton onPress={() => console.log('TODO')}>
+        <PrimaryButton onPress={() => setCurrentStep('loading')}>
           <ButtonText>Finish</ButtonText>
         </PrimaryButton>
       </View>
-    </KeyboardAwareScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    marginTop: 120,
+    marginTop: 160,
+    height: '75%',
+    backgroundColor: 'transparent',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+  },
+  shareButton: {
+    marginVertical: 10,
+    marginRight: 'auto',
+    marginLeft: 10,
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginHorizontal: 20,
-    flex: 1,
     backgroundColor: 'transparent',
   },
 });

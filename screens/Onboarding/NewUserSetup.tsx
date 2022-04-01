@@ -19,6 +19,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { Buffer } from 'buffer';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Step } from './Onboarding';
+import Colors from '../../theme/Colors';
 
 interface NewUserSetupProps {
   username: string;
@@ -99,7 +100,11 @@ export default function NewUserSetup({ setCurrentStep }: NewUserSetupProps) {
         </InputContainer>
       </FormContainer>
       <View style={styles.nextContainer}>
-        <PrimaryButton onPress={() => setCurrentStep('habit')}>
+        <PrimaryButton
+          style={username === '' ? { backgroundColor: Colors.mastiff } : {}}
+          onPress={() => setCurrentStep('habit')}
+          disabled={username === ''}
+        >
           <ButtonText>Next</ButtonText>
         </PrimaryButton>
       </View>
@@ -110,7 +115,7 @@ export default function NewUserSetup({ setCurrentStep }: NewUserSetupProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 120,
+    marginTop: 160,
   },
   changeImageLabel: {
     marginVertical: 10,

@@ -1,10 +1,5 @@
 import { useEffect, useState } from 'react';
-import {
-  Image,
-  StyleSheet,
-  ImageBackground,
-  TouchableOpacity,
-} from 'react-native';
+import { Image, StyleSheet, ImageBackground, SafeAreaView } from 'react-native';
 import { Text, View } from '../../components/Themed';
 import * as ImagePicker from 'expo-image-picker';
 import { Buffer } from 'buffer';
@@ -22,8 +17,10 @@ import Camera from '../../assets/images/camera.svg';
 import Colors from '../../theme/Colors';
 import NewFriendSetup from './NewFriendSetup';
 import OnboardingIntro from './OnboardingIntro';
+import { conditionalExpression } from '@babel/types';
+import OnboardingLoadingScreen from './OnboardingLoadingScreen';
 
-export type Step = 'intro' | 'user' | 'habit' | 'invite_friend';
+export type Step = 'intro' | 'user' | 'habit' | 'invite_friend' | 'loading';
 
 interface OnboardingStepProps {
   stepNum: number;
@@ -31,8 +28,9 @@ interface OnboardingStepProps {
   title: string;
 }
 
-export default function Onboarding() {
+export default function Onboarding({}) {
   const [username, setUsername] = useState<string>('');
+
   //const [firstName, setFirstName] = useState<string>('');
   //const [lastName, setLastName] = useState<string>('');
   const [currentStep, setCurrentStep] = useState<string>('intro');
@@ -52,7 +50,9 @@ export default function Onboarding() {
     const isCompletedStep = () => {
       return (
         (currentStep === 'habit' && id === 'user') ||
-        (currentStep === 'invite_friend' && (id === 'user' || id === 'habit'))
+        (currentStep === 'invite_friend' &&
+          (id === 'user' || id === 'habit')) ||
+        currentStep === 'loading'
       );
     };
     return id === currentStep || isCompletedStep();
@@ -65,13 +65,23 @@ export default function Onboarding() {
         <RowContainer>
           <OnboardingStep stepNum={1} id="user" title="User Info" />
           <View
-            style={styles.stepSeparator}
+            style={[
+              styles.stepSeparator,
+              isCurrentStep('habit')
+                ? styles.stepSeparatorComplete
+                : styles.stepSeparatorIncomplete,
+            ]}
             lightColor="#eee"
             darkColor="#eee"
           />
           <OnboardingStep stepNum={2} id="habit" title="Habits" />
           <View
-            style={styles.stepSeparator}
+            style={[
+              styles.stepSeparator,
+              isCurrentStep('invite_friend')
+                ? styles.stepSeparatorComplete
+                : styles.stepSeparatorIncomplete,
+            ]}
             lightColor="#eee"
             darkColor="#eee"
           />
@@ -116,7 +126,7 @@ export default function Onboarding() {
       style={styles.imageBackground}
       imageStyle={styles.image}
     >
-      { currentStep !== 'intro' && <OnboardingHeader /> }
+      {currentStep !== 'intro' && <OnboardingHeader />}
       {currentStep === 'intro' && (
         <OnboardingIntro setCurrentStep={setCurrentStep} />
       )}
@@ -140,6 +150,9 @@ export default function Onboarding() {
       {currentStep === 'invite_friend' && (
         <NewFriendSetup setCurrentStep={setCurrentStep} />
       )}
+      {currentStep === 'loading' && (
+        <OnboardingLoadingScreen setCurrentStep={setCurrentStep} />
+      )}
     </ImageBackground>
   );
 }
@@ -147,16 +160,23 @@ export default function Onboarding() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 120,
+    marginTop: 160,
   },
   stepSeparator: {
-    borderStyle: 'dotted',
     borderWidth: 1,
     borderRadius: 1,
     height: 1,
     marginBottom: 15,
     marginHorizontal: -20,
     width: 70,
+  },
+  stepSeparatorIncomplete: {
+    borderColor: Colors.pug,
+    borderStyle: 'dotted',
+  },
+  stepSeparatorComplete: {
+    borderStyle: 'solid',
+    borderColor: Colors.clifford,
   },
   centerStepText: {
     marginLeft: 12,
@@ -165,7 +185,7 @@ const styles = StyleSheet.create({
   header: {
     position: 'absolute',
     width: 375,
-    height: 145,
+    height: 165,
     left: 0,
     top: 0,
     zIndex: 10,
