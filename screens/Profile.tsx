@@ -1,55 +1,65 @@
-import { StyleSheet, Image } from 'react-native';
+import { StyleSheet, Image, ImageBackground } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { View } from '../components/Themed';
-import  Text  from '../theme/Text';
-import { Heading, Body, CenterText, ScrollContainer, RowContainer, TitleText, ColContainer, LeftAlign, CenteredContainer, Container, CenteredRowContainer, SubHeadingItalic, ProfileBody, CenteredColContainer } from '../components/Common';
+import Text from '../theme/Text';
+import {
+  Heading,
+  Body,
+  CenterText,
+  ScrollContainer,
+  RowContainer,
+  TitleText,
+  ColContainer,
+  LeftAlign,
+  CenteredContainer,
+  Container,
+  CenteredRowContainer,
+  SubHeadingItalic,
+  ProfileBody,
+  CenteredColContainer,
+} from '../components/Common';
 import Tape from '../assets/images/Tape.png';
-import Colors from '../theme/Colors';
+import HuskyHabitsBackground from '../assets/images/Pawprints.png';
 
 export default function ProfileScreen() {
   return (
-    <ScrollContainer>
-      <Container>
-        <LeftAlign>
-          <TitleText>
-            @bagel_gatekeeper
-          </TitleText>
-        </LeftAlign>
-        
-        <CenteredRowContainer>
-          <CenteredColContainer>
-          <Image source={Tape} style={styles.tape}/>
-          <View style={styles.shadowContainer}>
-            <Image source={{
-                uri: 'https://eitrawmaterials.eu/wp-content/uploads/2016/09/person-icon.png'
-              }} style={styles.profilePicture}/>
-          </View>
-          </CenteredColContainer>
-          
-          <ColContainer> 
+    <ImageBackground
+      source={HuskyHabitsBackground}
+      style={styles.imageBackground}
+      imageStyle={styles.image}
+    >
+      <ScrollContainer>
+        <Container>
+          <LeftAlign>
+            <TitleText>@bagel_gatekeeper</TitleText>
+          </LeftAlign>
+          <CenteredRowContainer>
+            <CenteredColContainer>
+              <Image source={Tape} style={styles.tape} />
+              <View style={styles.shadowContainer}>
+                <Image
+                  source={{
+                    uri: 'https://eitrawmaterials.eu/wp-content/uploads/2016/09/person-icon.png',
+                  }}
+                  style={styles.profilePicture}
+                />
+              </View>
+            </CenteredColContainer>
+
+            <ColContainer>
               <Heading> Jaime Gonora </Heading>
               <SubHeadingItalic> (she/her) </SubHeadingItalic>
-              
               <RowContainer>
                 <ProfileBody> 50 </ProfileBody>
                 <Body>Friends </Body>
               </RowContainer>
-
-              <RowContainer>
-                <ProfileBody> 3 </ProfileBody>
-                <Body>Challenges </Body>
-              </RowContainer>
-              
-              <RowContainer>
-                <ProfileBody> 6 </ProfileBody>
-                <Body>Habits </Body>
-              </RowContainer>
-             
-          </ColContainer>
-
-        </CenteredRowContainer>
-      </Container>
-    </ScrollContainer>
+              <RowContainer></RowContainer>
+              <RowContainer></RowContainer>
+            </ColContainer>
+          </CenteredRowContainer>
+        </Container>
+      </ScrollContainer>
+    </ImageBackground>
   );
 }
 
@@ -73,7 +83,12 @@ const styles = StyleSheet.create({
     elevation: 5,
     alignItems: 'center',
   },
-  yellowColor: {
-    color: Colors.huskyYellow,
+  imageBackground: {
+    width: '100%',
+    height: '100%',
+    flex: 1,
+  },
+  image: {
+    opacity: 0.5,
   },
 });
