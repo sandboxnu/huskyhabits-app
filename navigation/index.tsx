@@ -93,6 +93,7 @@ function BottomTabNavigator() {
     <BottomTab.Navigator
       initialRouteName="Profile"
       screenOptions={{
+        headerShown: false,
         tabBarActiveTintColor: Colors[colorScheme].tint,
       }}
     >

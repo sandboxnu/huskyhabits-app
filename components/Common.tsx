@@ -11,19 +11,16 @@ export const Heading = styled.Text`
 
 export const Body = styled.Text`
   fontFamily: ${Text.font.body};
-  lineHeight: 30px;
 `;
 
 export const ProfileBody = styled.Text`
   fontSize: ${Text.size.body};
   fontFamily: ${Text.font.bodyBold};
-  lineHeight: 30px;
 `;
 
 export const TitleText = styled.Text`
   fontFamily: ${Text.font.bodyBold};
   fontSize: ${Text.size.heading};
-  lineHeight: 50px;
 `;
 
 export const SmallTextInput = styled.TextInput`
@@ -104,5 +101,6 @@ export const LeftAlign = styled.View`
 export const SubHeadingItalic = styled.Text`
   fontFamily: ${Text.font.subHeadingItalic};
   fontSize: 14px;
+  marginBottom: 10px;
   color: ${Colors.huskyYellow};
 `;
