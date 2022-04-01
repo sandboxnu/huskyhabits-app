@@ -103,5 +103,5 @@ export const LeftAlign = styled.View`
 export const SubHeadingItalic = styled.Text`
   fontFamily: ${Text.font.subHeadingItalic};
   fontSize: 14px;
-  color: ${Colors.goldendoodle};
+  color: ${Colors.huskyYellow};
 `;

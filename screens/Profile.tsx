@@ -4,6 +4,7 @@ import { View } from '../components/Themed';
 import  Text  from '../theme/Text';
 import { Heading, Body, CenterText, ScrollContainer, RowContainer, TitleText, ColContainer, LeftAlign, CenteredContainer, Container, CenteredRowContainer, SubHeadingItalic, ProfileBody, CenteredColContainer } from '../components/Common';
 import Tape from '../assets/images/Tape.png';
+import Colors from '../theme/Colors';
 
 export default function ProfileScreen() {
   return (
@@ -28,12 +29,22 @@ export default function ProfileScreen() {
           <ColContainer> 
               <Heading> Jaime Gonora </Heading>
               <SubHeadingItalic> (she/her) </SubHeadingItalic>
+              
               <RowContainer>
                 <ProfileBody> 50 </ProfileBody>
                 <Body>Friends </Body>
               </RowContainer>
-              <RowContainer></RowContainer>
-              <RowContainer></RowContainer>
+
+              <RowContainer>
+                <ProfileBody> 3 </ProfileBody>
+                <Body>Challenges </Body>
+              </RowContainer>
+              
+              <RowContainer>
+                <ProfileBody> 6 </ProfileBody>
+                <Body>Habits </Body>
+              </RowContainer>
+             
           </ColContainer>
 
         </CenteredRowContainer>
@@ -61,5 +72,8 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 5,
     alignItems: 'center',
+  },
+  yellowColor: {
+    color: Colors.huskyYellow,
   },
 });

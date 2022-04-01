@@ -5,6 +5,7 @@ export default {
   ///// COLOR PALETTE /////
   clifford: "#e1897e",
   goldendoodle: "#cfbc91",
+  huskyYellow: "#ac9c78",
   malamute: "#ecec4",
   mastiff: "#c4c4c4",
   pug: "#000000",
