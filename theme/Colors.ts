@@ -6,8 +6,9 @@ export default {
   clifford: "#e1897e",
   goldendoodle: "#cfbc91",
   huskyYellow: "#ac9c78",
-  malamute: "#ecec4",
+  malamute: "#ecece4",
   mastiff: "#c4c4c4",
+  tintedYellow: '#f8f8f0',
   pug: "#000000",
   
   ///// THEME COLORS /////
