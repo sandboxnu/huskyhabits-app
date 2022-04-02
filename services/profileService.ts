@@ -39,11 +39,11 @@ export interface GetProfileFriendsResponse {
 export default class ProfileServicesClient {
   private _axios: AxiosInstance;
 
-  constructor(serviceUrl: string | undefined) {
+  constructor(serviceUrl?: string) {
     const baseURL =
       serviceUrl ||
       process.env.PROFILE_SERVICE_URL ||
-      'http://localhost:8080/v1/profiles';
+      'http://localhost:3000/v1/profiles';
     assert(baseURL);
     this._axios = axios.create({ baseURL });
   }

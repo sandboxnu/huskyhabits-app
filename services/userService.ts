@@ -30,11 +30,11 @@ export interface GetUserAvatarResponse {
 export default class UserServiceClient {
   private _axios: AxiosInstance;
 
-  constructor(serviceUrl: string | undefined) {
+  constructor(serviceUrl?: string) {
     const baseURL =
       serviceUrl ||
       process.env.USER_SERVICE_URL ||
-      'http://localhost:8080/v1/users';
+      'http://localhost:3000/v1/users';
     assert(baseURL);
     this._axios = axios.create({ baseURL });
   }
