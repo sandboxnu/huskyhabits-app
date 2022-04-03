@@ -1,14 +1,16 @@
-import { Button, ScrollView } from "react-native"
+import { ImageBackground, Button, ScrollView } from "react-native"
 import { Image, StyleSheet } from 'react-native';
 import { Text, View, TextInput } from '../components/Themed';
 import AuthServiceClient from '../services/authService';
 import * as Linking from 'expo-linking';
+import { openBrowserAsync } from "expo-web-browser";
 
 export default function Login() {
   const authClient: AuthServiceClient =  new AuthServiceClient();
 
   return (
-        <View style={styles.pageContainer}>
+        <View style={styles.container}>
+          <ImageBackground source = {require('../assets/images/pawprint-wallpaper.png')} resizeMode="cover" style={styles.image}>
             <Text style={styles.title}>Husky Habits</Text>
             <Button 
               title='Log in with Google'
@@ -17,6 +19,7 @@ export default function Login() {
                 await authClient.loginWithGoogle(initialUrl || undefined);
               }}
             />
+          </ImageBackground>
             {/* <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script> */}
         </View>
     );
@@ -56,6 +59,10 @@ const styles = StyleSheet.create({
       borderColor: 'black',
       borderWidth: 1,
     },
+    image: {
+      flex: 1,
+      justifyContent: "center"
+    },
     photoContainer: {
       flexDirection: "column",
       alignItems: 'center',
@@ -77,9 +84,10 @@ const styles = StyleSheet.create({
       padding: 0,
     },
     title: {
-      fontSize: 20,
+      fontSize: 30,
       fontWeight: 'bold',
       margin: 20,
+      textAlign: 'center',
     },
     separator: {
       marginVertical: 15,
