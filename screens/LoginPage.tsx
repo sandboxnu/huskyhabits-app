@@ -1,21 +1,30 @@
-import { Button, ScrollView } from "react-native"
+import React, { useEffect } from 'react';
+import { Button } from "react-native"
 import { Image, StyleSheet } from 'react-native';
-import { Text, View, TextInput } from '../components/Themed';
+import { Text, View } from '../components/Themed';
 import AuthServiceClient from '../services/authService';
 import * as Linking from 'expo-linking';
+import { RootStackScreenProps } from "../types";
 
-export default function Login() {
+export default function Login({ navigation }: RootStackScreenProps<'Login'>) {
   const authClient: AuthServiceClient =  new AuthServiceClient();
 
+  const handleAuth = async () => {
+    const initialUrl = await Linking.getInitialURL() as string;
+    const oAuthLogin = await authClient.loginWithGoogle(initialUrl);
+    // returns error
+    if (oAuthLogin) {
+      console.log("OAuth failed");
+    } 
+    navigation.navigate('Root', { screen: 'Profile' });
+  };
+  
   return (
         <View style={styles.pageContainer}>
             <Text style={styles.title}>Husky Habits</Text>
             <Button 
               title='Log in with Google'
-              onPress={async () => {
-                const initialUrl = await Linking.getInitialURL() as string;
-                await authClient.loginWithGoogle(initialUrl || undefined);
-              }}
+              onPress={handleAuth}
             />
             {/* <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script> */}
         </View>
