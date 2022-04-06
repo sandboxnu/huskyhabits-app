@@ -16,27 +16,27 @@
    }
  }
 
- export type AuthenticatedStackParamList = {
-   Root: NavigatorScreenParams<RootTabParamList> | undefined;
-   LoginPage: undefined;
+ export type AuthStackParamList = {
+   Root: NavigatorScreenParams<AuthTabParamList> | undefined;
    EditProfile: undefined;
    NotFound: undefined;
  }
 
- export type AuthenticatedStackScreenProps = {
-
+ export type AuthStackScreenProps = {
  }
  
  export type RootStackParamList = {
-   Root: NavigatorScreenParams<RootTabParamList> | undefined;
+   Root: NavigatorScreenParams<AuthTabParamList> | undefined;
+   Profile: undefined;
    EditProfile: undefined;
+   Login: undefined;
    NotFound: undefined;
  };
  
  export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
    NativeStackScreenProps<RootStackParamList, Screen>;
  
- export type RootTabParamList = {
+ export type AuthTabParamList = {
    Profile: undefined;
    TabTwo: undefined;
  };
@@ -45,12 +45,19 @@
    Profile: undefined;
    EditProfile: undefined;
  }
+
+ export type RootParamList = {
+  Login: undefined;
+}
+
+export type RootScreenProps<Screen extends keyof RootParamList> =
+  NativeStackScreenProps<RootParamList, Screen>; 
  
  export type RootStackModalProps<Screen extends keyof RootModalParamList> = 
- NativeStackScreenProps<RootModalParamList>;
+ NativeStackScreenProps<RootModalParamList, Screen>;
  
- export type RootTabScreenProps<Screen extends keyof RootTabParamList> =
+ export type RootTabScreenProps<Screen extends keyof AuthTabParamList> =
    CompositeScreenProps<
-     BottomTabScreenProps<RootTabParamList, Screen>,
+     BottomTabScreenProps<AuthTabParamList, Screen>,
      NativeStackScreenProps<RootStackParamList>
    >;

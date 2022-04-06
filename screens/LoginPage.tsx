@@ -2,12 +2,24 @@ import { ImageBackground, Button, ScrollView } from "react-native"
 import { Image, StyleSheet } from 'react-native';
 import {SocialIcon} from 'react-native-elements';
 import { Text, View, TextInput } from '../components/Themed';
+import React, { useEffect } from 'react';
 import AuthServiceClient from '../services/authService';
 import * as Linking from 'expo-linking';
+import { RootStackScreenProps } from "../types";
 
-export default function Login() {
+export default function Login({ navigation }: RootStackScreenProps<'Login'>) {
   const authClient: AuthServiceClient =  new AuthServiceClient();
 
+  const handleAuth = async () => {
+    const initialUrl = await Linking.getInitialURL() as string;
+    const oAuthLogin = await authClient.loginWithGoogle(initialUrl);
+    // returns error
+    if (oAuthLogin) {
+      console.log("OAuth failed");
+    } 
+    navigation.navigate('Root', { screen: 'Profile' });
+  };
+  
   return (
         <View style={styles.container}>
           <ImageBackground source = {require('../assets/images/pawprint-wallpaper.png')} resizeMode="cover" style={styles.image}>
@@ -16,10 +28,7 @@ export default function Login() {
               title={'Sign in with Google'}
               button={true}
               type={"google"}
-              onPress={async () => {
-                const initialUrl = await Linking.getInitialURL() as string;
-                await authClient.loginWithGoogle(initialUrl || undefined);
-              }}
+              onPress={handleAuth}
             />
           </ImageBackground>
             {/* <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script> */}

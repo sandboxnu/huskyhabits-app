@@ -21,10 +21,12 @@
  import TabTwoScreen from '../screens/TabTwoScreen';
  import {
    RootStackModalProps,
-   AuthenticatedStackParamList,
-   AuthenticatedStackScreenProps,
-   RootTabParamList,
+   AuthStackParamList,
+   AuthStackScreenProps,
+   AuthTabParamList,
    RootTabScreenProps,
+   RootScreenProps,
+   RootParamList,
  } from '../types';
  import LinkingConfiguration from './LinkingConfiguration';
  
@@ -39,27 +41,30 @@
        linking={LinkingConfiguration}
        theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
      >
-       {isUser ? <AuthenticatedNavigator /> : <RegisterNavigator />}
+       {isUser ? <AuthNavigator /> : <RegisterNavigator />}
      </NavigationContainer>
    );
  }
- 
- const Stack = createNativeStackNavigator<AuthenticatedStackParamList>();
- 
- function AuthenticatedNavigator() {
+
+ /**
+  * AuthNavigator holds all screens for authenticated users.
+  */
+ const AuthStack = createNativeStackNavigator<AuthStackParamList>();
+
+ function AuthNavigator() {
    return (
-     <Stack.Navigator screenOptions={{ headerShown: false }}>
-       <Stack.Screen
+     <AuthStack.Navigator screenOptions={{ headerShown: false }}>
+       <AuthStack.Screen
          name="Root"
          component={BottomTabNavigator}
        />
-       <Stack.Screen
+       <AuthStack.Screen
          name="NotFound"
          component={NotFoundScreen}
          options={{ title: 'Oops!' }}
        />
-       <Stack.Group screenOptions={{ presentation: 'modal' }}>
-         <Stack.Screen
+       <AuthStack.Group screenOptions={{ presentation: 'modal' }}>
+         <AuthStack.Screen
            name="EditProfile"
            component={EditProfile}
            options={({ navigation }: RootStackModalProps<'EditProfile'>) => ({
@@ -72,23 +77,25 @@
              ),
            })}
          />
-       </Stack.Group>
-     </Stack.Navigator>
+       </AuthStack.Group>
+     </AuthStack.Navigator>
    );
  }
  
  /**
   * RegisterNavigator holds all screens for unauthenticated users.
   */
+ const RootStack = createNativeStackNavigator<RootParamList>();
+
  function RegisterNavigator() {
    return (
-     <Stack.Navigator>
-       <Stack.Screen
-         name="Root"
+     <RootStack.Navigator>
+       <RootStack.Screen
+         name="Login"
          component={LoginPage}
          options={{ headerShown: false }}
        />
-     </Stack.Navigator>
+     </RootStack.Navigator>
    );
  }
  
@@ -96,7 +103,7 @@
   * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
   * https://reactnavigation.org/docs/bottom-tab-navigator
   */
- const BottomTab = createBottomTabNavigator<RootTabParamList>();
+ const BottomTab = createBottomTabNavigator<AuthTabParamList>();
  
  function BottomTabNavigator() {
    const colorScheme = useColorScheme();
