@@ -34,7 +34,7 @@ export default class UserServiceClient {
     const baseURL =
       serviceUrl ||
       process.env.USER_SERVICE_URL ||
-      'http://localhost:3000/v1/users';
+      'http://10.110.54.6:3000/v1/users';
     assert(baseURL);
     this._axios = axios.create({ baseURL });
   }

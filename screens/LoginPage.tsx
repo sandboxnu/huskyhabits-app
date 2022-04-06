@@ -17,7 +17,7 @@ export default function Login({ navigation }: RootStackScreenProps<'Login'>) {
     if (oAuthLogin) {
       console.log("OAuth failed");
     } 
-    navigation.navigate('Root', { screen: 'Profile' });
+    navigation.navigate('Profile');
   };
   
   return (
