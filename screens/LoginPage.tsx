@@ -23,7 +23,7 @@ export default function Login({ navigation }: RootStackScreenProps<'Login'>) {
   return (
         <View style={styles.container}>
           <ImageBackground source = {require('../assets/images/pawprint-wallpaper.png')} resizeMode="cover" style={styles.image}>
-            <img style={styles.image} src={require('../assets/images/welcome-logo.png')}></img>
+            <Image source={require('../assets/images/welcome-logo.png')}/>
             <SocialIcon 
               title={'Sign in with Google'}
               button={true}
@@ -39,6 +39,7 @@ export default function Login({ navigation }: RootStackScreenProps<'Login'>) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        padding: 1
       },
     pageContainer: {
         alignItems: 'center',
