@@ -1,9 +1,9 @@
 import { ImageBackground, Button, ScrollView } from "react-native"
 import { Image, StyleSheet } from 'react-native';
+import {SocialIcon} from 'react-native-elements';
 import { Text, View, TextInput } from '../components/Themed';
 import AuthServiceClient from '../services/authService';
 import * as Linking from 'expo-linking';
-import { openBrowserAsync } from "expo-web-browser";
 
 export default function Login() {
   const authClient: AuthServiceClient =  new AuthServiceClient();
@@ -11,9 +11,11 @@ export default function Login() {
   return (
         <View style={styles.container}>
           <ImageBackground source = {require('../assets/images/pawprint-wallpaper.png')} resizeMode="cover" style={styles.image}>
-            <Text style={styles.title}>Husky Habits</Text>
-            <Button 
-              title='Log in with Google'
+            <img style={styles.image} src={require('../assets/images/welcome-logo.png')}></img>
+            <SocialIcon 
+              title={'Sign in with Google'}
+              button={true}
+              type={"google"}
               onPress={async () => {
                 const initialUrl = await Linking.getInitialURL() as string;
                 await authClient.loginWithGoogle(initialUrl || undefined);
