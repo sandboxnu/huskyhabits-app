@@ -29,13 +29,35 @@
    RootParamList,
  } from '../types';
  import LinkingConfiguration from './LinkingConfiguration';
- 
- export default function Navigation({
+ import * as SecureStore from 'expo-secure-store';
+
+ export default async function Navigation({
    colorScheme,
  }: {
    colorScheme: ColorSchemeName;
  }) {
-   const isUser: boolean = false;
+
+    const isUser: boolean = false
+//    const [userToken, setUserToken] = React.useState<string | null>(null);
+
+//    // updates every time the page is rendered
+//    React.useEffect(() => {
+//     const fetchData = async () => {
+//       const data = await SecureStore.getItemAsync('auth-cookies');
+//       setUserToken(data);
+//     }
+
+//     fetchData();
+//    });
+
+  //  const authHandler = () => {
+  //   SecureStore.getItemAsync('auth-cookies').then((token) => setUserToken(token));
+  //  }
+
+  //  React.useEffect(() => {
+  //   authHandler();
+  //  });
+   
    return (
      <NavigationContainer
        linking={LinkingConfiguration}
