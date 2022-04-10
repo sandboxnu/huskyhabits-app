@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { StyleSheet, Image, ImageBackground, TouchableOpacity, Touchable } from 'react-native';
+import { StyleSheet, Image, ImageBackground, TouchableOpacity, Touchable, Dimensions } from 'react-native';
 import { View } from '../components/Themed';
 import {
   Heading,
@@ -21,15 +21,8 @@ import Notebook from '../assets/images/Notebook.png';
 import Colors from '../theme/Colors';
 import { RootTabScreenProps } from '../types';
 import Text from '../theme/Text';
-
-interface NotebookTabProps {
-  title: string;
-  setCurrentTab: (title: string) => void;
-}
-
-interface ChallengeProps {
-  name: string;
-}
+import NotebookTab from '../components/NotebookTabComponent'
+import Challenge from '../components/ChallengeComponent';
 
 export default function ProfileScreen({ navigation }: RootTabScreenProps<'Profile'>) {
   const [profileData, setProfileData] = useState({
@@ -41,38 +34,18 @@ export default function ProfileScreen({ navigation }: RootTabScreenProps<'Profil
     numberOfHabits: 6,
   })
   const [challengeData, setChallengeData] = useState([
-    { name: 'the bookies'}
+    { name: '📚 the bookies' },
+    { name: '😭 trying our best' }
   ]);
   const [currentTab, setCurrentTab] = useState('Challenges');
+  const windowHeight = Dimensions.get('window').height;
 
   // TODO: Connect to backend
   useEffect(() => {
-    
+
   }, []);
+  const challengesToRender = challengeData.map(challenge => <Challenge key={challenge.name} name={challenge.name} />);
 
-  function NotebookTab({ title, setCurrentTab }: NotebookTabProps) {
-    return(
-      <TouchableOpacity 
-        onPress={() => setCurrentTab(title)} 
-        style={[styles.tab, currentTab === title && styles.tabSelected]}>
-        <Heading style={styles.tabText}>{title}</Heading>
-      </TouchableOpacity>
-    );
-  };
-
-  function Challenge({ name }: ChallengeProps) {
-    return(
-      <View style={styles.challenge}>
-        <RowContainer>
-          <ColContainer>
-            <Heading style={styles.challengeHeading}>{name}</Heading>
-            <SubHeadingItalic>9 members</SubHeadingItalic>
-            <SubHeadingItalic style={styles.redText}>Last update: 2:32 pm</SubHeadingItalic>
-          </ColContainer>
-        </RowContainer>
-      </View>
-    );
-  };
 
   return (
     <ImageBackground
@@ -124,9 +97,9 @@ export default function ProfileScreen({ navigation }: RootTabScreenProps<'Profil
           <Image source={Notebook} style={styles.notebook} />
           <Container style={styles.notebookPaper}>
             <View style={styles.tabContainer}>
-              <NotebookTab title={'Challenges'} setCurrentTab={setCurrentTab} />
-              <NotebookTab title={'Habits'} setCurrentTab={setCurrentTab} />
-              <NotebookTab title={'Posts'} setCurrentTab={setCurrentTab} />
+              <NotebookTab title={'Challenges'} setCurrentTab={setCurrentTab} currentTab={currentTab} />
+              <NotebookTab title={'Habits'} setCurrentTab={setCurrentTab} currentTab={currentTab}/>
+              <NotebookTab title={'Posts'} setCurrentTab={setCurrentTab} currentTab={currentTab}/>
             </View>
             { currentTab === 'Challenges' &&
               <View style={styles.tabView}>
@@ -135,7 +108,7 @@ export default function ProfileScreen({ navigation }: RootTabScreenProps<'Profil
                     Challenges are groups you can make/join with your friends where you compete and/or work together to complete habits consistently!
                   </Heading>
                 </View>
-                <Challenge name={'the bookies'} />
+                {challengesToRender}
               </View>
             }
           </Container>
@@ -149,47 +122,13 @@ const styles = StyleSheet.create({
   container: {
     marginVertical: 50,
   },
-  challenge: {
-    width: '100%',
-    height: 90,
-    marginBottom: 10,
-    padding: 10,
-    backgroundColor: Colors.malamute,
-    borderRadius: 18,
-    borderWidth: 3.3,
-    borderColor: Colors.goldendoodle
-  },
-  challengeHeading: {
-    fontSize: 16
-  },
+  
   tabContainer: {
-    flex: 1,
     flexDirection: 'row',
     marginHorizontal: 20,
     justifyContent: 'space-between'
   },
-  tab: {
-    borderTopLeftRadius: 15,
-    borderTopRightRadius: 15,
-    marginTop: -40,
-    backgroundColor: 'white',
-    paddingTop: 8,
-    width: 95,
-    height: 33,
-    // shadowColor: '#000',
-    // shadowOffset: { width: 0, height: 1 },
-    // shadowOpacity: 0.25,
-    // shadowRadius: 2,
-  },
-  tabSelected: {
-    borderBottomColor: Colors.clifford,
-    borderBottomWidth: 3,
-  },
-  tabText: {
-    fontSize: 15,
-    lineHeight: 18,
-    textAlign: 'center',
-  },
+
   infoText: {
     fontSize: 13,
     lineHeight: 15,
@@ -276,9 +215,6 @@ const styles = StyleSheet.create({
   },
   yellowText: {
     color: Colors.huskyYellow,
-  },
-  redText: {
-    color: Colors.clifford,
   },
   profileInfoText: {
     fontSize: 18,
