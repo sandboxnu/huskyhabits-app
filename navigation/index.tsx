@@ -31,39 +31,31 @@
  import LinkingConfiguration from './LinkingConfiguration';
  import * as SecureStore from 'expo-secure-store';
 
- export default async function Navigation({
+ export default function Navigation({
    colorScheme,
  }: {
    colorScheme: ColorSchemeName;
  }) {
 
-    const isUser: boolean = false
-//    const [userToken, setUserToken] = React.useState<string | null>(null);
+    // const isUser: boolean = false
+   const [userToken, setUserToken] = React.useState<string | null>(null);
 
-//    // updates every time the page is rendered
-//    React.useEffect(() => {
-//     const fetchData = async () => {
-//       const data = await SecureStore.getItemAsync('auth-cookies');
-//       setUserToken(data);
-//     }
+   // updates every time the page is rendered
+   React.useEffect(() => {
+    const fetchData = async () => {
+      const data = await SecureStore.getItemAsync('auth-cookies');
+      setUserToken(data);
+    }
 
-//     fetchData();
-//    });
-
-  //  const authHandler = () => {
-  //   SecureStore.getItemAsync('auth-cookies').then((token) => setUserToken(token));
-  //  }
-
-  //  React.useEffect(() => {
-  //   authHandler();
-  //  });
+    fetchData();
+   });
    
    return (
      <NavigationContainer
        linking={LinkingConfiguration}
        theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
      >
-       {isUser ? <AuthNavigator /> : <RegisterNavigator />}
+       {userToken ? <AuthNavigator /> : <RegisterNavigator />}
      </NavigationContainer>
    );
  }
