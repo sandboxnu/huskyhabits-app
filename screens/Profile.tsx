@@ -94,7 +94,6 @@ export default function ProfileScreen({ navigation }: RootTabScreenProps<'Profil
             </ColContainer>
           </CenteredRowContainer>
           <Heading style={[styles.smallText, styles.padding]}>{profileData.bio}</Heading>
-          <Image source={Notebook} style={styles.notebook} />
           <Container style={styles.notebookPaper}>
             <View style={styles.tabContainer}>
               <NotebookTab title={'Challenges'} setCurrentTab={setCurrentTab} currentTab={currentTab} />
@@ -112,6 +111,10 @@ export default function ProfileScreen({ navigation }: RootTabScreenProps<'Profil
               </View>
             }
           </Container>
+          <View style={styles.notebook}>
+            <Image source={Notebook}/>
+          </View>
+          
         </Container>
       </ScrollContainer>
     </ImageBackground>
@@ -140,7 +143,7 @@ const styles = StyleSheet.create({
     flex: 1,
     top: 0,
     justifyContent: 'flex-start',
-
+    backgroundColor: 'white',
   },
   textContainer: {
     padding: 10,
@@ -152,7 +155,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     height: 470,
     top: 400,
-    zIndex: 1,
+    //zIndex: 1,
+    elevation: 5,
+    shadowColor: 'transparent',
+    backgroundColor: 'transparent',
   },
   notebookPaper: {
     backgroundColor: 'white',
