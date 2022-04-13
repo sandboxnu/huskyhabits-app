@@ -1,9 +1,17 @@
 import { StyleSheet, Image, ScrollView } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { Text, View } from '../components/Themed';
+import { Button } from 'react-native';
+import * as SecureStore from 'expo-secure-store';
 
 export default function ProfileScreen() {
-  return (
+    const tempLogout = () => {
+        SecureStore.deleteItemAsync('auth-cookies').then(() => {
+            alert('Logged out');
+        })
+    }
+
+    return (
     <ScrollView style={styles.container}>
       <View style={styles.profileContainer}>
         <Image
@@ -22,6 +30,13 @@ export default function ProfileScreen() {
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua.
         </Text>
+
+        <Button 
+            onPress={tempLogout}
+            title="Log out"
+            color="#ffffff">
+
+        </Button>
 
         <View
           style={styles.separator}
