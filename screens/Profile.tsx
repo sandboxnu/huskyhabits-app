@@ -3,12 +3,19 @@ import { FontAwesome } from '@expo/vector-icons';
 import { Text, View } from '../components/Themed';
 import { Button } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
+import { useAppDispatch } from '../store/App.hooks';
+import { AuthAction } from '../store/Auth.action';
 
 export default function ProfileScreen() {
-    const tempLogout = () => {
+    const dispatch = useAppDispatch();
+
+
+    const logout = () => {
         SecureStore.deleteItemAsync('auth-cookies').then(() => {
             alert('Logged out');
         })
+
+        dispatch(AuthAction.setCookies(''));
     }
 
     return (
@@ -32,7 +39,7 @@ export default function ProfileScreen() {
         </Text>
 
         <Button 
-            onPress={tempLogout}
+            onPress={logout}
             title="Log out"
             color="#ffffff">
 

@@ -4,6 +4,8 @@ import * as Linking from 'expo-linking';
 import * as WebBrowser from 'expo-web-browser';
 import { Buffer } from 'buffer';
 import * as SecureStore from 'expo-secure-store';
+import { useAppDispatch } from '../store/App.hooks';
+import { AuthAction } from '../store/Auth.action';
 
 export default class AuthServiceClient {
   private _axios: AxiosInstance;
@@ -30,7 +32,6 @@ export default class AuthServiceClient {
 
         const cookies = queryParams['cookies']
         await SecureStore.setItemAsync('auth-cookies', Buffer.from(cookies, 'base64').toString('ascii'))
-        
       }
       
       

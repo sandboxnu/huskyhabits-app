@@ -6,9 +6,13 @@ import React, { useEffect } from 'react';
 import AuthServiceClient from '../services/authService';
 import * as Linking from 'expo-linking';
 import { RootStackScreenProps } from "../types";
+import { useAppDispatch } from "../store/App.hooks";
+import * as SecureStore from 'expo-secure-store';
+import { AuthAction } from "../store/Auth.action";
 
 export default function Login({ navigation }: RootStackScreenProps<'Login'>) {
   const authClient: AuthServiceClient =  new AuthServiceClient();
+  const dispatch = useAppDispatch();
 
   const handleAuth = async () => {
     const initialUrl = await Linking.getInitialURL() as string;
@@ -17,7 +21,10 @@ export default function Login({ navigation }: RootStackScreenProps<'Login'>) {
     if (oAuthLogin) {
       console.log("OAuth failed");
     } 
-    navigation.navigate('Profile');
+
+    const cookies = await SecureStore.getItemAsync('auth-cookies');
+
+    dispatch(AuthAction.setCookies(cookies || ''));
   };
   
   return (

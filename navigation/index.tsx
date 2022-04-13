@@ -30,6 +30,8 @@
  } from '../types';
  import LinkingConfiguration from './LinkingConfiguration';
  import * as SecureStore from 'expo-secure-store';
+import { useSelector } from 'react-redux';
+import { selectCookies } from '../store/Auth.selector';
 
  export default function Navigation({
    colorScheme,
@@ -38,24 +40,20 @@
  }) {
 
     // const isUser: boolean = false
-   const [userToken, setUserToken] = React.useState<string | null>(null);
+   const [authenticated, setAuthenticated] = React.useState<boolean>(false);
+   const cookies = useSelector(selectCookies);
 
-   // updates every time the page is rendered
    React.useEffect(() => {
-    const fetchData = async () => {
-      const data = await SecureStore.getItemAsync('auth-cookies');
-      setUserToken(data);
-    }
+    setAuthenticated(cookies !== '');
 
-    fetchData();
-   });
-   
+   }, [ cookies ]);
+
    return (
      <NavigationContainer
        linking={LinkingConfiguration}
        theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
      >
-       {userToken ? <AuthNavigator /> : <RegisterNavigator />}
+       {authenticated ? <AuthNavigator /> : <RegisterNavigator />}
      </NavigationContainer>
    );
  }
