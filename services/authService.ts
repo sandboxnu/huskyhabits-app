@@ -2,7 +2,7 @@ import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { assert } from './utils';
 import * as Linking from 'expo-linking';
 import * as WebBrowser from 'expo-web-browser';
-import { Buffer } from 'buffer';
+import { Buffer, constants } from 'buffer';
 import * as SecureStore from 'expo-secure-store';
 import { useAppDispatch } from '../store/App.hooks';
 import { AuthAction } from '../store/Auth.action';
@@ -13,7 +13,7 @@ export default class AuthServiceClient {
 
   constructor(serviceUrl?: string) {
     const baseURL =
-      'http://10.110.54.6:3000';
+      'http://' + process.env.BACKEND_URL || '';
     this._baseURL = baseURL;
     assert(baseURL);
     this._axios = axios.create({ baseURL });
@@ -36,7 +36,6 @@ export default class AuthServiceClient {
       
       
     } catch(e) {
-      console.log(e);
       return new Error(`WARNING: could not open link: ${url}`);
     }
 

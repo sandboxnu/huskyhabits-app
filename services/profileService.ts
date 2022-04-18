@@ -42,8 +42,7 @@ export default class ProfileServicesClient {
   constructor(serviceUrl?: string) {
     const baseURL =
       serviceUrl ||
-      process.env.PROFILE_SERVICE_URL ||
-      'http://10.110.54.6:3000/v1/profiles';
+      `http://${process.env.BACKEND_URL}/v1/profiles`;
     assert(baseURL);
     this._axios = axios.create({ baseURL });
   }
