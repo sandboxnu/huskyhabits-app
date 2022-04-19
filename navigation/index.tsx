@@ -51,28 +51,23 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator>
       <Stack.Screen
         name="Root"
         component={BottomTabNavigator}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="NotFound"
         component={NotFoundScreen}
         options={{ title: 'Oops!' }}
       />
-      <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen 
-          name="EditProfile" 
+      <Stack.Group screenOptions={{ presentation: 'modal', headerShown: true }}>
+        <Stack.Screen
+          name="EditProfile"
           component={EditProfile}
-          options={({ navigation }: RootStackModalProps<'EditProfile'>) => ({ 
+          options={({ navigation }: RootStackModalProps<'EditProfile'>) => ({
             title: 'Edit Profile',
-            headerRight: () => (
-              <Button 
-                onPress={() => navigation.navigate('Profile')}
-                title="Done"
-              />
-            )
           })}
         />
       </Stack.Group>

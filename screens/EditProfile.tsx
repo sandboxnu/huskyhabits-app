@@ -1,12 +1,14 @@
 import { useState } from 'react';
-import { Image, StyleSheet } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text, View, TextInput } from '../components/Themed';
 import * as ImagePicker from 'expo-image-picker';
 import { Buffer } from 'buffer';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import Colors from '../theme/Colors'
+import { SmallTextInput, LargeTextInput, ProfileBody } from '../components/Common'
+import { RootStackModalProps } from '../types';
 
-
-export default function EditProfile() {
+export default function EditProfile({ navigation }: RootStackModalProps<'EditProfile'>) {
   const [username, setUsername] = useState<string>("");
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
@@ -32,17 +34,22 @@ export default function EditProfile() {
     }
   }
 
+  const submitChanges = async () => {
+    // Add requests to backend server here to update profile info
+    navigation.navigate('Profile')
+  }
+
   return (
     <KeyboardAwareScrollView style={styles.container}>
       <View style={styles.profileContainer}>
-        <View style={styles.photoContainer}>
+        <View style={styles.photoContainer} >
           <Image
             style={styles.profileImage}
             source={{
               uri: photoURI || 'https://eitrawmaterials.eu/wp-content/uploads/2016/09/person-icon.png',
             }}
           />
-          <Text 
+          <Text
             onPress={onChangeImage}
             lightColor="blue"
             darkColor="#EEEE"
@@ -57,50 +64,26 @@ export default function EditProfile() {
         />
         <View style={styles.inputContainer}>
           <Text style={styles.textLabel}>Username</Text>
-          <TextInput style={styles.input} 
-            placeholder={"ross3102"}
-            onChangeText={setUsername}
-            value={username} 
-            lightColor="gray"
-            darkColor="white"
-          />
+          <SmallTextInput style={styles.shadowed} onChangeText={(text) => setUsername(text)}/>
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.textLabel}>First Name</Text>
-          <TextInput style={styles.input} 
-            placeholder={"Ross"}
-            onChangeText={setFirstName}
-            value={firstName} 
-            lightColor="gray"
-            darkColor="white"
-          />
+          <SmallTextInput style={styles.shadowed} onChangeText={(text) => setFirstName(text)}/>
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.textLabel}>Last Name</Text>
-          <TextInput 
-          style={styles.input} 
-            placeholder={"Newman"}
-            onChangeText={setLastName}
-            value={lastName} 
-            lightColor="gray"
-            darkColor="white"
-          />
+          <SmallTextInput style={styles.shadowed} onChangeText={(text) => setLastName(text)}/>
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.textLabel}>Bio</Text>
-          <TextInput 
-          style={styles.multilineInput} 
-            placeholder={"Hi! I'm a second year. This is my bio. lol"}
-            multiline
-            numberOfLines={4}
-            maxLength={40}
-            onChangeText={setBio}
-            value={bio} 
-            lightColor="gray"
-            darkColor="white"
-          />
+          <LargeTextInput multiline numberOfLines={4} style={styles.shadowed} onChangeText={(text) => setBio(text)}/>
         </View>
       </View>
+      <TouchableOpacity onPress={submitChanges} style={styles.editButton}>
+        <ProfileBody style={styles.linkText}>
+          Save
+        </ProfileBody>
+      </TouchableOpacity>
     </KeyboardAwareScrollView>
   );
 }
@@ -108,6 +91,7 @@ export default function EditProfile() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: Colors.tintedYellow,
   },
   input: {
     height: 40,
@@ -126,6 +110,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
+    backgroundColor: 'transparent',
   },
   profileImage: {
     width: 100,
@@ -133,16 +118,19 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     borderColor: 'black',
     borderWidth: 1,
+    backgroundColor: 'transparent',
   },
   photoContainer: {
     flexDirection: "column",
     alignItems: 'center',
     justifyContent: 'center',
     margin: 5,
+    backgroundColor: 'transparent',
   },
   profileContainer: {
     paddingVertical: 20,
     alignItems: 'center',
+    backgroundColor: 'transparent',
   },
   changeImageLabel: {
     marginTop: 5,
@@ -162,5 +150,25 @@ const styles = StyleSheet.create({
     marginVertical: 15,
     height: 1,
     width: '80%',
+  },
+  shadowed: {
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 1,
+    shadowRadius: 3,
+    shadowColor: 'black',
+    elevation: 2
+  },
+  editButton: {
+    margin: 10,
+    height: 33,
+    paddingHorizontal: 30,
+    alignSelf: 'center',
+    backgroundColor: Colors.clifford,
+    borderRadius: 20,
+  },
+  linkText: {
+    color: '#fff',
+    lineHeight: 30,
+    textAlign: 'center',
   },
 });

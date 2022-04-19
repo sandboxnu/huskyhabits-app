@@ -28,6 +28,9 @@ export const SmallTextInput = styled.TextInput`
   width: 200px;
   borderRadius: 8px;
   margin: 5px;
+  
+  elevation: 2;
+  
   padding: 10px;
   background: #FFFFFF;
   boxShadow: 0px 1px 8px rgba(0, 0, 0, 0.25);
@@ -41,6 +44,7 @@ export const LargeTextInput = styled.TextInput`
   padding: 10px;
   background: #FFFFFF;
   boxShadow: 0px 1px 8px rgba(0, 0, 0, 0.25);
+  textAlignVertical: top;
 `;
 
 export const CenteredContainer = styled.View`
