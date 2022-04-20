@@ -4,20 +4,20 @@ import { AuthAction } from "./Auth.action";
 
 export namespace AuthReducer {
     export interface State {
-        authenticated: boolean
+        cookies: string
     }
 
     const initialState: State = {
-        authenticated: false
+        cookies: ''
     }
 
     // todo: i think this needs to be a union or something
-    export type Action = ActionType<boolean>;
+    export type Action = ActionType<string>;
 
     export const authReducer = (state = initialState, action: AnyAction): State => {
         switch (action.type) {
-            case AuthAction.Type.SET_AUTHENTICATED:
-                return { ...state, authenticated: Boolean(action.payload) };
+            case AuthAction.Type.SET_COOKIES:
+                return { ...state, cookies: String(action.payload) };
             default:
                 return state;
         }
