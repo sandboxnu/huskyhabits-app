@@ -1,9 +1,23 @@
 import { StyleSheet, Image } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { Text, View } from '../components/Themed';
+import { Button } from 'react-native';
+import * as SecureStore from 'expo-secure-store';
+import { useAppDispatch } from '../store/App.hooks';
+import { AuthAction } from '../store/Auth.action';
 import { Heading, Body, CenterText, Container, ScrollContainer, StyledImage } from '../components/Common';
 
 export default function ProfileScreen() {
+  const dispatch = useAppDispatch();
+
+    const logout = () => {
+        SecureStore.deleteItemAsync('auth-cookies').then(() => {
+            alert('Logged out');
+        })
+
+        dispatch(AuthAction.setCookies(''));
+    }
+
   return (
     <ScrollContainer>
       <Container>
@@ -22,62 +36,11 @@ export default function ProfileScreen() {
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua.
         </CenterText>
-        <View
-          style={styles.separator}
-          lightColor="#eee"
-          darkColor="rgba(255,255,255,0.1)"
-        />
-        <Container>
-          <Text style={styles.title}>Groups</Text>
-          <View style={styles.group}>
-            <Image
-              style={styles.groupImage}
-              source={{
-                uri: 'https://eitrawmaterials.eu/wp-content/uploads/2016/09/person-icon.png',
-              }}
-            />
-            <View style={styles.groupInfo}>
-              <Text style={styles.groupName}>Group 1</Text>
-              <Text>10 members</Text>
-            </View>
-          </View>
-          <View style={styles.group}>
-            <Image
-              style={styles.groupImage}
-              source={{
-                uri: 'https://eitrawmaterials.eu/wp-content/uploads/2016/09/person-icon.png',
-              }}
-            />
-            <View style={styles.groupInfo}>
-              <Text style={styles.groupName}>Group 2</Text>
-              <Text>150 members</Text>
-            </View>
-          </View>
-          <View style={styles.group}>
-            <Image
-              style={styles.groupImage}
-              source={{
-                uri: 'https://eitrawmaterials.eu/wp-content/uploads/2016/09/person-icon.png',
-              }}
-            />
-            <View style={styles.groupInfo}>
-              <Text style={styles.groupName}>Group 3</Text>
-              <Text>2 members</Text>
-            </View>
-          </View>
-          <View style={styles.group}>
-            <Image
-              style={styles.groupImage}
-              source={{
-                uri: 'https://eitrawmaterials.eu/wp-content/uploads/2016/09/person-icon.png',
-              }}
-            />
-            <View style={styles.groupInfo}>
-              <Text style={styles.groupName}>Group 4</Text>
-              <Text>50 members</Text>
-            </View>
-          </View>
-        </Container>
+        <Button 
+            onPress={logout}
+            title="Log out"
+            color="#ffffff">
+        </Button>
       </Container>
     </ScrollContainer>
   );

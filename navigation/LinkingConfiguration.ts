@@ -7,9 +7,9 @@
 import { LinkingOptions } from '@react-navigation/native';
 import * as Linking from 'expo-linking';
 
-import { AuthenticatedStackParamList } from '../types';
+import { AuthStackParamList } from '../types';
 
-const linking: LinkingOptions<AuthenticatedStackParamList> = {
+const linking: LinkingOptions<AuthStackParamList> = {
   prefixes: [Linking.createURL('/')],
   config: {
     screens: {
@@ -23,7 +23,8 @@ const linking: LinkingOptions<AuthenticatedStackParamList> = {
           },
           Profile: {
             screens: {
-              ProfileScreen: 'one',
+              Profile: 'profile',
+              EditProfile: 'modal',
             },
           },
           TabTwo: {
@@ -33,7 +34,7 @@ const linking: LinkingOptions<AuthenticatedStackParamList> = {
           },
         },
       },
-      EditProfile: 'modal',
+      Login: 'login',
       NotFound: '*',
     },
   },

@@ -1,20 +1,76 @@
-const local = true;
-const path = local ? 'http://localhost:8080/v1/profiles' : '';
+import axios, { AxiosInstance } from 'axios';
+import { assert } from './utils';
+import { ResponseEnvelope, unwrapOrThrowError } from './utils';
 
-export async function createProfile() {
-  return fetch(`${path}/`, { method: 'POST' })
-    .then((res) => res.json())
-    .catch((error) => console.log(error));
+export interface CreateProfileRequest {
+  username: string;
+  bio?: string;
 }
 
-export async function getProfileById(profileId: string) {
-  return fetch(`${path}/${profileId}`)
-    .then((res) => res.json())
-    .catch((error) => console.log(error));
+export interface CreateProfileResponse {
+  profileId: string;
 }
 
-export async function getFriendsForProfile(profileId: string) {
-  return fetch(`${path}/${profileId}/friends`)
-    .then((res) => res.json())
-    .catch((error) => console.log(error));
+export interface GetProfileRequest {
+  profileId: string;
+}
+
+export interface GetProfileResponse {
+  userId: string;
+  username: string;
+  bio: string;
+  photo: { data: Buffer; contentType: string };
+}
+
+export interface GetProfileFriendsRequest {
+  profileId: string;
+}
+
+export interface GetProfileFriendsResponse {
+  friends: [
+    {
+      username: string;
+      bio: string;
+      photo: { data: Buffer; contentType: string };
+    },
+  ];
+}
+
+export default class ProfileServicesClient {
+  private _axios: AxiosInstance;
+
+  constructor(serviceUrl?: string) {
+    const baseURL =
+      serviceUrl ||
+      `http://${process.env.BACKEND_URL}/v1/profiles`;
+    assert(baseURL);
+    this._axios = axios.create({ baseURL });
+  }
+
+  async createProfile(
+    requestData: CreateProfileRequest,
+  ): Promise<CreateProfileResponse> {
+    const responseWrapper = await this._axios.post<
+      ResponseEnvelope<CreateProfileResponse>
+    >('/', requestData);
+    return unwrapOrThrowError(responseWrapper);
+  }
+
+  async getProfileById(
+    requestData: GetProfileRequest,
+  ): Promise<GetProfileResponse> {
+    const responseWrapper = await this._axios.get<
+      ResponseEnvelope<GetProfileResponse>
+    >(`/${requestData.profileId}`);
+    return unwrapOrThrowError(responseWrapper);
+  }
+
+  async getFriendsForProfile(
+    requestData: GetProfileFriendsRequest,
+  ): Promise<GetProfileFriendsResponse> {
+    const responseWrapper = await this._axios.get<
+      ResponseEnvelope<GetProfileFriendsResponse>
+    >(`/${requestData.profileId}/friends`);
+    return unwrapOrThrowError(responseWrapper);
+  }
 }
