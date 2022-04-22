@@ -1,25 +1,14 @@
 import { useState } from 'react';
-import { StyleSheet, Touchable, TouchableOpacity } from 'react-native';
-import { Text, View, TextInput } from '../../components/Themed';
+import { StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View } from '../../components/Themed';
 import {
-  Body,
   ButtonText,
-  ColumnContainer,
-  Container,
   FormContainer,
-  Heading,
   InputContainer,
   InputTextLabel,
-  LargeTextInput,
   PrimaryButton,
-  RowContainer,
   SecondaryButton,
-  SmallTextInput,
-  StyledImage,
 } from '../../components/Common';
-import * as ImagePicker from 'expo-image-picker';
-import { Buffer } from 'buffer';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Step } from './Onboarding';
 
 interface NewHabitSetupProps {

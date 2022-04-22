@@ -19,6 +19,10 @@ import NewFriendSetup from './NewFriendSetup';
 import OnboardingIntro from './OnboardingIntro';
 import { conditionalExpression } from '@babel/types';
 import OnboardingLoadingScreen from './OnboardingLoadingScreen';
+import Toast from 'react-native-toast-message';
+import { AuthStackScreenProps } from '../../types';
+import { AuthServiceClient, ProfileServiceClient, UserServiceClient } from '../../services';
+import { GetUserResponse } from '../../services/user/types';
 
 export type Step = 'intro' | 'user' | 'habit' | 'invite_friend' | 'loading';
 
@@ -28,32 +32,60 @@ interface OnboardingStepProps {
   title: string;
 }
 
-export default function Onboarding({}) {
-  const [username, setUsername] = useState<string>('');
+export default function Onboarding({ navigation }: AuthStackScreenProps<'Onboarding'>) {
+  const authClient: AuthServiceClient = new AuthServiceClient();
+  const userClient: UserServiceClient = new UserServiceClient();
+  const profileClient: ProfileServiceClient =  new ProfileServiceClient();
 
-  //const [firstName, setFirstName] = useState<string>('');
-  //const [lastName, setLastName] = useState<string>('');
+  const [userData, setUserData] = useState<GetUserResponse>();
+  
   const [currentStep, setCurrentStep] = useState<string>('intro');
-  const [name, setName] = useState<string>('');
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState<string>('');
+  const [name, setName] = useState<string>(''); // get from oauth
   const [bio, setBio] = useState<string>('');
   const [photoBuffer, setPhotoBuffer] = useState<Buffer | null>(null);
   const [photoURI, setPhotoURI] = useState<string>('');
   const [habit, setHabit] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(true); // TODO
 
-  // simulate name being autofilled from oauth
+  const fetchData = async () => {
+    try {
+      const data = await authClient.getUserInfo();
+      // const data = await profileClient.getProfileById({
+      //   profileId: "123123123"
+      // });
+      console.log(data);
+      setUserData(data);
+    } catch (err: any) {
+      setError(err.message);
+    }
+  }
+
+  // fetch user data
   useEffect(() => {
-    setName('Ross Newman');
-  }, []);
+    // simulate loading while fetching oauth data
+    fetchData();
+    setLoading(false);
+    if (userData) {
+      setEmail(userData.email);
+      setName(userData.firstName + " " + userData.lastName);
+      Toast.show({
+        type: 'success',
+        text1: `Sign up for ${email} was successful`
+      });
+    }
+  }, [userData])
 
   const isCurrentStep = (id: string) => {
     // checks if step has already been completed
     const isCompletedStep = () => {
-      return (
-        (currentStep === 'habit' && id === 'user') ||
-        (currentStep === 'invite_friend' &&
-          (id === 'user' || id === 'habit')) ||
-        currentStep === 'loading'
-      );
+      const isBeforeHabit = currentStep === 'habit' && id === 'user';
+      const isBeforeInviteFriend = currentStep === 'invite_friend' &&
+      (id === 'user' || id === 'habit');
+      const isLoading = currentStep === 'loading';
+      return isBeforeHabit || isBeforeInviteFriend || isLoading;
     };
     return id === currentStep || isCompletedStep();
   };
@@ -134,8 +166,14 @@ export default function Onboarding({}) {
         <NewUserSetup
           username={username}
           setUsername={setUsername}
+          name={name}
+          setName={setName}
           bio={bio}
           setBio={setBio}
+          photoBuffer={photoBuffer}
+          setPhotoBuffer={setPhotoBuffer}
+          photoURI={photoURI}
+          setPhotoURI={setPhotoURI}
           onChangeImage={onChangeImage}
           setCurrentStep={setCurrentStep}
         />
@@ -153,6 +191,7 @@ export default function Onboarding({}) {
       {currentStep === 'loading' && (
         <OnboardingLoadingScreen setCurrentStep={setCurrentStep} />
       )}
+      <Toast />
     </ImageBackground>
   );
 }
@@ -235,4 +274,11 @@ const styles = StyleSheet.create({
   image: {
     opacity: 0.5,
   },
+  toast: {
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 2,
+    elevation: 5,
+  }
 });

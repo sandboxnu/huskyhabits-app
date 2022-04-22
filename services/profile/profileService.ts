@@ -1,48 +1,21 @@
 import axios, { AxiosInstance } from 'axios';
-import { assert } from './utils';
-import { ResponseEnvelope, unwrapOrThrowError } from './utils';
+import { assert } from '../utils';
+import { ResponseEnvelope, unwrapOrThrowError } from '../utils';
+import {
+  CreateProfileRequest,
+  CreateProfileResponse,
+  GetProfileRequest,
+  GetProfileResponse,
+  GetProfileFriendsRequest,
+  GetProfileFriendsResponse,
+} from './types';
 
-export interface CreateProfileRequest {
-  username: string;
-  bio?: string;
-}
-
-export interface CreateProfileResponse {
-  profileId: string;
-}
-
-export interface GetProfileRequest {
-  profileId: string;
-}
-
-export interface GetProfileResponse {
-  userId: string;
-  username: string;
-  bio: string;
-  photo: { data: Buffer; contentType: string };
-}
-
-export interface GetProfileFriendsRequest {
-  profileId: string;
-}
-
-export interface GetProfileFriendsResponse {
-  friends: [
-    {
-      username: string;
-      bio: string;
-      photo: { data: Buffer; contentType: string };
-    },
-  ];
-}
-
-export default class ProfileServicesClient {
+export default class ProfileServiceClient {
   private _axios: AxiosInstance;
 
   constructor(serviceUrl?: string) {
     const baseURL =
-      serviceUrl ||
-      `http://${process.env.BACKEND_URL}/v1/profiles`;
+      serviceUrl || `http://${process.env.BACKEND_URL}/v1/profiles`;
     assert(baseURL);
     this._axios = axios.create({ baseURL });
   }

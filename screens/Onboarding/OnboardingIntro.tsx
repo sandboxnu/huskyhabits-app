@@ -59,10 +59,10 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: Colors.goldendoodle,
     fontFamily: 'BeVietnam-Bold',
+    lineHeight: 26,
   },
   logoImage: {
-    // width: 300,
-    // height: 100
+    marginTop: -20,
     width: Dimensions.get('window').width * 0.7,
     height: Dimensions.get('window').height * 0.13,
     resizeMode: 'cover',

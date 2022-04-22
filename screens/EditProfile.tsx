@@ -1,18 +1,25 @@
 import { useState } from 'react';
-import { Image, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Text, View } from '../components/Themed';
-import { RowContainer, SmallTextInput, LargeTextInput, ScrollContainer, InputTextLabel, Container, StyledImage } from '../components/Common';
+import {
+  RowContainer,
+  SmallTextInput,
+  LargeTextInput,
+  ScrollContainer,
+  InputTextLabel,
+  Container,
+  StyledImage,
+} from '../components/Common';
 import * as ImagePicker from 'expo-image-picker';
 import { Buffer } from 'buffer';
 
-
 export default function EditProfile() {
-  const [username, setUsername] = useState<string>("");
-  const [firstName, setFirstName] = useState<string>("");
-  const [lastName, setLastName] = useState<string>("");
-  const [bio, setBio] = useState<string>("");
+  const [username, setUsername] = useState<string>('');
+  const [firstName, setFirstName] = useState<string>('');
+  const [lastName, setLastName] = useState<string>('');
+  const [bio, setBio] = useState<string>('');
   const [photoBuffer, setPhotoBuffer] = useState<Buffer | null>(null);
-  const [photoURI, setPhotoURI] = useState<string>("");
+  const [photoURI, setPhotoURI] = useState<string>('');
 
   const onChangeImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -25,12 +32,12 @@ export default function EditProfile() {
 
     if (!result.cancelled) {
       if (result.base64) {
-        const buffer: Buffer = Buffer.from(result.base64, "base64");
-        setPhotoURI("data:image/jpeg;base64,"+result.base64);
+        const buffer: Buffer = Buffer.from(result.base64, 'base64');
+        setPhotoURI('data:image/jpeg;base64,' + result.base64);
         setPhotoBuffer(buffer);
       }
     }
-  }
+  };
 
   return (
     <ScrollContainer>
@@ -38,16 +45,19 @@ export default function EditProfile() {
         <View style={styles.photoContainer}>
           <StyledImage
             source={{
-              uri: photoURI || 'https://eitrawmaterials.eu/wp-content/uploads/2016/09/person-icon.png',
+              uri:
+                photoURI ||
+                'https://eitrawmaterials.eu/wp-content/uploads/2016/09/person-icon.png',
             }}
           />
-          <Text 
+          <Text
             onPress={onChangeImage}
             lightColor="blue"
             darkColor="#EEEE"
-            style={styles.changeImageLabel}>
+            style={styles.changeImageLabel}
+          >
             Change profile photo
-            </Text>
+          </Text>
         </View>
         <View
           style={styles.separator}
@@ -57,36 +67,36 @@ export default function EditProfile() {
         <RowContainer>
           <InputTextLabel>Username</InputTextLabel>
           <SmallTextInput
-            placeholder={"ross3102"}
+            placeholder={'ross3102'}
             onChangeText={setUsername}
-            value={username} 
+            value={username}
           />
         </RowContainer>
         <RowContainer>
           <InputTextLabel>First Name</InputTextLabel>
           <SmallTextInput
-            placeholder={"Ross"}
+            placeholder={'Ross'}
             onChangeText={setFirstName}
-            value={firstName} 
+            value={firstName}
           />
         </RowContainer>
         <RowContainer>
           <InputTextLabel>Last Name</InputTextLabel>
           <SmallTextInput
-            placeholder={"Newman"}
+            placeholder={'Newman'}
             onChangeText={setLastName}
-            value={lastName} 
+            value={lastName}
           />
         </RowContainer>
         <RowContainer>
           <InputTextLabel>Bio</InputTextLabel>
-          <LargeTextInput 
+          <LargeTextInput
             placeholder={"Hi! I'm a second year. This is my bio. lol"}
             multiline
             numberOfLines={4}
-            maxLength={40}
+            maxLength={100}
             onChangeText={setBio}
-            value={bio} 
+            value={bio}
           />
         </RowContainer>
       </Container>
@@ -96,11 +106,11 @@ export default function EditProfile() {
 
 const styles = StyleSheet.create({
   inputContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   photoContainer: {
-    flexDirection: "column",
+    flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
     margin: 5,
@@ -113,7 +123,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   textLabel: {
-    textAlign: "right",
+    textAlign: 'right',
     width: 100,
     fontSize: 15,
     marginRight: 10,

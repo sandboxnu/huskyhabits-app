@@ -1,39 +1,19 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
-import { assert } from './utils';
-import { ResponseEnvelope, unwrapOrThrowError } from './utils';
-
-export interface GetUserResponse {
-  userId: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  accounts: [{ acc_type: string; uid: string }];
-}
-
-export interface GetUserChallengesResponse {
-  // TODO
-}
-
-export interface GetUserFriendRequestsResponse {
-  // TODO
-}
-
-export interface GetUserAvatarRequest {
-  userId: string;
-  size: 'sm' | 'md' | 'lg';
-}
-
-export interface GetUserAvatarResponse {
-  // TODO
-}
+import { assert } from '../utils';
+import { ResponseEnvelope, unwrapOrThrowError } from '../utils';
+import {
+  GetUserResponse,
+  GetUserChallengesResponse,
+  GetUserFriendRequestsResponse,
+  GetUserAvatarRequest,
+  GetUserAvatarResponse,
+} from './types';
 
 export default class UserServiceClient {
   private _axios: AxiosInstance;
 
   constructor(serviceUrl?: string) {
-    const baseURL =
-      serviceUrl ||
-      `http://${process.env.BACKEND_URL}/v1/users`;
+    const baseURL = serviceUrl || `http://${process.env.BACKEND_URL}/v1/users`;
     assert(baseURL);
     this._axios = axios.create({ baseURL });
   }

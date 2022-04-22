@@ -55,6 +55,10 @@ export const InputTextLabel = styled.Text`
   padding: 0;
 `;
 
+export const RequiredLabel = styled.Text`
+  color: ${Colors.clifford};
+`;
+
 export const FormContainer = styled.View`
   margin: 10px;
   paddingVertical: 20px;

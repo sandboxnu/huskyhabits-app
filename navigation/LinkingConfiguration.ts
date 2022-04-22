@@ -6,20 +6,18 @@
 
 import { LinkingOptions } from '@react-navigation/native';
 import * as Linking from 'expo-linking';
+import { AllStackParamList } from '../types';
 
-import { AuthStackParamList } from '../types';
-
-const linking: LinkingOptions<AuthStackParamList> = {
+const linking: LinkingOptions<AllStackParamList> = {
   prefixes: [Linking.createURL('/')],
   config: {
     screens: {
-      // Look at register
-      Root: {
+      Auth: {
         screens: {
           Onboarding: {
             screens: {
               Onboarding: '/onboarding',
-            }
+            },
           },
           Profile: {
             screens: {
@@ -27,15 +25,10 @@ const linking: LinkingOptions<AuthStackParamList> = {
               EditProfile: 'modal',
             },
           },
-          TabTwo: {
-            screens: {
-              TabTwoScreen: 'two',
-            },
-          },
+          NotFound: '*',
         },
       },
       Login: 'login',
-      NotFound: '*',
     },
   },
 };
