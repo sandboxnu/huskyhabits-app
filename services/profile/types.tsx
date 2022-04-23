@@ -1,6 +1,8 @@
 export interface CreateProfileRequest {
   username: string;
+  name?: string;
   bio?: string;
+  photo?: { data: Buffer | null; contentType: String };
 }
 
 export interface CreateProfileResponse {
@@ -33,4 +35,20 @@ export interface GetProfileFriendsResponse {
       };
     },
   ];
+}
+
+export interface GetProfileAvatarRequest {
+  userId: string;
+  size: 'sm' | 'md' | 'lg';
+}
+export interface GetProfileChallengesResponse {
+  // TODO
+}
+
+export interface GetProfileFriendRequestsResponse {
+  // TODO
+}
+
+export interface GetProfileAvatarResponse {
+  // TODO
 }

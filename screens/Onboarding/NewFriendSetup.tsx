@@ -11,14 +11,25 @@ import {
 } from '../../components/Common';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Step } from './Onboarding';
+import { CreateProfileRequest } from '../../services/profile/types';
+import { ProfileServiceClient } from '../../services';
+import { bindActionCreators } from 'redux';
 
 interface NewFriendSetupProps {
   setCurrentStep: (step: Step) => void;
+  submitFormData: () => void;
 }
+
+const profileClient: ProfileServiceClient = new ProfileServiceClient();
 
 export default function NewFriendSetup({
   setCurrentStep,
+  submitFormData,
 }: NewFriendSetupProps) {
+  const submitForm = () => {
+    submitFormData();
+    setCurrentStep('loading');
+  };
   return (
     <View style={styles.container}>
       <FormContainer>
@@ -51,7 +62,7 @@ export default function NewFriendSetup({
         <SecondaryButton onPress={() => setCurrentStep('habit')}>
           <ButtonText>Back</ButtonText>
         </SecondaryButton>
-        <PrimaryButton onPress={() => setCurrentStep('loading')}>
+        <PrimaryButton onPress={() => submitForm}>
           <ButtonText>Finish</ButtonText>
         </PrimaryButton>
       </View>

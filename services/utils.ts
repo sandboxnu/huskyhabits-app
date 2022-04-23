@@ -16,16 +16,12 @@ export function unwrapOrThrowError<T>(
   response: AxiosResponse<ResponseEnvelope<T>>,
   ignoreResponse = false,
 ): T {
-  try {
-    if (response.data.isOK) {
-      if (ignoreResponse) {
-        return {} as T;
-      }
-      assert(response.data.response);
-      return response.data.response;
+  if (response.data.isOK) {
+    if (ignoreResponse) {
+      return {} as T;
     }
-  } catch (err: any) {
-    console.log(err);
-    throw new Error(`Error processing request: ${err.message}`);
+    assert(response.data.response);
+    return response.data.response;
   }
+  throw new Error(`Error processing request: ${response.data.message}`);
 }

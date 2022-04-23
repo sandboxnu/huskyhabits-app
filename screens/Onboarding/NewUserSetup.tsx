@@ -39,8 +39,8 @@ interface NewUserSetupProps {
   setCurrentStep: (step: Step) => void;
 }
 
-export default function NewUserSetup({ 
-  username, 
+export default function NewUserSetup({
+  username,
   setUsername,
   name,
   setName,
@@ -51,7 +51,7 @@ export default function NewUserSetup({
   photoURI,
   setPhotoURI,
   onChangeImage,
-  setCurrentStep 
+  setCurrentStep,
 }: NewUserSetupProps) {
   const isIncomplete = username === '' || name === '';
 
@@ -68,26 +68,19 @@ export default function NewUserSetup({
     <KeyboardAwareScrollView style={styles.container}>
       <FormContainer>
         <InputContainer>
+        { /* TODO: Username validation: check if username already exists */}
           <InputTextLabel>
             Username
             <RequiredLabel>*</RequiredLabel>
           </InputTextLabel>
-          <SmallTextInput
-            placeholder={'ross3102'}
-            onChangeText={setUsername}
-            value={username}
-          />
+          <SmallTextInput onChangeText={setUsername} value={username} />
         </InputContainer>
         <InputContainer>
           <InputTextLabel>
             Name
             <RequiredLabel>*</RequiredLabel>
           </InputTextLabel>
-          <SmallTextInput
-            placeholder={'Ross Newman'}
-            onChangeText={setName}
-            value={name}
-          />
+          <SmallTextInput onChangeText={setName} value={name} />
         </InputContainer>
         <InputContainer>
           <InputTextLabel>Bio</InputTextLabel>

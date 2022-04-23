@@ -12,7 +12,7 @@ import {
 import { Step } from './Onboarding';
 
 interface NewHabitSetupProps {
-  habit: string;
+  habit: object;
   setHabit: (habit: string) => void;
   setCurrentStep: (step: Step) => void;
 }

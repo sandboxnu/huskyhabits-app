@@ -18,9 +18,12 @@ export default function Login({ navigation }: RootScreenProps<'Login'>) {
     const oAuthLogin = await authClient.loginWithGoogle(initialUrl);
     // returns error
     if (oAuthLogin) alert('OAuth failed');
-    // sets cookies
+
+    // stores cookies and user id
     const cookies = await SecureStore.getItemAsync('auth-cookies');
+    const userId = await SecureStore.getItemAsync('user-id');
     dispatch(AuthAction.setCookies(cookies || ''));
+    dispatch(AuthAction.setUserId(userId || ''));
   };
 
   return (
@@ -31,6 +34,7 @@ export default function Login({ navigation }: RootScreenProps<'Login'>) {
     >
       <Image source={WelcomeLogo} />
       <SocialIcon
+        style={styles.googleButton}
         title={'Sign in with Google'}
         button={true}
         type={'google'}
@@ -64,6 +68,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
   },
+  googleButton: {
+    width: '90%'
+  },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -79,6 +86,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     flex: 1,
+    alignItems: 'center',
     justifyContent: 'center',
   },
   image: {
