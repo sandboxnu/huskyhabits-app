@@ -18,9 +18,12 @@ export default function Login({ navigation }: RootScreenProps<'Login'>) {
     const oAuthLogin = await authClient.loginWithGoogle(initialUrl);
     // returns error
     if (oAuthLogin) alert('OAuth failed');
-    // sets cookies
+
+    // stores cookies and user id
     const cookies = await SecureStore.getItemAsync('auth-cookies');
+    const userId = await SecureStore.getItemAsync('user-id');
     dispatch(AuthAction.setCookies(cookies || ''));
+    dispatch(AuthAction.setUserId(userId || ''));
   };
 
   return (

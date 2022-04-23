@@ -21,8 +21,19 @@ import { conditionalExpression } from '@babel/types';
 import OnboardingLoadingScreen from './OnboardingLoadingScreen';
 import Toast from 'react-native-toast-message';
 import { AuthStackScreenProps } from '../../types';
-import { AuthServiceClient, ProfileServiceClient, UserServiceClient } from '../../services';
+import {
+  AuthServiceClient,
+  ProfileServiceClient,
+  UserServiceClient,
+} from '../../services';
 import { GetUserResponse } from '../../services/user/types';
+import {
+  CreateProfileRequest,
+  CreateProfileResponse,
+  GetProfileResponse,
+} from '../../services/profile/types';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import * as SecureStore from 'expo-secure-store';
 
 export type Step = 'intro' | 'user' | 'habit' | 'invite_friend' | 'loading';
 
@@ -32,58 +43,90 @@ interface OnboardingStepProps {
   title: string;
 }
 
-export default function Onboarding({ navigation }: AuthStackScreenProps<'Onboarding'>) {
-  const authClient: AuthServiceClient = new AuthServiceClient();
-  const userClient: UserServiceClient = new UserServiceClient();
-  const profileClient: ProfileServiceClient =  new ProfileServiceClient();
+const authClient: AuthServiceClient = new AuthServiceClient();
+const userClient: UserServiceClient = new UserServiceClient();
+const profileClient: ProfileServiceClient = new ProfileServiceClient();
 
+export default function Onboarding({
+  navigation,
+}: AuthStackScreenProps<'Onboarding'>) {
   const [userData, setUserData] = useState<GetUserResponse>();
-  
+
   const [currentStep, setCurrentStep] = useState<string>('intro');
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('');
   const [username, setUsername] = useState<string>('');
   const [name, setName] = useState<string>(''); // get from oauth
   const [bio, setBio] = useState<string>('');
   const [photoBuffer, setPhotoBuffer] = useState<Buffer | null>(null);
   const [photoURI, setPhotoURI] = useState<string>('');
-  const [habit, setHabit] = useState('');
+  const [habit, setHabit] = useState({});
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true); // TODO
 
+  const formData: CreateProfileRequest = {
+    username: username,
+    name: name,
+    bio: bio,
+    photo: {
+      data: photoBuffer,
+      contentType: photoURI,
+    },
+    // habit: habit
+  };
+
   const fetchData = async () => {
     try {
-      const data = await authClient.getUserInfo();
-      // const data = await profileClient.getProfileById({
-      //   profileId: "123123123"
-      // });
-      console.log(data);
-      setUserData(data);
+      // const data: GetUserResponse = await userClient.getCurrentUser();
+      const userId = await SecureStore.getItemAsync('user-id');
+      if (!userId) throw new Error('No user found.');
+
+      const userData = await userClient.getUserById({
+        userId: userId,
+      });
+      setUserData(userData);
     } catch (err: any) {
       setError(err.message);
     }
-  }
+  };
+
+  const submitFormData = async () => {
+    try {
+      const data: CreateProfileResponse = await profileClient.createProfile(
+        formData,
+      );
+      if (data) {
+        // returns profileId
+        console.log('SUBMISSION');
+        console.log(data);
+      }
+    } catch (err: any) {
+      setError(err.message);
+    }
+  };
 
   // fetch user data
   useEffect(() => {
     // simulate loading while fetching oauth data
-    fetchData();
+    if (!userData) {
+      fetchData();
+    }
     setLoading(false);
     if (userData) {
       setEmail(userData.email);
-      setName(userData.firstName + " " + userData.lastName);
+      setName(userData.firstName + ' ' + userData.lastName);
       Toast.show({
         type: 'success',
-        text1: `Sign up for ${email} was successful`
+        text1: `Sign up for ${email} was successful`,
       });
     }
-  }, [userData])
+  }, [userData]);
 
   const isCurrentStep = (id: string) => {
     // checks if step has already been completed
     const isCompletedStep = () => {
       const isBeforeHabit = currentStep === 'habit' && id === 'user';
-      const isBeforeInviteFriend = currentStep === 'invite_friend' &&
-      (id === 'user' || id === 'habit');
+      const isBeforeInviteFriend =
+        currentStep === 'invite_friend' && (id === 'user' || id === 'habit');
       const isLoading = currentStep === 'loading';
       return isBeforeHabit || isBeforeInviteFriend || isLoading;
     };
@@ -186,7 +229,10 @@ export default function Onboarding({ navigation }: AuthStackScreenProps<'Onboard
         />
       )}
       {currentStep === 'invite_friend' && (
-        <NewFriendSetup setCurrentStep={setCurrentStep} />
+        <NewFriendSetup
+          setCurrentStep={setCurrentStep}
+          submitFormData={submitFormData}
+        />
       )}
       {currentStep === 'loading' && (
         <OnboardingLoadingScreen setCurrentStep={setCurrentStep} />
@@ -280,5 +326,5 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 2,
     elevation: 5,
-  }
+  },
 });

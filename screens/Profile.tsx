@@ -17,11 +17,12 @@ import {
 export default function ProfileScreen() {
   const dispatch = useAppDispatch();
 
-  const logout = () => {
-    SecureStore.deleteItemAsync('auth-cookies').then(() => {
-      alert('Logged out');
-    });
+  const logout = async (): Promise<void> => {
+    await SecureStore.deleteItemAsync('auth-cookies');
+    await SecureStore.deleteItemAsync('user-id');
+    alert('Logged out');
     dispatch(AuthAction.setCookies(''));
+    dispatch(AuthAction.setUserId(''));
   };
 
   return (
