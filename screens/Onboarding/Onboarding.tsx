@@ -77,14 +77,13 @@ export default function Onboarding({
   const fetchData = async () => {
     try {
       // const data: GetUserResponse = await userClient.getCurrentUser();
-      const userId = await SecureStore.getItemAsync('user-id');
-      if (!userId) throw new Error('No user found.');
 
-      const userData = await userClient.getUserById({
-        userId: userId,
-      });
+      console.log('fetching...')
+      const userData = await userClient.getCurrentUser();
       setUserData(userData);
     } catch (err: any) {
+        console.log(err.message)
+
       setError(err.message);
     }
   };
@@ -100,6 +99,7 @@ export default function Onboarding({
         console.log(data);
       }
     } catch (err: any) {
+        console.log(err.message)
       setError(err.message);
     }
   };
@@ -113,7 +113,7 @@ export default function Onboarding({
     setLoading(false);
     if (userData) {
       setEmail(userData.email);
-      setName(userData.firstName + ' ' + userData.lastName);
+      setName(userData.first_name + ' ' + userData.last_name);
       Toast.show({
         type: 'success',
         text1: `Sign up for ${email} was successful`,

@@ -34,17 +34,16 @@ export default class AuthServiceClient {
       if (resp.type == 'success') {
         const { queryParams } = Linking.parse(resp.url);
         const cookies = queryParams['cookies'];
-        const userId = queryParams['userId'];
+        console.log(Buffer.from(cookies, 'base64').toString('ascii'))
         await SecureStore.setItemAsync(
           'auth-cookies',
           Buffer.from(cookies, 'base64').toString('ascii'),
         );
-        await SecureStore.setItemAsync('user-id', userId);
       } else {
         console.log('Oauth was cancelled.');
       }
     } catch (e) {
-      return new Error(`WARNING: could not open link: ${url}`);
+      return new Error(`could not open link: ${url}: ${e.message}`);
     }
 
     // Below won't work in local testing (need a web browser to open google oauth page)
