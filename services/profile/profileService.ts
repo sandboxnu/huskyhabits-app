@@ -24,14 +24,12 @@ export default class ProfileServiceClient {
     const baseURL =
       serviceUrl || `http://${process.env.BACKEND_URL}/api/v1/profiles`;
     this._baseURL = baseURL;
-    const state = store.getState();
     assert(baseURL);
     this._axios = axios.create({
       baseURL: this._baseURL,
       withCredentials: true,
       headers: {
         'Content-Type': 'application/json',
-        'Cookie': state.auth.cookies,
       },
     });
   }
@@ -39,10 +37,17 @@ export default class ProfileServiceClient {
   async createProfile(
     requestData: CreateProfileRequest,
   ): Promise<CreateProfileResponse> {
-    const responseWrapper = await this._axios.post<
-      ResponseEnvelope<CreateProfileResponse>
-    >('/', requestData);
-    return unwrapOrThrowError(responseWrapper);
+    const state = store.getState();
+    const res = await this._axios.post<CreateProfileResponse>
+    ('/', requestData, {
+      headers: {
+        'Cookie': state.auth.cookies
+      }
+    });
+    if (!res) {
+      throw new Error('eww');
+    }
+    return res.data;
   }
 
   async getProfileById(
@@ -50,7 +55,11 @@ export default class ProfileServiceClient {
   ): Promise<GetProfileResponse> {
     const responseWrapper = await this._axios.get<
       ResponseEnvelope<GetProfileResponse>
-    >(`/${requestData.profileId}`);
+    >(`/${requestData.profileId}`, {
+      headers: {
+        'Cookie': store.getState().auth.cookies
+      }
+    });
     return unwrapOrThrowError(responseWrapper);
   }
 
@@ -59,7 +68,11 @@ export default class ProfileServiceClient {
   ): Promise<GetProfileFriendsResponse> {
     const responseWrapper = await this._axios.get<
       ResponseEnvelope<GetProfileFriendsResponse>
-    >(`/${requestData.profileId}/friends`);
+    >(`/${requestData.profileId}/friends`, {
+      headers: {
+        'Cookie': store.getState().auth.cookies
+      }
+    });
     return unwrapOrThrowError(responseWrapper);
   }
 
@@ -68,7 +81,11 @@ export default class ProfileServiceClient {
   }): Promise<GetProfileChallengesResponse> {
     const responseWrapper = await this._axios.get<
       ResponseEnvelope<GetProfileChallengesResponse>
-    >(`/${requestData.userId}/challenges`);
+    >(`/${requestData.userId}/challenges`, {
+      headers: {
+        'Cookie': store.getState().auth.cookies
+      }
+    });
     return unwrapOrThrowError(responseWrapper);
   }
 
@@ -77,7 +94,11 @@ export default class ProfileServiceClient {
   }): Promise<GetProfileFriendRequestsResponse> {
     const responseWrapper = await this._axios.get<
       ResponseEnvelope<GetProfileFriendRequestsResponse>
-    >(`/${requestData.userId}/friend_requests`);
+    >(`/${requestData.userId}/friend_requests`, {
+      headers: {
+        'Cookie': store.getState().auth.cookies
+      }
+    });
     return unwrapOrThrowError(responseWrapper);
   }
 
@@ -86,7 +107,11 @@ export default class ProfileServiceClient {
   ): Promise<GetProfileAvatarResponse> {
     const responseWrapper = await this._axios.get<
       ResponseEnvelope<GetProfileAvatarResponse>
-    >(`/users/${requestData.userId}/avatar?size=${requestData.size}`);
+    >(`/users/${requestData.userId}/avatar?size=${requestData.size}`, {
+      headers: {
+        'Cookie': store.getState().auth.cookies
+      }
+    });
     return unwrapOrThrowError(responseWrapper);
   }
 }

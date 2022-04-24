@@ -1,8 +1,6 @@
 export interface CreateProfileRequest {
   username: string;
-  name?: string;
   bio?: string;
-  photo?: { data: Buffer | null; contentType: String };
 }
 
 export interface CreateProfileResponse {

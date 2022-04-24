@@ -65,12 +65,12 @@ export default function Onboarding({
 
   const formData: CreateProfileRequest = {
     username: username,
-    name: name,
+    // name: name,
     bio: bio,
-    photo: {
-      data: photoBuffer,
-      contentType: photoURI,
-    },
+    // photo: {
+    //   data: photoBuffer,
+    //   contentType: photoURI,
+    // },
     // habit: habit
   };
 
@@ -86,19 +86,19 @@ export default function Onboarding({
       setUserData({
         userId: userId,
         email: res.email,
-        firstName: res.firstName,
-        lastName: res.lastName,
+        first_name: res.first_name,
+        last_name: res.last_name,
       })
       console.log(userData);
       setUserData(userData);
     } catch (err: any) {
-        console.log(err.message)
-
+      console.log(err.message)
       setError(err.message);
     }
   };
 
   const submitFormData = async () => {
+    console.log(formData);
     try {
       const data: CreateProfileResponse = await profileClient.createProfile(
         formData,
@@ -249,7 +249,7 @@ export default function Onboarding({
         />
       )}
       {currentStep === 'loading' && (
-        <OnboardingLoadingScreen setCurrentStep={setCurrentStep} />
+        <OnboardingLoadingScreen navigation={navigation} />
       )}
       <Toast />
     </ImageBackground>

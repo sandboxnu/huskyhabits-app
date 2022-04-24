@@ -62,7 +62,7 @@ export default function NewFriendSetup({
         <SecondaryButton onPress={() => setCurrentStep('habit')}>
           <ButtonText>Back</ButtonText>
         </SecondaryButton>
-        <PrimaryButton onPress={() => submitForm}>
+        <PrimaryButton onPress={() => submitForm()}>
           <ButtonText>Finish</ButtonText>
         </PrimaryButton>
       </View>

@@ -1,31 +1,31 @@
 import { View, StyleSheet } from 'react-native';
 import { Body } from '../../components/Common';
-import { Step } from './Onboarding';
 import Colors from '../../theme/Colors';
 import * as Progress from 'react-native-progress';
 import { useEffect, useState } from 'react';
+import { AuthStackScreenProps } from '../../types';
 
-interface OnboardingLoadingProps {
-  setCurrentStep: (step: Step) => void;
-}
 
 const OnboardingLoadingScreen = ({
-  setCurrentStep,
-}: OnboardingLoadingProps) => {
+  navigation
+}: AuthStackScreenProps<'Onboarding'>) => {
   const [progress, setProgress] = useState<number>(0);
   const [intervalId, setIntervalId] = useState<NodeJS.Timer | null>(null);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (progress === 1 && intervalId) {
-        clearInterval(intervalId);
-        console.log('FINISHED');
-      } else {
-        setProgress((p) => Math.min(p + 0.1, 1));
-      }
+      setProgress((p) => Math.min(p + 0.1, 1));
     }, 1000);
     setIntervalId(interval);
   }, []);
+
+  useEffect(() => {
+    if (progress === 1 && intervalId) {
+      clearInterval(intervalId);
+      console.log('FINISHED');
+      navigation.navigate('Profile');
+    }
+  }, [progress])
 
   return (
     <View style={styles.progressBar}>

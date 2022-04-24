@@ -14,14 +14,9 @@ const linking: LinkingOptions<AllStackParamList> = {
     screens: {
       Auth: {
         screens: {
-          Onboarding: {
-            screens: {
-              Onboarding: '/onboarding',
-            },
-          },
+          Onboarding: 'onboarding',
           Profile: {
             screens: {
-              Profile: 'profile',
               EditProfile: 'modal',
             },
           },

@@ -24,9 +24,9 @@ export default class UserServiceClient {
   async getCurrentUser(): Promise<GetUserResponse> {
     const state = store.getState()
     const responseWrapper = await this._axios.get<GetUserResponse>('/', {
-        headers: {
-            'Cookie': state.auth.cookies,
-        }
+      headers: {
+        'Cookie': state.auth.cookies,
+      }
     });
     // wrap into error function
     if (responseWrapper.status < 200 || responseWrapper.status >= 300 || !responseWrapper.data) {
@@ -41,7 +41,11 @@ export default class UserServiceClient {
     //   ResponseEnvelope<GetUserResponse>
     // >(`/${requestData.userId}`);
     const res = await this._axios.get<GetUserResponse>(
-      `/${requestData.userId}`,
+      `/${requestData.userId}`, {
+        headers: {
+          'Cookie': store.getState().auth.cookies
+        }
+      }
     );
     if (!res) throw new Error('User not found.');
     return res.data;
