@@ -92,6 +92,8 @@ export default function Onboarding({
       console.log(userData);
       setUserData(userData);
     } catch (err: any) {
+        console.log(err.message)
+
       setError(err.message);
     }
   };
@@ -107,6 +109,7 @@ export default function Onboarding({
         console.log(data);
       }
     } catch (err: any) {
+      console.log(err.message)
       setError(err.message);
     }
   };
@@ -123,7 +126,7 @@ export default function Onboarding({
     setLoading(false);
     if (userData) {
       setEmail(userData.email);
-      setName(userData.firstName + ' ' + userData.lastName);
+      setName(userData.first_name + ' ' + userData.last_name);
       Toast.show({
         type: 'success',
         text1: `Sign up for ${userData.email} was successful`,

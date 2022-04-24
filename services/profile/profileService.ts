@@ -1,4 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
+import { store } from '../../store/App.store';
 import { GetUserResponse } from '../user/types';
 import { assert } from '../utils';
 import { ResponseEnvelope, unwrapOrThrowError } from '../utils';
@@ -23,12 +24,14 @@ export default class ProfileServiceClient {
     const baseURL =
       serviceUrl || `http://${process.env.BACKEND_URL}/api/v1/profiles`;
     this._baseURL = baseURL;
+    const state = store.getState();
     assert(baseURL);
     this._axios = axios.create({
       baseURL: this._baseURL,
       withCredentials: true,
       headers: {
         'Content-Type': 'application/json',
+        'Cookie': state.auth.cookies,
       },
     });
   }

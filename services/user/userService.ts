@@ -1,6 +1,7 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { assert, ResponseEnvelope, unwrapOrThrowError } from '../utils';
 import { GetUserResponse } from './types';
+import store from '../../store/App.store';
 
 export default class UserServiceClient {
   private _axios: AxiosInstance;
@@ -21,11 +22,18 @@ export default class UserServiceClient {
   }
 
   async getCurrentUser(): Promise<GetUserResponse> {
-    const responseWrapper = await this._axios.get<
-      ResponseEnvelope<GetUserResponse>
-    >('/');
-    console.log(responseWrapper);
-    return unwrapOrThrowError(responseWrapper);
+    const state = store.getState()
+    const responseWrapper = await this._axios.get<GetUserResponse>('/', {
+        headers: {
+            'Cookie': state.auth.cookies,
+        }
+    });
+    // wrap into error function
+    if (responseWrapper.status < 200 || responseWrapper.status >= 300 || !responseWrapper.data) {
+        throw new Error('did not work')
+    }
+
+    return responseWrapper.data;
   }
 
   async getUserById(requestData: { userId: string }): Promise<GetUserResponse> {

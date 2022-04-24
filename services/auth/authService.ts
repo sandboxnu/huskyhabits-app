@@ -23,7 +23,7 @@ export default class AuthServiceClient {
     });
   }
   async loginWithGoogle(redirectUri: string) {
-    const url = `${this._baseURL}/google${`?auth_redirect_uri=${redirectUri}`}`;
+    const url = `${this._baseURL}/google`;
 
     try {
       const resp = await WebBrowser.openAuthSessionAsync(
@@ -43,8 +43,8 @@ export default class AuthServiceClient {
       } else {
         console.log('Oauth was cancelled.');
       }
-    } catch (e) {
-      return new Error(`WARNING: could not open link: ${url}`);
+    } catch (err: any) {
+      return new Error(`could not open link: ${url}: ${err.message}`);
     }
 
     // Below won't work in local testing (need a web browser to open google oauth page)
