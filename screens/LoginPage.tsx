@@ -17,7 +17,7 @@ export default function Login({ navigation }: RootScreenProps<'Login'>) {
     const initialUrl = (await Linking.getInitialURL()) as string;
     const oAuthLogin = await authClient.loginWithGoogle(initialUrl);
     // returns error
-    if (oAuthLogin) alert('OAuth failed');
+    if (oAuthLogin) alert('OAuth failed: ' + oAuthLogin.message);
 
     // stores cookies and user id
     const cookies = await SecureStore.getItemAsync('auth-cookies');

@@ -23,7 +23,7 @@ export default class AuthServiceClient {
     });
   }
   async loginWithGoogle(redirectUri: string) {
-    const url = `${this._baseURL}/google${`?auth_redirect_uri=${redirectUri}`}`;
+    const url = `${this._baseURL}/google`;
 
     try {
       const resp = await WebBrowser.openAuthSessionAsync(
