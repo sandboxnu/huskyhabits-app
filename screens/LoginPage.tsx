@@ -23,7 +23,6 @@ export default function Login({ navigation }: RootScreenProps<'Login'>) {
     const cookies = await SecureStore.getItemAsync('auth-cookies');
     const userId = await SecureStore.getItemAsync('user-id');
     dispatch(AuthAction.setCookies(cookies || ''));
-    dispatch(AuthAction.setUserId(userId || ''));
   };
 
   return (
@@ -69,7 +68,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   googleButton: {
-    width: '90%'
+    width: '90%',
   },
   inputContainer: {
     flexDirection: 'row',

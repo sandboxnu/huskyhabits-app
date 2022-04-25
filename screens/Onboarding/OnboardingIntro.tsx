@@ -6,21 +6,11 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
-import { Text, View } from '../../components/Themed';
-import * as ImagePicker from 'expo-image-picker';
-import { Buffer } from 'buffer';
 import {
   Body,
   ButtonText,
-  ColumnContainer,
   Container,
-  FormContainer,
-  Heading,
-  InputContainer,
-  InputTextLabel,
   PrimaryButton,
-  RowContainer,
-  SecondaryButton,
 } from '../../components/Common';
 import { Step } from './Onboarding';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';

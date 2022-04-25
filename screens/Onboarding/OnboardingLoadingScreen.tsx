@@ -3,12 +3,11 @@ import { Body } from '../../components/Common';
 import Colors from '../../theme/Colors';
 import * as Progress from 'react-native-progress';
 import { useEffect, useState } from 'react';
-import { AuthStackScreenProps } from '../../types';
+import { useNavigation } from '@react-navigation/native';
 
-
-const OnboardingLoadingScreen = ({
-  navigation
-}: AuthStackScreenProps<'Onboarding'>) => {
+// Onboarding loading screen that displays circular progress bar
+const OnboardingLoadingScreen = () => {
+  const navigation = useNavigation();
   const [progress, setProgress] = useState<number>(0);
   const [intervalId, setIntervalId] = useState<NodeJS.Timer | null>(null);
 
@@ -22,10 +21,9 @@ const OnboardingLoadingScreen = ({
   useEffect(() => {
     if (progress === 1 && intervalId) {
       clearInterval(intervalId);
-      console.log('FINISHED');
       navigation.navigate('Profile');
     }
-  }, [progress])
+  }, [progress]);
 
   return (
     <View style={styles.progressBar}>

@@ -18,8 +18,6 @@ export namespace AuthReducer {
     action: AnyAction,
   ): State => {
     switch (action.type) {
-      case AuthAction.Type.SET_USER_ID:
-        return { ...state, userId: String(action.payload) };
       case AuthAction.Type.SET_COOKIES:
         return { ...state, cookies: String(action.payload) };
       default:

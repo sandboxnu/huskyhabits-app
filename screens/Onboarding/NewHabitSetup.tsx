@@ -17,6 +17,7 @@ interface NewHabitSetupProps {
   setCurrentStep: (step: Step) => void;
 }
 
+// New Habit step: user can add a new habit to their profile
 export default function NewHabitSetup({ setCurrentStep }: NewHabitSetupProps) {
   const [habit, setHabit] = useState<string>('');
 

@@ -11,6 +11,11 @@ export interface GetProfileRequest {
   profileId: string;
 }
 
+export interface SetProfilePhotoRequest {
+  profileId: string;
+  photo: string; // photo uri
+}
+
 export interface GetProfileResponse {
   userId: string;
   username: string;
@@ -18,8 +23,12 @@ export interface GetProfileResponse {
   photo: { data: Buffer; contentType: string };
 }
 
-export interface GetProfileFriendsRequest {
-  profileId: string;
+export interface GetProfilePhotoResponse {
+  // TODO
+}
+
+export interface SetProfilePhotoResponse {
+  profile: GetProfileResponse;
 }
 
 export interface GetProfileFriendsResponse {
@@ -35,18 +44,10 @@ export interface GetProfileFriendsResponse {
   ];
 }
 
-export interface GetProfileAvatarRequest {
-  userId: string;
-  size: 'sm' | 'md' | 'lg';
-}
 export interface GetProfileChallengesResponse {
   // TODO
 }
 
 export interface GetProfileFriendRequestsResponse {
-  // TODO
-}
-
-export interface GetProfileAvatarResponse {
   // TODO
 }

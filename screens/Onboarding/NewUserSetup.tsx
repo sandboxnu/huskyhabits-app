@@ -68,7 +68,7 @@ export default function NewUserSetup({
     <KeyboardAwareScrollView style={styles.container}>
       <FormContainer>
         <InputContainer>
-        { /* TODO: Username validation: check if username already exists */}
+          {/* TODO: Username validation: check if username already exists */}
           <InputTextLabel>
             Username
             <RequiredLabel>*</RequiredLabel>
@@ -102,7 +102,10 @@ export default function NewUserSetup({
           </Text>
           <TouchableOpacity onPress={onChangeImage}>
             <View style={styles.imageContainer}>
-              <Image source={Camera} style={styles.cameraIcon} />
+              <Image
+                source={photoURI ? { uri: photoURI } : Camera}
+                style={photoURI ? styles.photoIcon : styles.cameraIcon}
+              />
             </View>
           </TouchableOpacity>
         </InputContainer>
@@ -139,6 +142,11 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  photoIcon: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
   },
   cameraIcon: {
     resizeMode: 'contain',

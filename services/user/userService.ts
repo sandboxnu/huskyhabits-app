@@ -15,37 +15,39 @@ export default class UserServiceClient {
     this._axios = axios.create({
       baseURL: this._baseURL,
       withCredentials: true,
-      headers: {
-        'Content-Type': 'application/json',
+    });
+
+    // add cookies to every request
+    this._axios.interceptors.request.use(
+      (config) => {
+        config.headers!['Cookie'] = store.getState().auth.cookies;
+        return config;
       },
-    });
+      (error) => {
+        console.log(error.message);
+        throw new Error(error.message);
+      },
+    );
   }
 
+  /**
+   * Gets current logged in user information.
+   * @returns user object
+   */
   async getCurrentUser(): Promise<GetUserResponse> {
-    const state = store.getState()
-    const responseWrapper = await this._axios.get<GetUserResponse>('/', {
-      headers: {
-        'Cookie': state.auth.cookies,
-      }
-    });
-    // wrap into error function
-    if (responseWrapper.status < 200 || responseWrapper.status >= 300 || !responseWrapper.data) {
-        throw new Error('did not work')
-    }
-
-    return responseWrapper.data;
+    const res = await this._axios.get<GetUserResponse>('/');
+    if (!res) throw new Error('User not found.');
+    return res.data;
   }
 
+  /**
+   * Gets user information for a specific user.
+   * @param requestData user id
+   * @returns user object
+   */
   async getUserById(requestData: { userId: string }): Promise<GetUserResponse> {
-    // const responseWrapper = await this._axios.get<
-    //   ResponseEnvelope<GetUserResponse>
-    // >(`/${requestData.userId}`);
     const res = await this._axios.get<GetUserResponse>(
-      `/${requestData.userId}`, {
-        headers: {
-          'Cookie': store.getState().auth.cookies
-        }
-      }
+      `/${requestData.userId}`,
     );
     if (!res) throw new Error('User not found.');
     return res.data;
