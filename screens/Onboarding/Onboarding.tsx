@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Image, StyleSheet, ImageBackground, SafeAreaView } from 'react-native';
-import { Text, View } from '../../components/Themed';
+import { StyleSheet, ImageBackground } from 'react-native';
+import { View } from '../../components/Themed';
 import * as ImagePicker from 'expo-image-picker';
 import { Buffer } from 'buffer';
 import {
@@ -9,15 +9,12 @@ import {
   Heading,
   RowContainer,
 } from '../../components/Common';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import HuskyHabitsBackground from '../../assets/images/Pawprints.png';
 import NewUserSetup from './NewUserSetup';
 import NewHabitSetup from './NewHabitSetup';
-import Camera from '../../assets/images/camera.svg';
 import Colors from '../../theme/Colors';
 import NewFriendSetup from './NewFriendSetup';
 import OnboardingIntro from './OnboardingIntro';
-import { conditionalExpression } from '@babel/types';
 import OnboardingLoadingScreen from './OnboardingLoadingScreen';
 import Toast from 'react-native-toast-message';
 import { AuthStackScreenProps } from '../../types';
@@ -30,9 +27,9 @@ import { GetUserResponse } from '../../services/user/types';
 import {
   CreateProfileRequest,
   CreateProfileResponse,
-  GetProfileResponse,
+  SetProfilePhotoRequest,
+  SetProfilePhotoResponse,
 } from '../../services/profile/types';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as SecureStore from 'expo-secure-store';
 
 export type Step = 'intro' | 'user' | 'habit' | 'invite_friend' | 'loading';
@@ -59,24 +56,13 @@ export default function Onboarding({
   const [bio, setBio] = useState<string>('');
   const [photoBuffer, setPhotoBuffer] = useState<Buffer | null>(null);
   const [photoURI, setPhotoURI] = useState<string>('');
-  const [habit, setHabit] = useState({});
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(true); // TODO
 
-  const formData: CreateProfileRequest = {
-    username: username,
-    // name: name,
-    bio: bio,
-    // photo: {
-    //   data: photoBuffer,
-    //   contentType: photoURI,
-    // },
-    // habit: habit
-  };
+  const [habit, setHabit] = useState({});
+  const [error, setError] = useState(''); // TODO
+  const [loading, setLoading] = useState(true); // TODO
 
   const fetchData = async () => {
     try {
-      // const data: GetUserResponse = await userClient.getCurrentUser();
       const userId = await SecureStore.getItemAsync('user-id');
       if (!userId) throw new Error('No user found.');
 
@@ -88,28 +74,46 @@ export default function Onboarding({
         email: res.email,
         first_name: res.first_name,
         last_name: res.last_name,
-      })
-      console.log(userData);
+      });
       setUserData(userData);
     } catch (err: any) {
-      console.log(err.message)
+      console.log(err.message);
       setError(err.message);
     }
   };
 
   const submitFormData = async () => {
-    console.log(formData);
     try {
-      const data: CreateProfileResponse = await profileClient.createProfile(
-        formData,
-      );
-      if (data) {
-        // returns profileId
-        console.log('SUBMISSION');
-        console.log(data);
+      const profileFormData: CreateProfileRequest = {
+        username: username,
+        bio: bio,
+        // name: name,
+        // habit: habit
+      };
+      if (!profileFormData)
+        throw new Error('No profile form data was submitted');
+
+      const profileData: CreateProfileResponse =
+        await profileClient.createProfile(profileFormData);
+      if (!profileData) {
+        setError('Error in creating profile');
+        return;
       }
+
+      const profileId = profileData.profileId; // returns profileId
+      // only update if photo was added
+      if (profileId && photoURI) {
+        const photoFormData: SetProfilePhotoRequest = {
+          profileId: profileId,
+          photo: photoURI,
+        };
+        const photoData: SetProfilePhotoResponse =
+          await profileClient.setProfileAvatar(photoFormData);
+        if (!photoData) setError('Photo not set.');
+      }
+      console.log('Submitted!');
     } catch (err: any) {
-      console.log(err.message)
+      console.log(err.message);
       setError(err.message);
     }
   };
@@ -122,6 +126,16 @@ export default function Onboarding({
     }
   }, []);
 
+  // display any errors
+  useEffect(() => {
+    if (error) {
+      Toast.show({
+        type: 'error',
+        text1: `Error: ${error}`,
+      });
+    }
+  }, [error]);
+
   useEffect(() => {
     setLoading(false);
     if (userData) {
@@ -133,7 +147,25 @@ export default function Onboarding({
       });
     }
   }, [userData]);
-    
+
+  const onChangeImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      base64: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    if (!result.cancelled) {
+      if (result.base64) {
+        const buffer: Buffer = Buffer.from(result.base64, 'base64');
+        // setPhotoURI('data:image/jpeg;base64,' + result.base64);
+        setPhotoURI(result.uri);
+        setPhotoBuffer(buffer);
+      }
+    }
+  };
 
   const isCurrentStep = (id: string) => {
     // checks if step has already been completed
@@ -190,24 +222,6 @@ export default function Onboarding({
       </ColumnContainer>
     );
   }
-
-  const onChangeImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      base64: true,
-      aspect: [1, 1],
-      quality: 1,
-    });
-
-    if (!result.cancelled) {
-      if (result.base64) {
-        const buffer: Buffer = Buffer.from(result.base64, 'base64');
-        setPhotoURI('data:image/jpeg;base64,' + result.base64);
-        setPhotoBuffer(buffer);
-      }
-    }
-  };
 
   return (
     <ImageBackground

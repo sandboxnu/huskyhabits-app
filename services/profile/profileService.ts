@@ -1,8 +1,7 @@
 import axios, { AxiosInstance } from 'axios';
+import { Platform } from 'react-native';
 import { store } from '../../store/App.store';
-import { GetUserResponse } from '../user/types';
 import { assert } from '../utils';
-import { ResponseEnvelope, unwrapOrThrowError } from '../utils';
 import {
   CreateProfileRequest,
   CreateProfileResponse,
@@ -10,11 +9,26 @@ import {
   GetProfileResponse,
   GetProfileFriendsRequest,
   GetProfileFriendsResponse,
-  GetProfileAvatarRequest,
-  GetProfileAvatarResponse,
+  GetProfilePhotoRequest,
+  GetProfilePhotoResponse,
   GetProfileChallengesResponse,
   GetProfileFriendRequestsResponse,
+  SetProfilePhotoRequest,
+  SetProfilePhotoResponse,
 } from './types';
+
+declare global {
+  interface FormDataValue {
+    uri: string;
+    name: string;
+    type: string;
+  }
+
+  interface FormData {
+    append(name: string, value: FormDataValue, fileName?: string): void;
+    set(name: string, value: FormDataValue, fileName?: string): void;
+  }
+}
 
 export default class ProfileServiceClient {
   private _axios: AxiosInstance;
@@ -32,86 +46,101 @@ export default class ProfileServiceClient {
         'Content-Type': 'application/json',
       },
     });
+
+    // add cookies to every request
+    this._axios.interceptors.request.use(
+      (config) => {
+        config.headers!['Cookie'] = store.getState().auth.cookies;
+        return config;
+      },
+      (error) => {
+        console.log(error.message);
+        throw new Error(error.message);
+      },
+    );
   }
 
   async createProfile(
     requestData: CreateProfileRequest,
   ): Promise<CreateProfileResponse> {
-    const state = store.getState();
-    const res = await this._axios.post<CreateProfileResponse>
-    ('/', requestData, {
-      headers: {
-        'Cookie': state.auth.cookies
-      }
-    });
-    if (!res) {
-      throw new Error('eww');
-    }
+    const res = await this._axios.post<CreateProfileResponse>('/', requestData);
+    if (!res) throw new Error('Profile could not be created.');
     return res.data;
   }
 
   async getProfileById(
     requestData: GetProfileRequest,
   ): Promise<GetProfileResponse> {
-    const responseWrapper = await this._axios.get<
-      ResponseEnvelope<GetProfileResponse>
-    >(`/${requestData.profileId}`, {
-      headers: {
-        'Cookie': store.getState().auth.cookies
-      }
-    });
-    return unwrapOrThrowError(responseWrapper);
+    const res = await this._axios.get<GetProfileResponse>(
+      `/${requestData.profileId}`,
+    );
+    if (!res) throw new Error('Profile not found.');
+    return res.data;
   }
+
+  async getProfileAvatar(
+    requestData: GetProfilePhotoRequest,
+  ): Promise<GetProfilePhotoResponse> {
+    const res = await this._axios.get<GetProfilePhotoResponse>(
+      `/${requestData.profileId}/photo?size=${requestData.size}`,
+    );
+    if (!res) throw new Error('Profile photo not found.');
+    return res.data;
+  }
+
+  async setProfileAvatar(
+    requestData: SetProfilePhotoRequest,
+  ): Promise<SetProfilePhotoResponse> {
+    const photoData = new global.FormData();
+    const fileObj: FormDataValue = {
+      uri: requestData.photo,
+      name: 'profile-pic',
+      type: 'image/png',
+    };
+    photoData.append('file', fileObj);
+    
+    try {
+      const res = await this._axios.post<SetProfilePhotoResponse>(
+        `/${requestData.profileId}/photo`,
+        photoData,
+      );
+      if (!res) throw new Error('Profile photo not found.');
+      return res.data;
+    } catch (err: any) {
+      console.log(err.message);
+      throw new Error(err.message);
+    }
+  }
+
+  // TODO
 
   async getFriendsForProfile(
     requestData: GetProfileFriendsRequest,
   ): Promise<GetProfileFriendsResponse> {
-    const responseWrapper = await this._axios.get<
-      ResponseEnvelope<GetProfileFriendsResponse>
-    >(`/${requestData.profileId}/friends`, {
-      headers: {
-        'Cookie': store.getState().auth.cookies
-      }
-    });
-    return unwrapOrThrowError(responseWrapper);
+    const res = await this._axios.get<GetProfileFriendsResponse>(
+      `/${requestData.profileId}/friends`,
+    );
+    if (!res) throw new Error('Friends not found.');
+    return res.data;
   }
 
   async getProfileChallenges(requestData: {
     userId: string;
   }): Promise<GetProfileChallengesResponse> {
-    const responseWrapper = await this._axios.get<
-      ResponseEnvelope<GetProfileChallengesResponse>
-    >(`/${requestData.userId}/challenges`, {
-      headers: {
-        'Cookie': store.getState().auth.cookies
-      }
-    });
-    return unwrapOrThrowError(responseWrapper);
+    const res = await this._axios.get<GetProfileChallengesResponse>(
+      `/${requestData.userId}/challenges`,
+    );
+    if (!res) throw new Error('Challenges not found.');
+    return res.data;
   }
 
   async getProfileFriendRequests(requestData: {
     userId: string;
   }): Promise<GetProfileFriendRequestsResponse> {
-    const responseWrapper = await this._axios.get<
-      ResponseEnvelope<GetProfileFriendRequestsResponse>
-    >(`/${requestData.userId}/friend_requests`, {
-      headers: {
-        'Cookie': store.getState().auth.cookies
-      }
-    });
-    return unwrapOrThrowError(responseWrapper);
-  }
-
-  async getProfileAvatar(
-    requestData: GetProfileAvatarRequest,
-  ): Promise<GetProfileAvatarResponse> {
-    const responseWrapper = await this._axios.get<
-      ResponseEnvelope<GetProfileAvatarResponse>
-    >(`/users/${requestData.userId}/avatar?size=${requestData.size}`, {
-      headers: {
-        'Cookie': store.getState().auth.cookies
-      }
-    });
-    return unwrapOrThrowError(responseWrapper);
+    const res = await this._axios.get<GetProfileFriendRequestsResponse>(
+      `/${requestData.userId}/friend_requests`,
+    );
+    if (!res) throw new Error('Friend requests not found.');
+    return res.data;
   }
 }

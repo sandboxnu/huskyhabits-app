@@ -5,9 +5,8 @@ import * as Progress from 'react-native-progress';
 import { useEffect, useState } from 'react';
 import { AuthStackScreenProps } from '../../types';
 
-
 const OnboardingLoadingScreen = ({
-  navigation
+  navigation,
 }: AuthStackScreenProps<'Onboarding'>) => {
   const [progress, setProgress] = useState<number>(0);
   const [intervalId, setIntervalId] = useState<NodeJS.Timer | null>(null);
@@ -25,7 +24,7 @@ const OnboardingLoadingScreen = ({
       console.log('FINISHED');
       navigation.navigate('Profile');
     }
-  }, [progress])
+  }, [progress]);
 
   return (
     <View style={styles.progressBar}>
