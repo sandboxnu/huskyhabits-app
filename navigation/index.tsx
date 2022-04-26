@@ -6,9 +6,9 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
-  NavigationContainer,
-  DefaultTheme,
-  DarkTheme,
+    NavigationContainer,
+    DefaultTheme,
+    DarkTheme,
 } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, { useState, useEffect } from 'react';
@@ -20,13 +20,13 @@ import NotFoundScreen from '../screens/NotFoundScreen';
 import ProfileScreen from '../screens/Profile';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import {
-  AuthStackModalProps,
-  AuthStackParamList,
-  AuthStackScreenProps,
-  AuthTabParamList,
-  AuthTabScreenProps,
-  RootScreenProps,
-  RootParamList,
+    AuthStackModalProps,
+    AuthStackParamList,
+    AuthStackScreenProps,
+    AuthTabParamList,
+    AuthTabScreenProps,
+    RootScreenProps,
+    RootParamList,
 } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 import { useSelector } from 'react-redux';
@@ -40,25 +40,25 @@ import Onboarding from '../screens/Onboarding/Onboarding';
  * The corresponding props and types for these screens are defined accordingly.
  */
 export default function Navigation({
-  colorScheme,
-}: {
-  colorScheme: ColorSchemeName;
+                                       colorScheme,
+                                   }: {
+    colorScheme: ColorSchemeName;
 }) {
-  const [authenticated, setAuthenticated] = useState<boolean>(false);
-  const cookies = useSelector(selectCookies);
+    const [authenticated, setAuthenticated] = useState<boolean>(false);
+    const cookies = useSelector(selectCookies);
 
-  useEffect(() => {
-    setAuthenticated(cookies !== '');
-  }, [cookies]);
+    useEffect(() => {
+        setAuthenticated(cookies !== '');
+    }, [cookies]);
 
-  return (
-    <NavigationContainer
-      linking={LinkingConfiguration}
-      theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
-    >
-      {authenticated ? <AuthNavigator /> : <RegisterNavigator />}
-    </NavigationContainer>
-  );
+    return (
+        <NavigationContainer
+            linking={LinkingConfiguration}
+            theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+        >
+            {authenticated ? <AuthNavigator /> : <RegisterNavigator />}
+        </NavigationContainer>
+    );
 }
 
 /**
@@ -67,32 +67,32 @@ export default function Navigation({
 const AuthStack = createNativeStackNavigator<AuthStackParamList>();
 
 function AuthNavigator() {
-  return (
-    <AuthStack.Navigator screenOptions={{ headerShown: false }}>
-      <AuthStack.Screen name="Onboarding" component={Onboarding} />
-      <AuthStack.Screen name="Profile" component={BottomTabNavigator} />
-      <AuthStack.Screen
-        name="NotFound"
-        component={NotFoundScreen}
-        options={{ title: 'Oops!' }}
-      />
-      <AuthStack.Group screenOptions={{ presentation: 'modal' }}>
-        <AuthStack.Screen
-          name="EditProfile"
-          component={EditProfile}
-          options={({ navigation }: AuthStackModalProps<'EditProfile'>) => ({
-            title: 'Edit Profile',
-            headerRight: () => (
-              <Button
-                onPress={() => navigation.navigate('Profile')}
-                title="Done"
-              />
-            ),
-          })}
-        />
-      </AuthStack.Group>
-    </AuthStack.Navigator>
-  );
+    return (
+        <AuthStack.Navigator screenOptions={{ headerShown: false }}>
+            <AuthStack.Screen name="Onboarding" component={Onboarding} />
+            <AuthStack.Screen name="Profile" component={BottomTabNavigator} />
+            <AuthStack.Screen
+                name="NotFound"
+                component={NotFoundScreen}
+                options={{ title: 'Oops!' }}
+            />
+            <AuthStack.Group screenOptions={{ presentation: 'modal' }}>
+                <AuthStack.Screen
+                    name="EditProfile"
+                    component={EditProfile}
+                    options={({ navigation }: AuthStackModalProps<'EditProfile'>) => ({
+                        title: 'Edit Profile',
+                        headerRight: () => (
+                            <Button
+                                onPress={() => navigation.navigate('Profile')}
+                                title="Done"
+                            />
+                        ),
+                    })}
+                />
+            </AuthStack.Group>
+        </AuthStack.Navigator>
+    );
 }
 
 /**
@@ -101,15 +101,15 @@ function AuthNavigator() {
 const RootStack = createNativeStackNavigator<RootParamList>();
 
 function RegisterNavigator() {
-  return (
-    <RootStack.Navigator>
-      <RootStack.Screen
-        name="Login"
-        component={LoginPage}
-        options={{ headerShown: false }}
-      />
-    </RootStack.Navigator>
-  );
+    return (
+        <RootStack.Navigator>
+            <RootStack.Screen
+                name="Login"
+                component={LoginPage}
+                options={{ headerShown: false }}
+            />
+        </RootStack.Navigator>
+    );
 }
 
 /**
@@ -119,42 +119,42 @@ function RegisterNavigator() {
 const BottomTab = createBottomTabNavigator<AuthTabParamList>();
 
 function BottomTabNavigator() {
-  const colorScheme = useColorScheme();
+    const colorScheme = useColorScheme();
 
-  return (
-    <BottomTab.Navigator initialRouteName="Profile" screenOptions={{}}>
-      <BottomTab.Screen
-        name="Profile"
-        component={ProfileScreen}
-        options={({ navigation }: AuthTabScreenProps<'Profile'>) => ({
-          title: 'Profile',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          headerRight: () => (
-            <Pressable
-              onPress={() => navigation.navigate('EditProfile')}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-              })}
-            >
-              <FontAwesome
-                name="pencil-square-o"
-                size={25}
-                style={{ marginRight: 15 }}
-              />
-            </Pressable>
-          ),
-        })}
-      />
-    </BottomTab.Navigator>
-  );
+    return (
+        <BottomTab.Navigator initialRouteName="Profile" screenOptions={{}}>
+            <BottomTab.Screen
+                name="Profile"
+                component={ProfileScreen}
+                options={({ navigation }: AuthTabScreenProps<'Profile'>) => ({
+                    title: 'Profile',
+                    tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+                    headerRight: () => (
+                        <Pressable
+                            onPress={() => navigation.navigate('EditProfile')}
+                            style={({ pressed }) => ({
+                                opacity: pressed ? 0.5 : 1,
+                            })}
+                        >
+                            <FontAwesome
+                                name="pencil-square-o"
+                                size={25}
+                                style={{ marginRight: 15 }}
+                            />
+                        </Pressable>
+                    ),
+                })}
+            />
+        </BottomTab.Navigator>
+    );
 }
 
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
  */
 function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>['name'];
-  color: string;
+    name: React.ComponentProps<typeof FontAwesome>['name'];
+    color: string;
 }) {
-  return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
+    return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
 }
