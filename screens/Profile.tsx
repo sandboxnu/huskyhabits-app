@@ -75,7 +75,9 @@ export default function ProfileScreen({ navigation }: AuthTabScreenProps<'Profil
           </LeftAlign>
           <CenteredRowContainer style={styles.mainContainer}>
             <CenteredColContainer>
-              <Image source={Tape} style={styles.tape} />
+              <View style={[styles.tape, styles.floatingImage]}>
+                <Image source={Tape} />
+              </View>
               <View style={styles.shadowContainer}>
                 <Image
                   source={{
@@ -108,24 +110,26 @@ export default function ProfileScreen({ navigation }: AuthTabScreenProps<'Profil
             </ColContainer>
           </CenteredRowContainer>
           <Heading style={[styles.smallText, styles.padding]}>{profileData.bio}</Heading>
-          <Container style={styles.notebookPaper}>
+          <View style={styles.notebookWithTabs}>
             <View style={styles.tabContainer}>
               <NotebookTab title={'Challenges'} setCurrentTab={setCurrentTab} currentTab={currentTab} />
               <NotebookTab title={'Habits'} setCurrentTab={setCurrentTab} currentTab={currentTab}/>
               <NotebookTab title={'Posts'} setCurrentTab={setCurrentTab} currentTab={currentTab}/>
             </View>
-            { currentTab === 'Challenges' &&
-              <View style={styles.tabView}>
-                <View style={[styles.textContainer, styles.shadowContainer]}>
-                  <Heading style={[styles.infoText, styles.yellowText]}>
-                    Challenges are groups you can make/join with your friends where you compete and/or work together to complete habits consistently!
-                  </Heading>
+            <Container style={styles.notebookPaper}>
+              { currentTab === 'Challenges' &&
+                <View style={styles.tabView}>
+                  <View style={[styles.textContainer, styles.shadowContainer]}>
+                    <Heading style={[styles.infoText, styles.yellowText]}>
+                      Challenges are groups you can make/join with your friends where you compete and/or work together to complete habits consistently!
+                    </Heading>
+                  </View>
+                  {challengesToRender}
                 </View>
-                {challengesToRender}
-              </View>
-            }
-          </Container>
-          <View style={styles.notebook}>
+              }
+            </Container>
+          </View>
+          <View style={[styles.notebook, styles.floatingImage]}>
             <Image source={Notebook}/>
           </View>
           
@@ -139,11 +143,17 @@ const styles = StyleSheet.create({
   container: {
     marginVertical: 50,
   },
-  
+  notebookWithTabs: {
+    marginTop: 10,
+    marginLeft: 10,
+    backgroundColor: 'transparent'
+  },
   tabContainer: {
     flexDirection: 'row',
-    marginHorizontal: 20,
-    justifyContent: 'space-between'
+    marginHorizontal: 25,
+    marginBottom: -1,
+    justifyContent: 'space-between',
+    backgroundColor: 'transparent'
   },
 
   infoText: {
@@ -170,15 +180,10 @@ const styles = StyleSheet.create({
     height: 470,
     top: 400,
     //zIndex: 1,
-    elevation: 5,
-    shadowColor: 'transparent',
-    backgroundColor: 'transparent',
   },
   notebookPaper: {
     backgroundColor: 'white',
     height: 520,
-    marginTop: 50,
-    marginHorizontal: 10,
     paddingHorizontal: 30,
     shadowColor: '#000',
     shadowOffset: { width: 5, height: -3 },
@@ -215,7 +220,11 @@ const styles = StyleSheet.create({
     width: 99,
     height: 20,
     marginBottom: -10,
-    zIndex: 1,
+  },
+  floatingImage: {
+    elevation: 10,
+    shadowColor: 'transparent',
+    backgroundColor: 'transparent',
   },
   shadowContainer: {
     shadowColor: '#000',
