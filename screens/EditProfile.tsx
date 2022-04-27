@@ -6,9 +6,9 @@ import { Buffer } from 'buffer';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Colors from '../theme/Colors'
 import { SmallTextInput, LargeTextInput, ProfileBody } from '../components/Common'
-import { RootStackModalProps } from '../types';
+import { AuthStackModalProps } from '../types';
 
-export default function EditProfile({ navigation }: RootStackModalProps<'EditProfile'>) {
+export default function EditProfile({ navigation }: AuthStackModalProps<'EditProfile'>) {
   const [username, setUsername] = useState<string>("");
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");

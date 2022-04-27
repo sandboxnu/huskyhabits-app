@@ -128,6 +128,7 @@ const styles = StyleSheet.create({
   
   tabContainer: {
     flexDirection: 'row',
+<<<<<<< HEAD
     marginHorizontal: 20,
     justifyContent: 'space-between'
   },
@@ -209,6 +210,17 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 2,
     elevation: 5,
+=======
+    marginBottom: 10,
+    marginTop: 5,
+  },
+  separator: {
+    marginVertical: 30,
+    height: 1,
+    width: '80%',
+  },
+  group: {
+>>>>>>> ef99e6380f0df00ea943eb87147b1c4ab91dfa4a
     alignItems: 'center',
   },
   imageBackground: {
