@@ -19,12 +19,12 @@ import Tape from '../assets/images/Tape.png';
 import HuskyHabitsBackground from '../assets/images/Pawprints.png';
 import Notebook from '../assets/images/Notebook.png';
 import Colors from '../theme/Colors';
-import { RootTabScreenProps } from '../types';
+import { AuthTabScreenProps } from '../types';
 import Text from '../theme/Text';
 import NotebookTab from '../components/NotebookTabComponent'
 import Challenge from '../components/ChallengeComponent';
 
-export default function ProfileScreen({ navigation }: RootTabScreenProps<'Profile'>) {
+export default function ProfileScreen({ navigation }: AuthTabScreenProps<'Profile'>) {
   const [profileData, setProfileData] = useState({
     username: 'bagel_gatekeeper',
     name: 'Jaime Gonora',
@@ -114,7 +114,7 @@ export default function ProfileScreen({ navigation }: RootTabScreenProps<'Profil
           <View style={styles.notebook}>
             <Image source={Notebook}/>
           </View>
-          
+
         </Container>
       </ScrollContainer>
     </ImageBackground>
@@ -125,10 +125,9 @@ const styles = StyleSheet.create({
   container: {
     marginVertical: 50,
   },
-  
+
   tabContainer: {
     flexDirection: 'row',
-<<<<<<< HEAD
     marginHorizontal: 20,
     justifyContent: 'space-between'
   },
@@ -210,7 +209,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 2,
     elevation: 5,
-=======
     marginBottom: 10,
     marginTop: 5,
   },
@@ -220,7 +218,6 @@ const styles = StyleSheet.create({
     width: '80%',
   },
   group: {
->>>>>>> ef99e6380f0df00ea943eb87147b1c4ab91dfa4a
     alignItems: 'center',
   },
   imageBackground: {
