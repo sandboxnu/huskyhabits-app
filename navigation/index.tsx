@@ -11,72 +11,105 @@ import {
   DarkTheme,
 } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, ColorSchemeName, Pressable } from 'react-native';
-import Colors from '../theme/Colors';
 import useColorScheme from '../hooks/useColorScheme';
+import LoginPage from '../screens/LoginPage';
 import EditProfile from '../screens/EditProfile';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import ProfileScreen from '../screens/Profile';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import {
-  RootStackModalProps,
-  RootStackParamList,
-  RootStackScreenProps,
-  RootTabParamList,
-  RootTabScreenProps,
+  AuthStackModalProps,
+  AuthStackParamList,
+  AuthStackScreenProps,
+  AuthTabParamList,
+  AuthTabScreenProps,
+  RootScreenProps,
+  RootParamList,
 } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
+import { useSelector } from 'react-redux';
+import { selectCookies } from '../store/selectors/Auth.selector';
+import Onboarding from '../screens/Onboarding/Onboarding';
+import Colors from '../theme/Colors';
 
+/*
+ * We use react-navigation to render different Navigators depending on the screen we wish to render.
+ * Navigation checks whether or not an authenticated state is currently stored.
+ * - If so, renders accessible screens for the user.
+ * The corresponding props and types for these screens are defined accordingly.
+ */
 export default function Navigation({
   colorScheme,
 }: {
   colorScheme: ColorSchemeName;
 }) {
+  const [authenticated, setAuthenticated] = useState<boolean>(false);
+  const cookies = useSelector(selectCookies);
+
+  useEffect(() => {
+    setAuthenticated(cookies !== '');
+  }, [cookies]);
+
   return (
     <NavigationContainer
       linking={LinkingConfiguration}
       theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
     >
-      <RootNavigator />
+      {authenticated ? <AuthNavigator /> : <RegisterNavigator />}
     </NavigationContainer>
   );
 }
 
 /**
- * A root stack navigator is often used for displaying modals on top of all other content.
- * https://reactnavigation.org/docs/modal
+ * AuthNavigator holds all screens for authenticated users.
  */
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const AuthStack = createNativeStackNavigator<AuthStackParamList>();
 
-function RootNavigator() {
+function AuthNavigator() {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen
-        name="Root"
-        component={BottomTabNavigator}
-      />
-      <Stack.Screen
+    <AuthStack.Navigator screenOptions={{ headerShown: false }}>
+      <AuthStack.Screen name="Onboarding" component={Onboarding} />
+      <AuthStack.Screen name="Profile" component={BottomTabNavigator} />
+      <AuthStack.Screen
         name="NotFound"
         component={NotFoundScreen}
         options={{ title: 'Oops!' }}
       />
-      <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen 
-          name="EditProfile" 
+      <AuthStack.Group screenOptions={{ presentation: 'modal' }}>
+        <AuthStack.Screen
+          name="EditProfile"
           component={EditProfile}
-          options={({ navigation }: RootStackModalProps<'EditProfile'>) => ({ 
+          options={({ navigation }: AuthStackModalProps<'EditProfile'>) => ({
             title: 'Edit Profile',
             headerRight: () => (
-              <Button 
+              <Button
                 onPress={() => navigation.navigate('Profile')}
                 title="Done"
               />
-            )
+            ),
           })}
         />
-      </Stack.Group>
-    </Stack.Navigator>
+      </AuthStack.Group>
+    </AuthStack.Navigator>
+  );
+}
+
+/**
+ * RegisterNavigator holds all screens for unauthenticated users.
+ */
+const RootStack = createNativeStackNavigator<RootParamList>();
+
+function RegisterNavigator() {
+  return (
+    <RootStack.Navigator>
+      <RootStack.Screen
+        name="Login"
+        component={LoginPage}
+        options={{ headerShown: false }}
+      />
+    </RootStack.Navigator>
   );
 }
 
@@ -84,7 +117,7 @@ function RootNavigator() {
  * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
  * https://reactnavigation.org/docs/bottom-tab-navigator
  */
-const BottomTab = createBottomTabNavigator<RootTabParamList>();
+const BottomTab = createBottomTabNavigator<AuthTabParamList>();
 
 function BottomTabNavigator() {
   const colorScheme = useColorScheme();
@@ -100,7 +133,7 @@ function BottomTabNavigator() {
       <BottomTab.Screen
         name="Profile"
         component={ProfileScreen}
-        options={({ navigation }: RootTabScreenProps<'Profile'>) => ({
+        options={({ navigation }: AuthTabScreenProps<'Profile'>) => ({
           title: 'Profile',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
@@ -113,21 +146,12 @@ function BottomTabNavigator() {
               <FontAwesome
                 name="pencil-square-o"
                 size={25}
-                color={Colors[colorScheme].text}
                 style={{ marginRight: 15 }}
               />
             </Pressable>
           ),
         })}
       />
-      {/* <BottomTab.Screen
-        name="TabTwo"
-        component={TabTwoScreen}
-        options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-        }}
-      /> */}
     </BottomTab.Navigator>
   );
 }

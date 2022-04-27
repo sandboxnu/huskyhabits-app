@@ -19,12 +19,15 @@ import Tape from '../assets/images/Tape.png';
 import HuskyHabitsBackground from '../assets/images/Pawprints.png';
 import Notebook from '../assets/images/Notebook.png';
 import Colors from '../theme/Colors';
-import { RootTabScreenProps } from '../types';
+import * as SecureStore from 'expo-secure-store';
+import { useAppDispatch } from '../store/App.hooks';
+import { AuthTabScreenProps } from '../types';
 import Text from '../theme/Text';
 import NotebookTab from '../components/NotebookTabComponent'
 import Challenge from '../components/ChallengeComponent';
+import { AuthAction } from '../store/actions/Auth.action';
 
-export default function ProfileScreen({ navigation }: RootTabScreenProps<'Profile'>) {
+export default function ProfileScreen({ navigation }: AuthTabScreenProps<'Profile'>) {
   const [profileData, setProfileData] = useState({
     username: 'bagel_gatekeeper',
     name: 'Jaime Gonora',
@@ -39,6 +42,17 @@ export default function ProfileScreen({ navigation }: RootTabScreenProps<'Profil
   ]);
   const [currentTab, setCurrentTab] = useState('Challenges');
   const windowHeight = Dimensions.get('window').height;
+
+  const dispatch = useAppDispatch();
+
+  const logout = async (): Promise<void> => {
+    await SecureStore.deleteItemAsync('auth-cookies');
+    await SecureStore.deleteItemAsync('user-id');
+    alert('Logged out');
+    dispatch(AuthAction.setCookies(''));
+    dispatch(AuthAction.setUserId(''));
+  };
+
 
   // TODO: Connect to backend
   useEffect(() => {

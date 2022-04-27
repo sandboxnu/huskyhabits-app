@@ -16,6 +16,7 @@ export default function useCachedResources() {
         await Font.loadAsync({
           ...FontAwesome.font,
           'Balsamiq-Sans': require('../assets/fonts/BalsamiqSans-Regular.ttf'),
+          'BeVietnam-Bold': require('../assets/fonts/BeVietnam-Bold.ttf'),
           'BeVietnam': require('../assets/fonts/BeVietnam-Regular.ttf'),
           'BeVietnam-Bold': require('../assets/fonts/BeVietnam-Bold.ttf'),
           'ABeeZee': require('../assets/fonts/ABeeZee-Regular.ttf'),
