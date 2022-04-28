@@ -4,57 +4,82 @@ import Colors from '../theme/Colors';
 import Text from '../theme/Text';
 
 export const Heading = styled.Text`
-  fontSize: ${Text.size.heading};
-  fontFamily: ${Text.font.heading};
-  fontWeight: bold;
+  fontsize: ${Text.size.heading};
+  fontfamily: ${Text.font.heading};
+  fontweight: bold;
 `;
 
 export const Body = styled.Text`
-  fontFamily: ${Text.font.body};
+  fontfamily: ${Text.font.body};
 `;
 
 export const ProfileBody = styled.Text`
-  fontSize: ${Text.size.body};
-  fontFamily: ${Text.font.bodyBold};
+  fontsize: ${Text.size.body};
+  fontfamily: ${Text.font.bodyBold};
 `;
 
 export const TitleText = styled.Text`
-  fontFamily: ${Text.font.bodyBold};
-  fontSize: ${Text.size.heading};
+  fontfamily: ${Text.font.bodyBold};
+  fontsize: ${Text.size.heading};
 `;
 
 export const SmallTextInput = styled.TextInput`
   height: 40px;
-  width: 200px;
-  borderRadius: 8px;
+  borderradius: 8px;
   margin: 5px;
-  
   elevation: 2;
-  
   padding: 10px;
-  background: #FFFFFF;
-  boxShadow: 0px 1px 8px rgba(0, 0, 0, 0.25);
+  background: #ffffff;
+  boxshadow: 0px 1px 8px rgba(0, 0, 0, 0.25);
 `;
 
 export const LargeTextInput = styled.TextInput`
   height: 100px;
-  width: 200px;
-  borderRadius: 8px;
+  borderradius: 8px;
   margin: 5px;
   padding: 10px;
-  background: #FFFFFF;
-  boxShadow: 0px 1px 8px rgba(0, 0, 0, 0.25);
-  textAlignVertical: top;
+  background: #ffffff;
+  boxshadow: 0px 1px 8px rgba(0, 0, 0, 0.25);
+  textalignvertical: top;
 `;
 
-export const CenteredContainer = styled.View`
-  alignItems: center;
-  justifyContent: center;
+export const InputTextLabel = styled.Text`
+  fontfamily: ${Text.font.body};
+  maxwidth: 90%;
+  fontsize: ${Text.size.body};
+  marginright: 10px;
+  padding: 0;
+`;
+
+export const RequiredLabel = styled.Text`
+  color: ${Colors.clifford};
+`;
+
+export const FormContainer = styled.View`
+  margin: 10px;
+  alignitems: center;
+  backgroundcolor: transparent;
+`;
+
+export const InputContainer = styled.View`
+  flexdirection: column;
+  width: 95%;
+  margin: 5px;
+  backgroundcolor: transparent;
+`;
+
+export const CenterText = styled.Text`
+  textalign: center;
+`;
+
+export const Container = styled.View`
   padding: 10px;
   width: 100%;
 `;
 
-export const Container = styled.View`
+export const CenteredContainer = styled.View`
+  alignitems: center;
+  justifycontent: center;
   padding: 10px;
   width: 100%;
 `;
@@ -63,48 +88,65 @@ export const ScrollContainer = styled.ScrollView`
   flex: 1;
 `;
 
-export const InputTextLabel = styled.Text`
-  fontFamily: ${Text.font.body};
-  textAlign: right;
-  width: 100px;
-  fontSize: ${Text.size.body};
-  marginRight: 10px;
-  padding: 0;
-`
-
-export const CenterText = styled.Text`
-  textAlign: center;
-`;
-
 export const RowContainer = styled.View`
-  flexDirection: row;
-  alignItems: center;
+  flexdirection: row;
+  alignitems: center;
 `;
 
 export const CenteredRowContainer = styled.View`
-  alignItems: center;
-  justifyContent: center;
-  flexDirection: row;
+  alignitems: center;
+  justifycontent: center;
+  flexdirection: row;
 `;
 
 export const CenteredColContainer = styled.View`
-  flexDirection: column;
-  alignItems: center;
-  justifyContent: center;
+  flexdirection: column;
+  alignitems: center;
+  justifycontent: center;
 `;
 
 export const ColContainer = styled.View`
-  flexDirection: column;
+  flexdirection: column;
 `;
 
 export const LeftAlign = styled.View`
-  flexDirection: row;
-  justifyContent: flex-start;
+  flexdirection: row;
+  justifycontent: flex-start;
 `;
 
 export const SubHeadingItalic = styled.Text`
-  fontFamily: ${Text.font.subHeadingItalic};
-  fontSize: 14px;
-  marginBottom: 10px;
+  fontfamily: ${Text.font.subHeadingItalic};
+  fontsize: 14px;
+  marginbottom: 10px;
   color: ${Colors.huskyYellow};
+`;
+
+export const ColumnContainer = styled.View`
+  flexdirection: column;
+  alignitems: center;
+`;
+
+export const PrimaryButton = styled.TouchableOpacity`
+  display: flex;
+  flexdirection: row;
+  alignitems: flex-start;
+  padding: 12px 16px;
+  backgroundcolor: ${Colors.clifford};
+  borderradius: 8px;
+`;
+
+export const SecondaryButton = styled.TouchableOpacity`
+  display: flex;
+  flexdirection: row;
+  alignitems: flex-start;
+  padding: 12px 16px;
+  bordercolor: ${Colors.clifford};
+  borderwidth: 2px;
+  backgroundcolor: ${Colors.malamute};
+  borderradius: 8px;
+`;
+
+export const ButtonText = styled.Text`
+  margin: auto;
+  fontsize: ${Text.size.body};
 `;

@@ -9,12 +9,3 @@ export default {
   SUBHEADING_FONT: 'ABeeZee',
   SUBHEADING_ITALIC_FONT: 'ABeeZee-Italic',
 }
-
-// export default = css`
-//   font-family: ${font.body};
-//   font-weight: ${weight.regular};
-//   h1 {
-//     font-size: ${size.heading.mobile.h1}px;
-//   }
-//   ...
-// `;

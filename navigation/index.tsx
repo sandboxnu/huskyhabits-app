@@ -20,18 +20,19 @@ import NotFoundScreen from '../screens/NotFoundScreen';
 import ProfileScreen from '../screens/Profile';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import {
-    AuthStackModalProps,
-    AuthStackParamList,
-    AuthStackScreenProps,
-    AuthTabParamList,
-    AuthTabScreenProps,
-    RootScreenProps,
-    RootParamList,
+  AuthStackModalProps,
+  AuthStackParamList,
+  AuthStackScreenProps,
+  AuthTabParamList,
+  AuthTabScreenProps,
+  RootScreenProps,
+  RootParamList,
 } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 import { useSelector } from 'react-redux';
 import { selectCookies } from '../store/selectors/Auth.selector';
 import Onboarding from '../screens/Onboarding/Onboarding';
+import Colors from '../theme/Colors';
 
 /*
  * We use react-navigation to render different Navigators depending on the screen we wish to render.

@@ -9,6 +9,7 @@ import {
 import {
   Body,
   ButtonText,
+  CenteredContainer,
   Container,
   PrimaryButton,
 } from '../../components/Common';
@@ -25,7 +26,7 @@ export default function OnboardingIntro({
   setCurrentStep,
 }: OnboardingIntroProps) {
   return (
-    <Container style={styles.onboardingContainer}>
+    <CenteredContainer style={styles.onboardingContainer}>
       <Body style={styles.welcomeText}>Thank you for signing up with</Body>
       <Image source={HuskyHabitsLogo} style={styles.logoImage} />
       <Body style={styles.introText}>
@@ -34,7 +35,7 @@ export default function OnboardingIntro({
       <PrimaryButton onPress={() => setCurrentStep('user')}>
         <ButtonText>Let's Go!</ButtonText>
       </PrimaryButton>
-    </Container>
+    </CenteredContainer>
   );
 }
 

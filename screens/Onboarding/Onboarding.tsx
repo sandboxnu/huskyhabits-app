@@ -89,12 +89,15 @@ export default function Onboarding({
 
       const profileData: CreateProfileResponse =
         await profileClient.createProfile(profileFormData);
+      console.log(profileData);
       if (!profileData) {
         setError('Error in creating profile');
         return;
       }
 
       const profileId = profileData.profileId; // returns profileId
+      console.log(profileId);
+      console.log(photoURI);
       // only update if photo was added
       if (profileId && photoURI) {
         const photoFormData: SetProfilePhotoRequest = {
@@ -103,6 +106,9 @@ export default function Onboarding({
         };
         const photoData: SetProfilePhotoResponse =
           await profileClient.setProfileAvatar(photoFormData);
+
+        console.log('I AM HERE');
+        console.log(photoData);
         if (!photoData) setError('Photo not set.');
       }
       console.log('Submitted!');
@@ -267,7 +273,6 @@ export default function Onboarding({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 160,
   },
   stepSeparator: {
     borderWidth: 1,

@@ -1,43 +1,60 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Image, StyleSheet, TouchableOpacity } from 'react-native';
-import { Text, View, TextInput } from '../components/Themed';
+import { Text, View } from '../components/Themed';
+import {
+  SmallTextInput,
+  LargeTextInput,
+  ProfileBody,
+} from '../components/Common';
 import * as ImagePicker from 'expo-image-picker';
 import { Buffer } from 'buffer';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import Colors from '../theme/Colors'
-import { SmallTextInput, LargeTextInput, ProfileBody } from '../components/Common'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import Colors from '../theme/Colors';
 import { AuthStackModalProps } from '../types';
 import ProfileServiceClient from '../services/profile/profileService';
-import * as SecureStore from 'expo-secure-store';
 import {
-  CreateProfileRequest,
-  CreateProfileResponse,
-  GetProfileRequest,
   GetProfileResponse,
-  GetProfileFriendsRequest,
-  GetProfileFriendsResponse,
-  GetProfilePhotoRequest,
   GetProfilePhotoResponse,
-  GetProfileChallengesResponse,
-  GetProfileFriendRequestsResponse,
-  SetProfilePhotoRequest,
-  SetProfilePhotoResponse,
 } from '../services/profile/types';
 
-export default function EditProfile({ navigation }: AuthStackModalProps<'EditProfile'>) {
-  const [username, setUsername] = useState<string>("");
-  const [name, setName] = useState<string>("");
-  const [bio, setBio] = useState<string>("");
+export default function EditProfile({
+  navigation,
+}: AuthStackModalProps<'EditProfile'>) {
+  const [username, setUsername] = useState<string>('');
+  const [name, setName] = useState<string>('');
+  const [bio, setBio] = useState<string>('');
   const [photoBuffer, setPhotoBuffer] = useState<Buffer | null>(null);
-  const [photoURI, setPhotoURI] = useState<string>("");
+  const [photoURI, setPhotoURI] = useState<string>('');
 
   const [profileOrig, setProfileOrig] = useState<GetProfileResponse | null>();
-  const [avatarOrig, setAvatarOrig] = useState<GetProfilePhotoResponse | null>();
+  const [avatarOrig, setAvatarOrig] =
+    useState<GetProfilePhotoResponse | null>();
+  const [error, setError] = useState<string>('');
 
   // TODO: Make getting the profile data work
-  const profileServiceClient : ProfileServiceClient = new ProfileServiceClient()
-  profileServiceClient.getCurrentProfile().then(x => setProfileOrig(x));
-  profileServiceClient.getCurrentProfilePhoto({size: 'md'}).then(x => setAvatarOrig(x))
+  const profileServiceClient: ProfileServiceClient = new ProfileServiceClient();
+
+  const fetchData = async () => {
+    try {
+      const profileData = await profileServiceClient.getCurrentProfile();
+      setProfileOrig(profileData);
+      const profilePicData =
+        await profileServiceClient.getCurrentProfilePhoto();
+      setAvatarOrig(profilePicData);
+    } catch (err: any) {
+      console.log(err);
+      setError(err);
+    }
+  };
+
+  console.log(profileOrig);
+
+  // fetch profile data
+  useEffect(() => {
+    if (!profileOrig || !avatarOrig) {
+      fetchData();
+    }
+  }, []);
 
   const onChangeImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -50,35 +67,38 @@ export default function EditProfile({ navigation }: AuthStackModalProps<'EditPro
 
     if (!result.cancelled) {
       if (result.base64) {
-        const buffer: Buffer = Buffer.from(result.base64, "base64");
-        setPhotoURI("data:image/jpeg;base64,"+result.base64);
+        const buffer: Buffer = Buffer.from(result.base64, 'base64');
+        setPhotoURI('data:image/jpeg;base64,' + result.base64);
         setPhotoBuffer(buffer);
       }
     }
-  }
+  };
 
   const submitChanges = async () => {
     // Add requests to backend server here to update profile info
-    navigation.navigate('Profile')
-  }
+    navigation.navigate('Profile');
+  };
 
   return (
     <KeyboardAwareScrollView style={styles.container}>
       <View style={styles.profileContainer}>
-        <View style={styles.photoContainer} >
+        <View style={styles.photoContainer}>
           <Image
             style={styles.profileImage}
             source={{
-              uri: photoURI || 'https://eitrawmaterials.eu/wp-content/uploads/2016/09/person-icon.png',
+              uri:
+                photoURI ||
+                'https://eitrawmaterials.eu/wp-content/uploads/2016/09/person-icon.png',
             }}
           />
           <Text
             onPress={onChangeImage}
             lightColor="blue"
             darkColor="#EEEE"
-            style={styles.changeImageLabel}>
+            style={styles.changeImageLabel}
+          >
             Change profile photo
-            </Text>
+          </Text>
         </View>
         <View
           style={styles.separator}
@@ -87,21 +107,33 @@ export default function EditProfile({ navigation }: AuthStackModalProps<'EditPro
         />
         <View style={styles.inputContainer}>
           <Text style={styles.textLabel}>Username</Text>
-          <SmallTextInput style={styles.shadowed} onChangeText={(text) => setUsername(text)} defaultValue={profileOrig?.username || ""}/>
+          <SmallTextInput
+            style={[styles.fixedTextInput, styles.shadowed]}
+            onChangeText={(text) => setUsername(text)}
+            defaultValue={profileOrig?.username || ''}
+          />
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.textLabel}>Name</Text>
-          <SmallTextInput style={styles.shadowed} onChangeText={(text) => setName(text)} defaultValue={profileOrig?.name || ""}/>
+          <SmallTextInput
+            style={[styles.fixedTextInput, styles.shadowed]}
+            onChangeText={(text) => setName(text)}
+            defaultValue={profileOrig?.name || ''}
+          />
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.textLabel}>Bio</Text>
-          <LargeTextInput multiline numberOfLines={4} style={styles.shadowed} onChangeText={(text) => setBio(text)} defaultValue={profileOrig?.bio || ""}/>
+          <LargeTextInput
+            multiline
+            numberOfLines={4}
+            style={[styles.fixedTextInput, styles.shadowed]}
+            onChangeText={(text) => setBio(text)}
+            defaultValue={profileOrig?.bio || ''}
+          />
         </View>
       </View>
       <TouchableOpacity onPress={submitChanges} style={styles.editButton}>
-        <ProfileBody style={styles.linkText}>
-          Save
-        </ProfileBody>
+        <ProfileBody style={styles.linkText}>Save</ProfileBody>
       </TouchableOpacity>
     </KeyboardAwareScrollView>
   );
@@ -127,8 +159,8 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   inputContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: 'transparent',
   },
   profileImage: {
@@ -140,7 +172,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   photoContainer: {
-    flexDirection: "column",
+    flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
     margin: 5,
@@ -155,7 +187,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   textLabel: {
-    textAlign: "right",
+    textAlign: 'right',
     width: 100,
     fontSize: 15,
     marginRight: 10,
@@ -170,12 +202,15 @@ const styles = StyleSheet.create({
     height: 1,
     width: '80%',
   },
+  fixedTextInput: {
+    width: 200,
+  },
   shadowed: {
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 1,
     shadowRadius: 3,
     shadowColor: 'black',
-    elevation: 2
+    elevation: 2,
   },
   editButton: {
     margin: 10,
