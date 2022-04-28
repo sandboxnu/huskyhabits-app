@@ -23,6 +23,8 @@ export interface SetProfilePhotoRequest {
 
 export interface GetProfileResponse {
   userId: string;
+  firstName: string;
+  lastName: string;
   username: string;
   bio: string;
   photo: { data: Buffer; contentType: string };

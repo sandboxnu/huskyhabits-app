@@ -98,7 +98,7 @@ export default class ProfileServiceClient {
       type: 'image/png',
     };
     photoData.append('file', fileObj);
-    
+
     try {
       const res = await this._axios.post<SetProfilePhotoResponse>(
         `/${requestData.profileId}/photo`,
@@ -110,6 +110,18 @@ export default class ProfileServiceClient {
       console.log(err.message);
       throw new Error(err.message);
     }
+  }
+
+  async getCurrentProfile(): Promise<GetProfileResponse> {
+    const res = await this._axios.get<GetProfileResponse>('/');
+    if (!res) throw new Error('Profile could not be found.');
+    return res.data;
+  }
+
+  async getCurrProfilePhoto(): Promise<GetProfilePhotoResponse> {
+    const res = await this._axios.get<GetProfilePhotoResponse>('/photo');
+    if (!res) throw new Error('Profile photo could not be found.');
+    return res.data;
   }
 
   // TODO
