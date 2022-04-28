@@ -10,6 +10,7 @@ import {
   GetProfileFriendsRequest,
   GetProfileFriendsResponse,
   GetProfilePhotoRequest,
+  GetCurrentProfilePhotoRequest,
   GetProfilePhotoResponse,
   GetProfileChallengesResponse,
   GetProfileFriendRequestsResponse,
@@ -118,7 +119,9 @@ export default class ProfileServiceClient {
     return res.data;
   }
 
-  async getCurrProfilePhoto(): Promise<GetProfilePhotoResponse> {
+  async getCurrentProfilePhoto(
+      requestData: GetCurrentProfilePhotoRequest
+  ): Promise<GetProfilePhotoResponse> {
     const res = await this._axios.get<GetProfilePhotoResponse>('/photo');
     if (!res) throw new Error('Profile photo could not be found.');
     return res.data;

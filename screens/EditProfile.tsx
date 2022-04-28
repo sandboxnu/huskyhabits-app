@@ -9,11 +9,24 @@ import { SmallTextInput, LargeTextInput, ProfileBody } from '../components/Commo
 import { AuthStackModalProps } from '../types';
 import ProfileServiceClient from '../services/profile/profileService';
 import * as SecureStore from 'expo-secure-store';
+import {
+  CreateProfileRequest,
+  CreateProfileResponse,
+  GetProfileRequest,
+  GetProfileResponse,
+  GetProfileFriendsRequest,
+  GetProfileFriendsResponse,
+  GetProfilePhotoRequest,
+  GetProfilePhotoResponse,
+  GetProfileChallengesResponse,
+  GetProfileFriendRequestsResponse,
+  SetProfilePhotoRequest,
+  SetProfilePhotoResponse,
+} from '../services/profile/types';
 
 export default function EditProfile({ navigation }: AuthStackModalProps<'EditProfile'>) {
   const [username, setUsername] = useState<string>("");
-  const [firstName, setFirstName] = useState<string>("");
-  const [lastName, setLastName] = useState<string>("");
+  const [name, setName] = useState<string>("");
   const [bio, setBio] = useState<string>("");
   const [photoBuffer, setPhotoBuffer] = useState<Buffer | null>(null);
   const [photoURI, setPhotoURI] = useState<string>("");
@@ -24,7 +37,7 @@ export default function EditProfile({ navigation }: AuthStackModalProps<'EditPro
   // TODO: Make getting the profile data work
   const profileServiceClient : ProfileServiceClient = new ProfileServiceClient()
   profileServiceClient.getCurrentProfile().then(x => setProfileOrig(x));
-  profileServiceClient.getProfileAvatar({profileId: userId, size: 'md'}).then(x => setAvatarOrig(x))
+  profileServiceClient.getCurrentProfilePhoto({size: 'md'}).then(x => setAvatarOrig(x))
 
   const onChangeImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -74,19 +87,15 @@ export default function EditProfile({ navigation }: AuthStackModalProps<'EditPro
         />
         <View style={styles.inputContainer}>
           <Text style={styles.textLabel}>Username</Text>
-          <SmallTextInput style={styles.shadowed} onChangeText={(text) => setUsername(text)} defaultValue={profileOrig.username || ""}/>
+          <SmallTextInput style={styles.shadowed} onChangeText={(text) => setUsername(text)} defaultValue={profileOrig?.username || ""}/>
         </View>
         <View style={styles.inputContainer}>
-          <Text style={styles.textLabel}>First Name</Text>
-          <SmallTextInput style={styles.shadowed} onChangeText={(text) => setFirstName(text)} defaultValue={profileOrig.firstName || ""}/>
-        </View>
-        <View style={styles.inputContainer}>
-          <Text style={styles.textLabel}>Last Name</Text>
-          <SmallTextInput style={styles.shadowed} onChangeText={(text) => setLastName(text)} defaultValue={profileOrig.lastName || ""}/>
+          <Text style={styles.textLabel}>Name</Text>
+          <SmallTextInput style={styles.shadowed} onChangeText={(text) => setName(text)} defaultValue={profileOrig?.name || ""}/>
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.textLabel}>Bio</Text>
-          <LargeTextInput multiline numberOfLines={4} style={styles.shadowed} onChangeText={(text) => setBio(text)} defaultValue={profileOrig.bio || ""}/>
+          <LargeTextInput multiline numberOfLines={4} style={styles.shadowed} onChangeText={(text) => setBio(text)} defaultValue={profileOrig?.bio || ""}/>
         </View>
       </View>
       <TouchableOpacity onPress={submitChanges} style={styles.editButton}>

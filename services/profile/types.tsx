@@ -16,6 +16,10 @@ export interface GetProfilePhotoRequest {
   size: 'sm' | 'md' | 'lg';
 }
 
+export interface GetCurrentProfilePhotoRequest {
+  size: 'sm' | 'md' | 'lg';
+}
+
 export interface SetProfilePhotoRequest {
   profileId: string;
   photo: string; // photo uri
@@ -23,8 +27,7 @@ export interface SetProfilePhotoRequest {
 
 export interface GetProfileResponse {
   userId: string;
-  firstName: string;
-  lastName: string;
+  name: string;
   username: string;
   bio: string;
   photo: { data: Buffer; contentType: string };
