@@ -21,9 +21,7 @@ export default function Login({ navigation }: RootScreenProps<'Login'>) {
 
     // stores cookies and user id
     const cookies = await SecureStore.getItemAsync('auth-cookies');
-    const userId = await SecureStore.getItemAsync('user-id');
     dispatch(AuthAction.setCookies(cookies || ''));
-    dispatch(AuthAction.setUserId(userId || ''));
   };
 
   return (

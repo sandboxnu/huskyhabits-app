@@ -63,19 +63,13 @@ export default function Onboarding({
 
   const fetchData = async () => {
     try {
-      const userId = await SecureStore.getItemAsync('user-id');
-      if (!userId) throw new Error('No user found.');
-
-      const res = await userClient.getUserById({
-        userId: userId,
-      });
+      const res = await userClient.getCurrentUser();
       setUserData({
-        userId: userId,
+        userId: res.userId,
         email: res.email,
         first_name: res.first_name,
         last_name: res.last_name,
       });
-      setUserData(userData);
     } catch (err: any) {
       console.log(err.message);
       setError(err.message);
