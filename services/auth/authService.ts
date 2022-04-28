@@ -24,7 +24,9 @@ export default class AuthServiceClient {
   }
   async loginWithGoogle(redirectUri: string) {
     const url = `${this._baseURL}/google`;
-
+    
+    console.log("Cope");
+    console.log("Sad");
     try {
       const resp = await WebBrowser.openAuthSessionAsync(
         url,

@@ -225,6 +225,7 @@ const styles = StyleSheet.create({
     elevation: 10,
     shadowColor: 'transparent',
     backgroundColor: 'transparent',
+    zIndex: 1,
   },
   shadowContainer: {
     shadowColor: '#000',

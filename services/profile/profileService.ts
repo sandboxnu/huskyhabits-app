@@ -63,9 +63,13 @@ export default class ProfileServiceClient {
   async createProfile(
     requestData: CreateProfileRequest,
   ): Promise<CreateProfileResponse> {
-    const res = await this._axios.post<CreateProfileResponse>('/', requestData);
+    const res = await this._axios.post<{ _id: string }>('/', requestData);
     if (!res) throw new Error('Profile could not be created.');
-    return res.data;
+
+    const newProfileObj: CreateProfileResponse = {
+      profileId: res.data._id
+    }
+    return newProfileObj;
   }
 
   async getProfileById(
@@ -91,19 +95,29 @@ export default class ProfileServiceClient {
   async setProfileAvatar(
     requestData: SetProfilePhotoRequest,
   ): Promise<SetProfilePhotoResponse> {
-    const photoData = new global.FormData();
-    const fileObj: FormDataValue = {
-      uri: requestData.photo,
-      name: 'profile-pic',
-      type: 'image/png',
+
+    const form = new FormData();
+    const fileObj2 = {
+      // uri: requestData.photo,
+      uri: 'https://th-thumbnailer.cdn-si-edu.com/9UrydtZErwwxVrzQRr4EmWfGAjk=/fit-in/1600x0/https://tf-cmsv2-smithsonianmag-media.s3.amazonaws.com/filer/Blobfish-ugly-470.jpg',
+      name: 'Blobfish-ugly-470.jpg',
+      type: 'image/jpeg',
     };
-    photoData.append('file', fileObj);
-    
+    form.append('photo', fileObj2);
+
+    console.log(form);
+
     try {
       const res = await this._axios.post<SetProfilePhotoResponse>(
         `/${requestData.profileId}/photo`,
-        photoData,
+        form, 
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }
       );
+      console.log(res);
       if (!res) throw new Error('Profile photo not found.');
       return res.data;
     } catch (err: any) {
