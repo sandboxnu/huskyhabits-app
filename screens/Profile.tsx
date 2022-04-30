@@ -22,16 +22,31 @@ import Colors from '../theme/Colors';
 import * as SecureStore from 'expo-secure-store';
 import { useAppDispatch } from '../store/App.hooks';
 import { AuthTabScreenProps } from '../types';
-import Text from '../theme/Text';
 import NotebookTab from '../components/NotebookTabComponent'
 import Challenge from '../components/ChallengeComponent';
 import { AuthAction } from '../store/actions/Auth.action';
+import { Buffer } from 'buffer';
+import {
+  ProfileServiceClient,
+  UserServiceClient,
+} from '../services';
+import Toast from 'react-native-toast-message';
 
 export default function ProfileScreen({ navigation }: AuthTabScreenProps<'Profile'>) {
+  const userClient: UserServiceClient = new UserServiceClient();
+  const profileClient: ProfileServiceClient = new ProfileServiceClient();
+
+  const [userData, setUserData] = useState({
+    firstName: '',
+    lastName: '',
+  });
   const [profileData, setProfileData] = useState({
-    username: 'bagel_gatekeeper',
-    name: 'Jaime Gonora',
-    bio: 'Hi, I’m a fifth year at NEU! I love to dance, take photos, and listen to kpop (specifically songs with good dances tho)',
+    username: '',
+    photo: {
+      data: Buffer.from([]),
+      contentType: ''
+    },
+    bio: '',
     numberOfFriends: 50,
     numberOfChallenges: 3,
     numberOfHabits: 6,
@@ -41,25 +56,56 @@ export default function ProfileScreen({ navigation }: AuthTabScreenProps<'Profil
     { name: '😭 trying our best' }
   ]);
   const [currentTab, setCurrentTab] = useState('Challenges');
+  const [error, setError] = useState('');
+
   const windowHeight = Dimensions.get('window').height;
 
   const dispatch = useAppDispatch();
 
   const logout = async (): Promise<void> => {
-    await SecureStore.deleteItemAsync('auth-cookies');
-    await SecureStore.deleteItemAsync('user-id');
+    await SecureStore.deleteItemAsync('auth-cookies')
     alert('Logged out');
     dispatch(AuthAction.setCookies(''));
-    dispatch(AuthAction.setUserId(''));
   };
 
+  // calls on getCurrentUser and getCurrentProfile
+  const fetchData = async () => {
+    try {
+      const userRes = await userClient.getCurrentUser();
+      setUserData({
+        firstName: userRes.first_name,
+        lastName: userRes.last_name,
+      });
 
-  // TODO: Connect to backend
+      const profileRes = await profileClient.getCurrentProfile();
+      
+      setProfileData(prevState => ({
+        ...prevState,
+        username: profileRes.username,
+        photo: profileRes.photo,
+        bio: profileRes.bio,
+      }));
+    } catch (err: any) {
+      setError(err.message);
+    }
+  }
+
+  // display any errors
   useEffect(() => {
+    if (error) {
+      Toast.show({
+        type: 'error',
+        text1: `Error: ${error}`,
+      });
+    }
+  }, [error]);
 
+  useEffect(() => {
+    fetchData();
   }, []);
-  const challengesToRender = challengeData.map(challenge => <Challenge key={challenge.name} name={challenge.name} />);
 
+
+  const challengesToRender = challengeData.map(challenge => <Challenge key={challenge.name} name={challenge.name} />);
 
   return (
     <ImageBackground
@@ -68,6 +114,7 @@ export default function ProfileScreen({ navigation }: AuthTabScreenProps<'Profil
       imageStyle={styles.image}
     >
       <ScrollContainer>
+        <Toast />
         <Container style={styles.container}>
           <LeftAlign>
             <TitleText style={styles.yellowText}>@</TitleText>
@@ -81,14 +128,16 @@ export default function ProfileScreen({ navigation }: AuthTabScreenProps<'Profil
               <View style={styles.shadowContainer}>
                 <Image
                   source={{
-                    uri: 'https://eitrawmaterials.eu/wp-content/uploads/2016/09/person-icon.png',
+                    uri: profileData.photo ? 
+                    `data:${profileData.photo.contentType};base64,${profileData.photo.data.toString('base64')}` 
+                  : 'https://eitrawmaterials.eu/wp-content/uploads/2016/09/person-icon.png',
                   }}
                   style={styles.profilePicture}
                 />
               </View>
             </CenteredColContainer>
             <ColContainer style={styles.padding}>
-              <Heading style={styles.profileHeader}>{profileData.name}</Heading>
+              <Heading style={styles.profileHeader}>{userData.firstName} {userData.lastName}</Heading>
               <SubHeadingItalic> (she/her) </SubHeadingItalic>
               <RowContainer>
                 <ProfileBody style={[styles.yellowText, styles.profileInfoText]}>{profileData.numberOfFriends} </ProfileBody>
@@ -109,7 +158,9 @@ export default function ProfileScreen({ navigation }: AuthTabScreenProps<'Profil
               </TouchableOpacity>
             </ColContainer>
           </CenteredRowContainer>
-          <Heading style={[styles.smallText, styles.padding]}>{profileData.bio}</Heading>
+          <View style={styles.bioContainer}>
+            <Heading style={[styles.smallText, styles.padding]}>{profileData.bio}</Heading>
+          </View>
           <View style={styles.notebookWithTabs}>
             <View style={styles.tabContainer}>
               <NotebookTab title={'Challenges'} setCurrentTab={setCurrentTab} currentTab={currentTab} />
@@ -132,7 +183,6 @@ export default function ProfileScreen({ navigation }: AuthTabScreenProps<'Profil
           <View style={[styles.notebook, styles.floatingImage]}>
             <Image source={Notebook}/>
           </View>
-          
         </Container>
       </ScrollContainer>
     </ImageBackground>
@@ -142,6 +192,10 @@ export default function ProfileScreen({ navigation }: AuthTabScreenProps<'Profil
 const styles = StyleSheet.create({
   container: {
     marginVertical: 50,
+  },
+  bioContainer: {
+    height: 50,
+    backgroundColor: 'transparent'
   },
   notebookWithTabs: {
     marginTop: 10,
@@ -178,8 +232,7 @@ const styles = StyleSheet.create({
   notebook: {
     position: 'absolute',
     height: 470,
-    top: 400,
-    //zIndex: 1,
+    top: 385,
   },
   notebookPaper: {
     backgroundColor: 'white',
@@ -254,6 +307,7 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
   },
   profileHeader: {
+    fontSize: 20,
     flexWrap: 'wrap'
   }
 });

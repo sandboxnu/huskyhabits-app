@@ -63,21 +63,14 @@ export default function Onboarding({
 
   const fetchData = async () => {
     try {
-      const userId = await SecureStore.getItemAsync('user-id');
-      if (!userId) throw new Error('No user found.');
-
-      const res = await userClient.getUserById({
-        userId: userId,
-      });
+      const res = await userClient.getCurrentUser();
       setUserData({
-        userId: userId,
+        userId: res.userId,
         email: res.email,
         first_name: res.first_name,
         last_name: res.last_name,
       });
-      setUserData(userData);
     } catch (err: any) {
-      console.log(err.message);
       setError(err.message);
     }
   };
@@ -90,20 +83,19 @@ export default function Onboarding({
         // name: name,
         // habit: habit
       };
+
       if (!profileFormData)
         throw new Error('No profile form data was submitted');
 
       const profileData: CreateProfileResponse =
         await profileClient.createProfile(profileFormData);
-        console.log(profileData);
       if (!profileData) {
         setError('Error in creating profile');
         return;
       }
 
       const profileId = profileData.profileId; // returns profileId
-      console.log(profileId);
-      console.log(photoURI);
+
       // only update if photo was added
       if (profileId && photoURI) {
         const photoFormData: SetProfilePhotoRequest = {
@@ -113,7 +105,6 @@ export default function Onboarding({
         const photoData: SetProfilePhotoResponse =
           await profileClient.setProfileAvatar(photoFormData);
 
-        console.log("I AM HERE");
         console.log(photoData);
         if (!photoData) setError('Photo not set.');
       }

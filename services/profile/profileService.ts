@@ -72,6 +72,18 @@ export default class ProfileServiceClient {
     return newProfileObj;
   }
 
+  async getCurrentProfile(): Promise<GetProfileResponse> {
+    const res = await this._axios.get<GetProfileResponse>('/');
+    if (!res) throw new Error('Profile could not be found.');
+    return res.data;
+  }
+
+  async getCurrentProfilePhoto(): Promise<GetProfilePhotoResponse> {
+    const res = await this._axios.get<GetProfilePhotoResponse>('/photo');
+    if (!res) throw new Error('Profile photo could not be found.');
+    return res.data;
+  }
+
   async getProfileById(
     requestData: GetProfileRequest,
   ): Promise<GetProfileResponse> {
@@ -97,13 +109,12 @@ export default class ProfileServiceClient {
   ): Promise<SetProfilePhotoResponse> {
 
     const form = new FormData();
-    const fileObj2 = {
-      // uri: requestData.photo,
-      uri: 'https://th-thumbnailer.cdn-si-edu.com/9UrydtZErwwxVrzQRr4EmWfGAjk=/fit-in/1600x0/https://tf-cmsv2-smithsonianmag-media.s3.amazonaws.com/filer/Blobfish-ugly-470.jpg',
-      name: 'Blobfish-ugly-470.jpg',
+    const fileObj = {
+      uri: requestData.photo,
+      name: 'photo.jpg',
       type: 'image/jpeg',
     };
-    form.append('photo', fileObj2);
+    form.append('photo', fileObj);
 
     console.log(form);
 
@@ -117,7 +128,6 @@ export default class ProfileServiceClient {
           }
         }
       );
-      console.log(res);
       if (!res) throw new Error('Profile photo not found.');
       return res.data;
     } catch (err: any) {

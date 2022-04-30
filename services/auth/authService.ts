@@ -24,9 +24,6 @@ export default class AuthServiceClient {
   }
   async loginWithGoogle(redirectUri: string) {
     const url = `${this._baseURL}/google`;
-    
-    console.log("Cope");
-    console.log("Sad");
     try {
       const resp = await WebBrowser.openAuthSessionAsync(
         url,
@@ -36,12 +33,10 @@ export default class AuthServiceClient {
       if (resp.type == 'success') {
         const { queryParams } = Linking.parse(resp.url);
         const cookies = queryParams['cookies'];
-        const userId = queryParams['userId'];
         await SecureStore.setItemAsync(
           'auth-cookies',
           Buffer.from(cookies, 'base64').toString('ascii'),
         );
-        await SecureStore.setItemAsync('user-id', userId);
       } else {
         console.log('Oauth was cancelled.');
       }
